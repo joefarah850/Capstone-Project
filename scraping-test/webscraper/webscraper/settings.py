@@ -12,6 +12,10 @@ BOT_NAME = "webscraper"
 SPIDER_MODULES = ["webscraper.spiders"]
 NEWSPIDER_MODULE = "webscraper.spiders"
 
+## Choose output file from settings.py
+# FEED = {
+#     'booksdata.json': {'format': 'json'}
+# }
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = "webscraper (+http://www.yourdomain.com)"
@@ -62,9 +66,10 @@ ROBOTSTXT_OBEY = True
 
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
-#ITEM_PIPELINES = {
-#    "webscraper.pipelines.WebscraperPipeline": 300,
-#}
+ITEM_PIPELINES = {
+   "webscraper.pipelines.WebscraperPipeline": 300,
+   "webscraper.pipelines.SaveToMySQLPipeline": 400,
+}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html

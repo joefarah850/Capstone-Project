@@ -1,0 +1,8 @@
+to start venv:
+source venv/bin/activate
+
+if mysql not found:
+export PATH=${PATH}:/usr/local/mysql/bin
+
+to run mysql:
+mysql -u root -p
