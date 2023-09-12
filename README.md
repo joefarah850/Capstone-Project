@@ -102,7 +102,7 @@ the data. This may require iterative training and adjustments for optimal perfor
 
 results and property price predictions.
 
-- Leverage SQLite for systematic database management, facilitating efficient storage
+- Leverage MySQL for systematic database management, facilitating efficient storage
 
 and retrieval of real estate data.
 
