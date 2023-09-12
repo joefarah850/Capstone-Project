@@ -118,21 +118,8 @@ class SaveToMySQLPipeline:
             stars,
             category,
             description
-            ) values (
-                %s,
-                %s,
-                %s,
-                %s,
-                %s,
-                %s,
-                %s,
-                %s,
-                %s,
-                %s,
-                %s,
-                %s,
-                %s
-                )""", (
+            ) values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)""", 
+            (
             item["url"],
             item["title"],
             item["upc"],
