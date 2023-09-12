@@ -4,8 +4,7 @@
 
 **Team Members:**
 
-Joe Farah
-Samia Mahdaoui
+Joe Farah & Samia Mahdaoui
 
 
 ## Overview
