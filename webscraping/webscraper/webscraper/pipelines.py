@@ -35,4 +35,8 @@ class WebscraperPipeline:
         else:
             adapter['num_bathrooms'] = 1
 
+        ## Fix title
+        value = adapter.get('title')
+        adapter['title'] = value.split(',')[0] + ', ' + value.split(',')[-1].split("sq.m. ")[-1]
+
         return item
