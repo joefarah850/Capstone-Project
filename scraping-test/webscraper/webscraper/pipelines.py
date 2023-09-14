@@ -104,7 +104,7 @@ class SaveToMySQLPipeline:
     def process_item(self, item, spider):
 
         ## Define insert statement
-        self.cur.execute(""" insert into books (
+        self.cur.execute(""" INSERT INTO books (
             url, 
             title, 
             upc, 
@@ -118,7 +118,7 @@ class SaveToMySQLPipeline:
             stars,
             category,
             description
-            ) values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)""", 
+            ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)""", 
             (
             item["url"],
             item["title"],

@@ -13,7 +13,7 @@ SPIDER_MODULES = ["webscraper.spiders"]
 NEWSPIDER_MODULE = "webscraper.spiders"
 
 ## Choose output file from settings.py
-# FEED = {
+# FEEDS = {
 #     'booksdata.json': {'format': 'json'}
 # }
 
