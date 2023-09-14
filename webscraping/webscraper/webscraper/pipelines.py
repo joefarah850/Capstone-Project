@@ -28,4 +28,11 @@ class WebscraperPipeline:
         else:
             adapter['num_rooms'] = 1
 
+        ## Num Bathrooms --> convert to int
+        value = adapter.get('num_bathrooms')
+        if value is not None:
+            adapter['num_bathrooms'] = int(eval(value.strip()))
+        else:
+            adapter['num_bathrooms'] = 1
+
         return item

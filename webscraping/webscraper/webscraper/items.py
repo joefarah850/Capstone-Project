@@ -17,5 +17,6 @@ class PropertyItem(scrapy.Item):
     region = scrapy.Field()
     type = scrapy.Field()
     num_rooms = scrapy.Field()
+    num_bathrooms = scrapy.Field()
     size = scrapy.Field()
     price = scrapy.Field()
