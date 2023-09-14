@@ -8,5 +8,14 @@ import scrapy
 
 class WebscraperItem(scrapy.Item):
     # define the fields for your item here like:
-    # name = scrapy.Field()
-    pass
+    name = scrapy.Field()
+
+class PropertyItem(scrapy.Item):
+    url = scrapy.Field()
+    title = scrapy.Field()
+    city = scrapy.Field()
+    region = scrapy.Field()
+    type = scrapy.Field()
+    num_rooms = scrapy.Field()
+    size = scrapy.Field()
+    price = scrapy.Field()

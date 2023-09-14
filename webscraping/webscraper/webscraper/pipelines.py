@@ -10,4 +10,19 @@ from itemadapter import ItemAdapter
 
 class WebscraperPipeline:
     def process_item(self, item, spider):
+
+        adapter = ItemAdapter(item)
+        
+        ## Price --> convert to float
+        value = adapter.get('price')
+        adapter['price'] = float(value.replace('\xa0', '').replace('AED', '').replace(',', ''))
+
+        ## Size --> convert to float
+        value = adapter.get('size')
+        adapter['size'] = float(value.split()[0])
+
+        ## Num Rooms --> convert to int
+        value = adapter.get('num_rooms')
+        adapter['num_rooms'] = int(eval(value.strip()))
+
         return item

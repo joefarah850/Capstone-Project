@@ -1,4 +1,5 @@
 import scrapy
+from webscraper.items import PropertyItem
 
 
 class PropertyspiderSpider(scrapy.Spider):
@@ -19,14 +20,17 @@ class PropertyspiderSpider(scrapy.Spider):
             yield response.follow(next_page_url, callback=self.parse)
 
     def parse_property_page(self, response):
+        property_item = PropertyItem()
+
+        property_item['url'] = response.url
+        property_item['title'] = response.css('h1::text').get()
+        property_item['city'] = response.css('div.params div.city span.value::text').get()
+        property_item['region'] = response.css('div.params div.region span.value a::text').get()
+        property_item['type'] = response.css('div.params div.tip span.value::text').get()
+        property_item['num_rooms'] = response.css('div.params div.rooms span.value::text').get()
+        property_item['size'] = response.css('div.params div.square span.value::text').get()
+        property_item['price'] = response.css('div.price_info div.value span::text').get()
         
-        yield {
-            'url': response.url,
-            'title': response.css('h1::text').get(),
-            'city': response.css('div.params div.city span.value::text').get(),
-            'region': response.css('div.params div.region span.value a::text').get(),
-            'type': response.css('div.params div.tip span.value::text').get(),
-            'num_rooms': response.css('div.params div.rooms span.value::text').get(),
-            'size': response.css('div.params div.square span.value::text').get(),
-            'price': response.css('div.price_info div.value span::text').get()
-        }
+        if property_item['type'] != 'Apartment':
+            return
+        return property_item
