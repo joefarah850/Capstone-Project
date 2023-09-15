@@ -73,7 +73,7 @@ class SaveToMySQLPipeline:
             size FLOAT,
             price FLOAT,
             PRIMARY KEY (id)
-        )
+        );
         """)
 
     def process_item(self, item, spider):

@@ -33,6 +33,6 @@ class PropertyspiderSpider(scrapy.Spider):
         property_item['size'] = response.css('div.params div.square span.value::text').get()
         property_item['price'] = response.css('div.price_info div.value span::text').get()
         
-        if property_item['type'] != 'Apartment':
+        if property_item['type'] == 'Development':
             return
         return property_item
