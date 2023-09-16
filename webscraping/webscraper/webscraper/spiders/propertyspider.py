@@ -5,7 +5,7 @@ from webscraper.items import PropertyItem
 class PropertyspiderSpider(scrapy.Spider):
     name = "propertyspider"
     allowed_domains = ["emirates.estate"]
-    start_urls = ["https://emirates.estate/property/dubai-emirate/dubai/"]
+    start_urls = ["https://emirates.estate/property/dubai-emirate/dubai/page/996/"]
 
     def parse(self, response):
         properties = response.css('li div.info')
@@ -33,6 +33,6 @@ class PropertyspiderSpider(scrapy.Spider):
         property_item['size'] = response.css('div.params div.square span.value::text').get()
         property_item['price'] = response.css('div.price_info div.value span::text').get()
         
-        if property_item['type'] == 'Development':
+        if property_item['type'] == 'Development' or property_item['size'] is None or property_item['price'] is None:
             return
         return property_item
