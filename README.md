@@ -132,11 +132,18 @@ Through these methodologies, the application aspires to stand out as a vital too
 
 |**Required Work**|**Deadline**|
 | - | - |
+|**Fall 2023**| - |
 |Bibliography and check for equivalent software (Gather information)|Week 3-4|
 |Understand the data, its sources, and generation process|Week 6-7|
-|Elicitation and Requirements of the functionalities of the software||
-|Choosing Machine Learning Models|Week 10-11|
+|Elicitation and Requirements of the functionalities of the software|Week 8-9|
+|Choosing Machine Learning Models|Week 11-12|
 |Prototyping & Presentation|Week 15|
+|**Spring 2024**| - |
+|Implement ANN model and test it|Week 3-4|
+|Design Website Interface|Week 5-6|
+|Design Website Back-End|Week 6-7|
+|Implement Website Front-End and Back-End (Alpha Version)|Week 9-10|
+|Make changes for Final Version|Week 13-14|
 
 ## Team members
 
