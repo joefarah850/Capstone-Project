@@ -23,3 +23,8 @@ for a ML project:
 Generally speaking, the rule of thumb regarding machine learning is that you need at least ten times as many rows (data points) as there are features (columns) in your dataset
 
 for the scraping of the properties we're at page 2587
+
+to fetch main:
+git fetch origin main
+git merge origin/main
+git push origin <branch_name>
