@@ -1,5 +1,5 @@
 import scrapy
-from webscraper.items import ReviewItem
+# from webscraper.items import ReviewItem
 
 
 class ReviewspiderSpider(scrapy.Spider):

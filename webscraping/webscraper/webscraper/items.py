@@ -20,8 +20,3 @@ class PropertyItem(scrapy.Item):
     num_bathrooms = scrapy.Field()
     size = scrapy.Field()  # in sqm
     price = scrapy.Field() # in AED
-
-class ReviewItem(scrapy.Item):
-    url = scrapy.Field()
-    title = scrapy.Field()
-    reviews = scrapy.Field()

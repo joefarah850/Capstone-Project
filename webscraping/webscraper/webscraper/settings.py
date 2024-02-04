@@ -64,7 +64,7 @@ DOWNLOAD_DELAY = 3
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
    "webscraper.pipelines.WebscraperPipeline": 300,
-   # "webscraper.pipelines.SaveToMySQLPipeline": 400,
+   "webscraper.pipelines.SaveToMySQLPipeline": 400,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)

@@ -5,7 +5,7 @@ from webscraper.items import PropertyItem
 class PropertyspiderSpider(scrapy.Spider):
     name = "propertyspider"
     allowed_domains = ["emirates.estate"]
-    start_urls = ["https://emirates.estate/property/dubai-emirate/dubai/page/996/"]
+    start_urls = ["https://emirates.estate/property/dubai-emirate/dubai/page/175/"]
 
     def parse(self, response):
         properties = response.css('li div.info')
