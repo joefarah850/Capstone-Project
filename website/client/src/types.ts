@@ -11,7 +11,7 @@ export interface User {
         lastLogin: Date;
         updateDate: Date;
         organizationId: number;
-        profilePicUrl: string;
+        profile_pic: string;
     };
     message: string;
 }

@@ -1,3 +1,4 @@
+import base64
 from datetime import datetime
 from flask import Flask, request, jsonify, session
 from flask_bcrypt import Bcrypt
@@ -5,7 +6,17 @@ from flask_session import Session
 from config import ApplicationConfig
 from flask_cors import CORS
 from models import db, User, Organization
+import requests
+import cloudinary
 
+cloudinary.config( 
+  cloud_name = ApplicationConfig.CLOUDINARY_CLOUD_NAME,
+  api_key = ApplicationConfig.CLOUDINARY_API_KEY, 
+  api_secret = ApplicationConfig.CLOUDINARY_API_SECRET,
+  secure=True
+)
+
+import cloudinary.uploader
 
 app = Flask(__name__)
 app.config.from_object(ApplicationConfig)
@@ -17,6 +28,7 @@ db.init_app(app)
 
 with app.app_context():
     db.create_all()
+
 
 @app.route('/@me', methods=['GET'])
 def get_current_user():
@@ -33,7 +45,8 @@ def get_current_user():
             "id": user.id,
             "email": user.email,
             "first_name": user.first_name,
-            "last_name": user.last_name
+            "last_name": user.last_name,
+            "profile_pic": user.profile_pic_url
         }
     }), 200
 
@@ -41,12 +54,22 @@ def get_current_user():
 def register_user():
     email = request.json.get("email")
     password = request.json.get("password")
-    first_name = request.json.get("first_name")
-    last_name = request.json.get("last_name")
+    first_name = request.json.get("firstName")
+    last_name = request.json.get("lastName")
     gender = request.json.get("gender")
-    date_of_birth = request.json.get("date_of_birth")
+    date_of_birth = request.json.get("dateOfBirth")
     account_creation_date = datetime.now()
     organization_id = request.json.get("organization_id")
+    profile_pic_url = request.json.get("profilePic")
+
+    # recaptcha_response = request.json.get("reCaptcha")
+    # secret_key = ApplicationConfig.RECAPTCHA_SECRET_KEY
+    # payload = {'secret': secret_key, 'response': recaptcha_response}
+    # response = requests.post('https://www.google.com/recaptcha/api/siteverify', data=payload)
+    # result = response.json()
+
+    # if not result.get('success'):
+    #     return jsonify({"message": "reCAPTCHA verification failed"}), 400
 
     email_exists = User.query.filter_by(email=email).first() is not None
     
@@ -63,13 +86,20 @@ def register_user():
         gender=gender,
         date_of_birth=date_of_birth,
         account_creation_date=account_creation_date,
-        organization_id=organization_id
+        organization_id=organization_id,
     )
 
     db.session.add(new_user)
     db.session.commit()
 
     session["user_id"] = new_user.id
+
+    upload = cloudinary.uploader.upload(profile_pic_url, public_id=f"{new_user.id}_profile_pic", folder="profile_pics", overwrite=True, resource_type="image")
+
+    profile_pic = upload.get("url")
+
+    new_user.profile_pic_url = profile_pic
+    db.session.commit()
 
     return jsonify({
         "message": "User created successfully",
@@ -81,7 +111,7 @@ def register_user():
             "gender": new_user.gender,
             "date_of_birth": new_user.date_of_birth,
             "account_creation_date": new_user.account_creation_date,
-            "organization_id": new_user.organization_id
+            # "organization_id": new_user.organization_id
         }
     }), 201
 
@@ -116,6 +146,10 @@ def login_user():
     if not bcrypt.check_password_hash(user.password, password):
         return jsonify({"message": "Incorrect password"}), 401
     
+    user.last_login = datetime.now()
+    db.session.commit()
+
+    
     session["user_id"] = user.id
     
     return jsonify({
@@ -124,7 +158,8 @@ def login_user():
             "id": user.id,
             "email": user.email,
             "first_name": user.first_name,
-            "last_name": user.last_name
+            "last_name": user.last_name,
+            "profile_pic": user.profile_pic_url
         }
     }), 200
 

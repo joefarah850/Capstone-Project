@@ -16,4 +16,10 @@ class ApplicationConfig:
     SESSION_USE_SIGNER = True
     SESSION_REDIS = redis.from_url("redis://localhost:6379")
 
+    RECAPTCHA_SECRET_KEY = os.environ["RECAPTCHA_SECRET_KEY"]
+
+    CLOUDINARY_CLOUD_NAME = os.environ["CLOUDINARY_CLOUD_NAME"]
+    CLOUDINARY_API_KEY = os.environ["CLOUDINARY_API_KEY"]
+    CLOUDINARY_API_SECRET = os.environ["CLOUDINARY_API_SECRET"]
+
 

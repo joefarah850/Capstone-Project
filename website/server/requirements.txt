@@ -6,3 +6,5 @@ mysqlclient
 flask-cors
 flask-session
 redis
+requests
+cloudinary

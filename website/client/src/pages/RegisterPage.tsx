@@ -1,17 +1,23 @@
 import React, { useEffect, useState } from "react";
 import httpClient from "../httpClient";
 import { useLocation } from "react-router-dom";
+import ReCAPTCHA from "react-google-recaptcha";
+import { RefObject } from "react";
 import "../style.css";
 
 const RegisterPage: React.FC = () => {
+  const [firstName, setFirstName] = useState<string>("");
+  const [lastName, setLastName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [gender, setGender] = useState<string>("");
   const [dateOfBirth, setDateOfBirth] = useState<string>("");
   const [profilePic, setProfilePic] = useState<string>("");
-  const [organization, setOrganization] = useState([]);
+  // const [organization, setOrganization] = useState([]);
   const [errorMessage, setErrorMessage] = useState<string>("");
+  const [reCaptcha, setReCaptcha] = useState<string>("");
   const location = useLocation();
+  const reCaptacharRef = React.createRef();
 
   useEffect(() => {
     showProfilePic();
@@ -23,10 +29,10 @@ const RegisterPage: React.FC = () => {
       if (profilePicUrl) {
         setProfilePic(profilePicUrl);
       } else {
-        setProfilePic("../images/noprofilepic.png");
+        setProfilePic(require("../images/noprofilepic.png"));
       }
     } catch (error) {
-      setProfilePic("../images/noprofilepic.png");
+      setProfilePic(require("../images/noprofilepic.png"));
     }
   }
 
@@ -34,13 +40,18 @@ const RegisterPage: React.FC = () => {
 
   const registerUser = async () => {
     try {
+      console.log(profilePic);
       const resp = await httpClient.post("http://localhost:5000/register", {
+        firstName,
+        lastName,
         email,
         password,
         gender,
         dateOfBirth,
         profilePic,
+        reCaptcha,
       });
+
       window.location.href = "/";
     } catch (error: any) {
       if (error.response.status === 400) {
@@ -66,6 +77,24 @@ const RegisterPage: React.FC = () => {
         <div>
           <img id="profile-pic" src={profilePic} alt="" />
           <a href="/profilepic">Add Profile Picture</a>
+        </div>
+        <div>
+          <label>First Name: </label>
+          <input
+            type="text"
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+            id=""
+          />
+        </div>
+        <div>
+          <label>Last Name: </label>
+          <input
+            type="text"
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+            id=""
+          />
         </div>
         <div>
           <label>Email: </label>
@@ -134,7 +163,14 @@ const RegisterPage: React.FC = () => {
             <button type="button">Add Organization</button>
           </a>
         </div> */}
-        <button type="submit" onClick={() => registerUser()}>
+        {/* <div>
+          <ReCAPTCHA
+            ref={reCaptacharRef as RefObject<ReCAPTCHA>}
+            sitekey={process.env.REACT_APP_RECAPTCHA_SITE_KEY || ""}
+            onChange={(token) => setReCaptcha(token || "")}
+          />
+        </div> */}
+        <button type="button" onClick={() => registerUser()}>
           Submit
         </button>
       </form>
