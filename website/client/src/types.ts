@@ -55,7 +55,9 @@ export const UserSchema: ZodType<RegisterFormData> = z
     firstName: z.string().min(1, { message: "First name is required" }),
     lastName: z.string().min(1, { message: "Last name is required" }),
     dateOfBirth: z.string().min(1, { message: "Date of birth is required" }),
-    gender: z.string(),
+    gender: z.string({
+        invalid_type_error: "Gender is required",
+    }),
     password: z
      .string()
      .min(8, { message: "Password is too short" })
@@ -72,7 +74,7 @@ export const UserSchema: ZodType<RegisterFormData> = z
  });
 
 
- 
+
 //  Login Page
 
  export type LoginFormData = {

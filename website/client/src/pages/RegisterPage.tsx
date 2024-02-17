@@ -6,16 +6,17 @@ import { RefObject } from "react";
 import "../style.css";
 import RegisterFormField from "../components/RegisterFormField";
 import { RegisterFormData, UserSchema } from "../types";
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import ProfilePicPage from "./ProfilePicPage";
 
 const RegisterPage: React.FC = () => {
-  const [gender, setGender] = useState<string>("");
   const [profilePic, setProfilePic] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [reCaptcha, setReCaptcha] = useState<string>("");
   const location = useLocation();
   const reCaptacharRef = React.createRef();
+  const [showProfileEditor, setShowProfileEditor] = useState<boolean>(false);
 
   const {
     register,
@@ -63,6 +64,11 @@ const RegisterPage: React.FC = () => {
     }
   };
 
+  const toggleProfileEditor = () => {
+    setShowProfileEditor(!showProfileEditor);
+    console.log(profilePic);
+  };
+
   //   useEffect(() => {
   //     const getOrganizations = async () => {
   //       const resp = await httpClient.get("http://localhost:5000/organizations");
@@ -79,7 +85,35 @@ const RegisterPage: React.FC = () => {
       <form onSubmit={handleSubmit(registerUser)}>
         <div>
           <img id="profile-pic" src={profilePic} alt="" />
-          <a href="/profilepic">Add Profile Picture</a>
+          <button type="button" onClick={toggleProfileEditor}>
+            Add profile
+          </button>
+          {showProfileEditor && (
+            <div
+              style={{
+                position: "fixed",
+                top: "10%",
+                left: "10%",
+                width: "80%",
+                height: "80%",
+                zIndex: 100,
+                backgroundColor: "white",
+                overflow: "auto",
+              }}
+            >
+              <ProfilePicPage
+                onClose={toggleProfileEditor}
+                onProfilePicSubmit={(e: string) => setProfilePic(e)}
+              />
+              <button
+                type="button"
+                onClick={toggleProfileEditor}
+                style={{ position: "absolute", top: 0, right: 0 }}
+              >
+                Close
+              </button>
+            </div>
+          )}
         </div>
         <div>
           <RegisterFormField

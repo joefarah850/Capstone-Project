@@ -1,21 +1,20 @@
 import React, { useState } from "react";
 import Avatar from "react-avatar-edit";
-import { useNavigate } from "react-router-dom";
 
-const ProfilePicPage: React.FC = () => {
+interface ProfilePicPageProps {
+  onClose: () => void;
+  onProfilePicSubmit: (profilePic: string) => void;
+}
+
+const ProfilePicPage: React.FC<ProfilePicPageProps> = ({
+  onClose,
+  onProfilePicSubmit,
+}) => {
   const [profilePic, setProfilePic] = useState(null);
-  const navigate = useNavigate();
-
-  const onClose = () => {
-    setProfilePic(null);
-  };
 
   const onCrop = (view: any) => {
     setProfilePic(view);
-  };
-
-  const navigateToRegister = () => {
-    navigate("/register", { state: { profilePic } });
+    onProfilePicSubmit(view);
   };
 
   return (
@@ -24,13 +23,12 @@ const ProfilePicPage: React.FC = () => {
         <Avatar
           width={400}
           height={400}
-          onClose={onClose}
           onCrop={onCrop}
           src={profilePic || undefined}
         />
       </div>
       <div>
-        <button onClick={navigateToRegister}>Submit</button>
+        <button onClick={onClose}>Submit</button>
       </div>
     </div>
   );

@@ -12,7 +12,6 @@ const Router = () => {
         <Route path="/" element={<LandingPage />}></Route>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
-        <Route path="/profilepic" element={<ProfilePicPage />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
