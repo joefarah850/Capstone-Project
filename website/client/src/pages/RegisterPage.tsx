@@ -4,20 +4,28 @@ import { useLocation } from "react-router-dom";
 import ReCAPTCHA from "react-google-recaptcha";
 import { RefObject } from "react";
 import "../style.css";
+import RegisterFormField from "../components/RegisterFormField";
+import { RegisterFormData, UserSchema } from "../types";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 const RegisterPage: React.FC = () => {
-  const [firstName, setFirstName] = useState<string>("");
-  const [lastName, setLastName] = useState<string>("");
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
   const [gender, setGender] = useState<string>("");
-  const [dateOfBirth, setDateOfBirth] = useState<string>("");
   const [profilePic, setProfilePic] = useState<string>("");
-  // const [organization, setOrganization] = useState([]);
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [reCaptcha, setReCaptcha] = useState<string>("");
   const location = useLocation();
   const reCaptacharRef = React.createRef();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setError,
+  } = useForm<RegisterFormData>({
+    resolver: zodResolver(UserSchema),
+    mode: "onBlur",
+  });
 
   useEffect(() => {
     showProfilePic();
@@ -36,18 +44,13 @@ const RegisterPage: React.FC = () => {
     }
   }
 
-  const today = new Date().toISOString().split("T")[0];
+  // const today = new Date().toISOString().split("T")[0];
 
-  const registerUser = async () => {
+  const registerUser = async (data: any) => {
     try {
       console.log(profilePic);
       const resp = await httpClient.post("http://localhost:5000/register", {
-        firstName,
-        lastName,
-        email,
-        password,
-        gender,
-        dateOfBirth,
+        ...data,
         profilePic,
         reCaptcha,
       });
@@ -73,109 +76,94 @@ const RegisterPage: React.FC = () => {
     <div>
       <h1>Create an account</h1>
       <p>{errorMessage}</p>
-      <form action="">
+      <form onSubmit={handleSubmit(registerUser)}>
         <div>
           <img id="profile-pic" src={profilePic} alt="" />
           <a href="/profilepic">Add Profile Picture</a>
         </div>
         <div>
-          <label>First Name: </label>
-          <input
+          <RegisterFormField
             type="text"
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
-            id=""
+            placeholder="First Name"
+            name="firstName"
+            register={register}
+            error={errors.firstName}
           />
         </div>
         <div>
-          <label>Last Name: </label>
-          <input
+          <RegisterFormField
             type="text"
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
-            id=""
+            placeholder="Last Name"
+            name="lastName"
+            register={register}
+            error={errors.lastName}
           />
         </div>
         <div>
-          <label>Email: </label>
-          <input
-            type="text"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            id=""
+          <RegisterFormField
+            type="email"
+            placeholder="Email"
+            name="email"
+            register={register}
+            error={errors.email}
           />
         </div>
         <div>
-          <label>Password: </label>
-          <input
+          <RegisterFormField
             type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            id=""
+            placeholder="Password"
+            name="password"
+            register={register}
+            error={errors.password}
           />
         </div>
         <div>
-          <label>
-            <input
-              type="radio"
-              value="M"
-              checked={gender === "M"}
-              onChange={(e) => {
-                setGender(e.target.value);
-              }}
-            />
-            Male
-          </label>
+          <RegisterFormField
+            type="password"
+            placeholder="Confirm Password"
+            name="confirmPassword"
+            register={register}
+            error={errors.confirmPassword}
+          />
         </div>
         <div>
-          <label>
-            <input
-              type="radio"
-              value="F"
-              checked={gender === "F"}
-              onChange={(e) => {
-                setGender(e.target.value);
-              }}
-            />
-            Female
-          </label>
-        </div>
-        <div>
-          <label>Date of Birth:</label>
-          <input
+          <RegisterFormField
             type="date"
-            id="dateOfBirth"
-            value={dateOfBirth}
-            onChange={(e) => setDateOfBirth(e.target.value)}
-            max={today}
+            placeholder="Date of Birth"
+            name="dateOfBirth"
+            register={register}
+            error={errors.dateOfBirth}
           />
         </div>
-        {/* <div>
-          <label>Organization:</label>
-          <select name="organizations" id="organizations">
-            {organization.map((org: any) => (
-              <option key={org.id} value={org.id}>
-                {org.name}
-              </option>
-            ))}
-          </select>
-          <a href="/organization-page">
-            <button type="button">Add Organization</button>
-          </a>
-        </div> */}
-        {/* <div>
+        <div>
+          <RegisterFormField
+            type="radio"
+            options={[
+              { label: "Male", value: "M" },
+              { label: "Female", value: "F" },
+            ]}
+            name="gender"
+            register={register}
+            error={errors.gender}
+            placeholder={""}
+          />
+        </div>
+        <div>
           <ReCAPTCHA
             ref={reCaptacharRef as RefObject<ReCAPTCHA>}
             sitekey={process.env.REACT_APP_RECAPTCHA_SITE_KEY || ""}
             onChange={(token) => setReCaptcha(token || "")}
           />
-        </div> */}
-        <button type="button" onClick={() => registerUser()}>
-          Submit
-        </button>
+        </div>
+        <button type="submit">Submit</button>
       </form>
     </div>
   );
 };
 
 export default RegisterPage;
+function zodSolver(
+  UserSchema: any
+): import("react-hook-form").Resolver<FormData, any> | undefined {
+  throw new Error("Function not implemented.");
+}

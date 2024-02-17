@@ -62,14 +62,14 @@ def register_user():
     organization_id = request.json.get("organization_id")
     profile_pic_url = request.json.get("profilePic")
 
-    # recaptcha_response = request.json.get("reCaptcha")
-    # secret_key = ApplicationConfig.RECAPTCHA_SECRET_KEY
-    # payload = {'secret': secret_key, 'response': recaptcha_response}
-    # response = requests.post('https://www.google.com/recaptcha/api/siteverify', data=payload)
-    # result = response.json()
+    recaptcha_response = request.json.get("reCaptcha")
+    secret_key = ApplicationConfig.RECAPTCHA_SECRET_KEY
+    payload = {'secret': secret_key, 'response': recaptcha_response}
+    response = requests.post('https://www.google.com/recaptcha/api/siteverify', data=payload)
+    result = response.json()
 
-    # if not result.get('success'):
-    #     return jsonify({"message": "reCAPTCHA verification failed"}), 400
+    if not result.get('success'):
+        return jsonify({"message": "reCAPTCHA verification failed"}), 400
 
     email_exists = User.query.filter_by(email=email).first() is not None
     
@@ -94,12 +94,18 @@ def register_user():
 
     session["user_id"] = new_user.id
 
-    upload = cloudinary.uploader.upload(profile_pic_url, public_id=f"{new_user.id}_profile_pic", folder="profile_pics", overwrite=True, resource_type="image")
+    if "data:image" in profile_pic_url:
+        upload = cloudinary.uploader.upload(profile_pic_url, public_id=f"{new_user.id}_profile_pic", folder="profile_pics", overwrite=True, resource_type="image")
 
-    profile_pic = upload.get("url")
+        profile_pic = upload.get("url")
 
-    new_user.profile_pic_url = profile_pic
-    db.session.commit()
+        new_user.profile_pic_url = profile_pic
+        db.session.commit()
+    else:
+        profile_pic = "../images/noprofilepic.png"
+
+        new_user.profile_pic_url = profile_pic
+        db.session.commit()
 
     return jsonify({
         "message": "User created successfully",

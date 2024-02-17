@@ -3,6 +3,7 @@ import { resetCookieConsentValue } from "react-cookie-consent";
 import httpClient from "../httpClient";
 import { User } from "../types";
 import { log } from "console";
+import { get } from "http";
 
 const LandingPage = () => {
   const [user, setUser] = React.useState<User | null>(null);
@@ -13,6 +14,15 @@ const LandingPage = () => {
     resetCookieConsentValue();
 
     window.location.href = "/";
+  };
+
+  const getProfilePic = () => {
+    if (user != null) {
+      if (user.data.profile_pic === "../images/noprofilepic.png") {
+        return require("../images/noprofilepic.png");
+      }
+      return user.data.profile_pic;
+    }
   };
 
   useEffect(() => {
@@ -34,7 +44,7 @@ const LandingPage = () => {
         {user != null ? (
           <div>
             <h2>Logged in</h2>
-            <img src={user.data.profile_pic} alt="Profile Pic" />
+            <img src={getProfilePic()} alt="Profile Pic" />
             <h3>Email: {user.data.email}</h3>
             <h3>ID: {user.data.id}</h3>
             <h3>{user.message}</h3>

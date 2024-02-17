@@ -1,18 +1,28 @@
 import React, { useState } from "react";
 import httpClient from "../httpClient";
 import CookieConsent, { resetCookieConsentValue } from "react-cookie-consent";
+import { LoginFormData, LoginUserSchema } from "../types";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import LoginFormField from "../components/LoginFormField";
 
 const LoginPage: React.FC = () => {
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
   const [cookieConsent, setCookieConsent] = useState<boolean>(false);
 
-  const loginUser = async () => {
-    console.log(email, password);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setError,
+  } = useForm<LoginFormData>({
+    resolver: zodResolver(LoginUserSchema),
+    mode: "onBlur",
+  });
+
+  const loginUser = async (data: any) => {
     try {
       const resp = await httpClient.post("http://localhost:5000/login", {
-        email,
-        password,
+        ...data,
         cookieConsent,
       });
       window.location.href = "/";
@@ -37,28 +47,26 @@ const LoginPage: React.FC = () => {
         </CookieConsent>
         <div>
           <h1>Login</h1>
-          <form action="">
+          <form onSubmit={handleSubmit(loginUser)}>
             <div>
-              <label>Email: </label>
-              <input
-                type="text"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                id=""
+              <LoginFormField
+                type="email"
+                placeholder="Email"
+                name="email"
+                login={register}
+                error={errors.email}
               />
             </div>
             <div>
-              <label>Password: </label>
-              <input
+              <LoginFormField
                 type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                id=""
+                placeholder="Password"
+                name="password"
+                login={register}
+                error={errors.password}
               />
             </div>
-            <button type="button" onClick={() => loginUser()}>
-              Submit
-            </button>
+            <button type="submit">Submit</button>
           </form>
         </div>
       </>
