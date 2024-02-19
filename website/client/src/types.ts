@@ -34,6 +34,7 @@ export type RegisterFormFieldProps = {
     placeholder: string;
     name: RegisterValidFieldNames;
     options?: { label: string; value: string }[];
+    max?: string;
     register: UseFormRegister<RegisterFormData>;
     error: FieldError | undefined;
     valueAsNumber?: boolean;

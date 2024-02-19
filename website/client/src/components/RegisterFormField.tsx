@@ -7,7 +7,8 @@ const RegisterFormField: React.FC<RegisterFormFieldProps> = ({
   name,
   register,
   error,
-  options, // Added options to destructure from props
+  options,
+  max,
   valueAsNumber,
 }) => {
   // Check if the input type is 'radio' and options are provided
@@ -31,6 +32,7 @@ const RegisterFormField: React.FC<RegisterFormFieldProps> = ({
       <input
         type={type}
         placeholder={placeholder}
+        max={max}
         {...register(name, { valueAsNumber })}
       />
       {error && <span className="error-message">{error.message}</span>}

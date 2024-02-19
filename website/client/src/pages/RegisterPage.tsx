@@ -45,8 +45,6 @@ const RegisterPage: React.FC = () => {
     }
   }
 
-  // const today = new Date().toISOString().split("T")[0];
-
   const registerUser = async (data: any) => {
     try {
       console.log(profilePic);
@@ -163,6 +161,7 @@ const RegisterPage: React.FC = () => {
         <div>
           <RegisterFormField
             type="date"
+            max={new Date().toISOString().split("T")[0]}
             placeholder="Date of Birth"
             name="dateOfBirth"
             register={register}

@@ -67,6 +67,8 @@ const LoginPage: React.FC = () => {
               />
             </div>
             <button type="submit">Submit</button>
+            Implement a Register link here Implement a "Forgot Password" link
+            here Implement a Login with Google button here
           </form>
         </div>
       </>
