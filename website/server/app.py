@@ -1,4 +1,3 @@
-import base64
 from datetime import datetime
 from flask import Flask, request, jsonify, session
 from flask_bcrypt import Bcrypt
@@ -8,6 +7,8 @@ from flask_cors import CORS
 from models import db, User, Organization
 import requests
 import cloudinary
+from itsdangerous import URLSafeTimedSerializer, SignatureExpired
+from flask_mail import Mail, Message
 
 cloudinary.config( 
   cloud_name = ApplicationConfig.CLOUDINARY_CLOUD_NAME,
@@ -24,10 +25,50 @@ CORS(app, supports_credentials=True)
 
 bcrypt = Bcrypt(app)
 server_session = Session(app)
+mail = Mail(app)
+s = URLSafeTimedSerializer(ApplicationConfig.SECRET_KEY)
+
 db.init_app(app)
 
 with app.app_context():
     db.create_all()
+
+@app.route('/forgot-password', methods=['POST'])
+def forgot_password():
+    email = request.json.get('email')
+    user = User.query.filter_by(email=email).first()
+
+    if not user:
+        return jsonify({"message": "Email address not found"}), 400
+
+    token = s.dumps(email, salt='password-reset-salt')
+
+    msg = Message('Password Reset Request', sender=ApplicationConfig.MAIL_USERNAME, recipients=[email])
+    link = f'http://localhost:3000/reset-password/{token}'
+    msg.body = f'Your link to reset your password is {link}'
+    mail.send(msg)
+
+    return jsonify({"message": "Password reset email has been sent."}), 200
+
+@app.route('/reset-password/<token>', methods=['GET', 'POST'])
+def reset_password(token):
+    if request.method == 'GET':
+        return jsonify({"message": "Password reset link is valid"}), 200
+    
+    try:
+        email = s.loads(token, salt='password-reset-salt', max_age=660)  # Token expires after 10 mins
+    except SignatureExpired:
+        return jsonify({"message": "The password reset link is expired"}), 400
+
+    user = User.query.filter_by(email=email).first()
+    if not user:
+        return jsonify({"message": "Invalid token"}), 400
+
+    new_password = request.json.get('password')
+    user.password = bcrypt.generate_password_hash(new_password).decode('utf-8')
+    db.session.commit()
+
+    return jsonify({"message": "Your password has been updated."}), 200
 
 
 @app.route('/@me', methods=['GET'])
@@ -174,6 +215,7 @@ def logout_user():
     session.pop("user_id", None)
 
     return jsonify({"message": "User logged out successfully"}), 200
+
 
 if __name__ == '__main__':
     app.run(debug=True)

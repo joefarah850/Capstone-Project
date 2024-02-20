@@ -22,4 +22,13 @@ class ApplicationConfig:
     CLOUDINARY_API_KEY = os.environ["CLOUDINARY_API_KEY"]
     CLOUDINARY_API_SECRET = os.environ["CLOUDINARY_API_SECRET"]
 
+    MAIL_SERVER = 'smtp.gmail.com'
+    MAIL_PORT = 587
+    MAIL_USE_SSL = False
+    MAIL_USE_TLS = True
+    MAIL_USERNAME = os.environ["MAIL_USERNAME"]
+    MAIL_PASSWORD = os.environ["MAIL_PASSWORD"]
+    
+    
+
 

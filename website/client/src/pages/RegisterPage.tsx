@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
 import httpClient from "../httpClient";
-import { useLocation } from "react-router-dom";
 import ReCAPTCHA from "react-google-recaptcha";
 import { RefObject } from "react";
 import "../style.css";
 import RegisterFormField from "../components/RegisterFormField";
 import { RegisterFormData, UserSchema } from "../types";
-import { set, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import ProfilePicPage from "./ProfilePicPage";
 
@@ -14,9 +13,11 @@ const RegisterPage: React.FC = () => {
   const [profilePic, setProfilePic] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [reCaptcha, setReCaptcha] = useState<string>("");
-  const location = useLocation();
   const reCaptacharRef = React.createRef();
   const [showProfileEditor, setShowProfileEditor] = useState<boolean>(false);
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] =
+    useState(false);
 
   const {
     register,
@@ -29,26 +30,12 @@ const RegisterPage: React.FC = () => {
   });
 
   useEffect(() => {
-    showProfilePic();
+    setProfilePic(require("../images/noprofilepic.png"));
   }, []);
-
-  function showProfilePic(): void {
-    try {
-      const profilePicUrl = location.state.profilePic;
-      if (profilePicUrl) {
-        setProfilePic(profilePicUrl);
-      } else {
-        setProfilePic(require("../images/noprofilepic.png"));
-      }
-    } catch (error) {
-      setProfilePic(require("../images/noprofilepic.png"));
-    }
-  }
 
   const registerUser = async (data: any) => {
     try {
-      console.log(profilePic);
-      const resp = await httpClient.post("http://localhost:5000/register", {
+      await httpClient.post("http://localhost:5000/register", {
         ...data,
         profilePic,
         reCaptcha,
@@ -64,7 +51,13 @@ const RegisterPage: React.FC = () => {
 
   const toggleProfileEditor = () => {
     setShowProfileEditor(!showProfileEditor);
-    console.log(profilePic);
+  };
+
+  const maxDate = () => {
+    const today = new Date();
+    today.setFullYear(today.getFullYear() - 18);
+    const maxDate = today.toISOString().split("T")[0];
+    return maxDate;
   };
 
   //   useEffect(() => {
@@ -75,6 +68,14 @@ const RegisterPage: React.FC = () => {
   //     };
   //     getOrganizations();
   //   }, []);
+
+  const togglePasswordVisibility = () => {
+    setIsPasswordVisible(!isPasswordVisible);
+  };
+
+  const toggleConfirmPasswordVisibility = () => {
+    setIsConfirmPasswordVisible(!isConfirmPasswordVisible);
+  };
 
   return (
     <div>
@@ -142,26 +143,33 @@ const RegisterPage: React.FC = () => {
         </div>
         <div>
           <RegisterFormField
-            type="password"
+            type={isPasswordVisible ? "text" : "password"}
             placeholder="Password"
             name="password"
             register={register}
             error={errors.password}
           />
+          <button type="button" onClick={togglePasswordVisibility}>
+            {isPasswordVisible ? "Hide" : "Show"}
+          </button>
         </div>
         <div>
           <RegisterFormField
-            type="password"
+            type={isConfirmPasswordVisible ? "text" : "password"}
             placeholder="Confirm Password"
             name="confirmPassword"
             register={register}
             error={errors.confirmPassword}
           />
+          <button type="button" onClick={toggleConfirmPasswordVisibility}>
+            {isConfirmPasswordVisible ? "Hide" : "Show"}
+          </button>
         </div>
         <div>
+          <label>Date of Birth:</label>
           <RegisterFormField
             type="date"
-            max={new Date().toISOString().split("T")[0]}
+            max={maxDate()}
             placeholder="Date of Birth"
             name="dateOfBirth"
             register={register}
@@ -189,14 +197,13 @@ const RegisterPage: React.FC = () => {
           />
         </div>
         <button type="submit">Submit</button>
+        <div>
+          Already have an account?
+          <a href="/login">Login</a>
+        </div>
       </form>
     </div>
   );
 };
 
 export default RegisterPage;
-function zodSolver(
-  UserSchema: any
-): import("react-hook-form").Resolver<FormData, any> | undefined {
-  throw new Error("Function not implemented.");
-}

@@ -5,9 +5,12 @@ import { LoginFormData, LoginUserSchema } from "../types";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import LoginFormField from "../components/LoginFormField";
+import ForgotPassword from "../components/ForgotPassword";
 
 const LoginPage: React.FC = () => {
   const [cookieConsent, setCookieConsent] = useState<boolean>(false);
+  const [forgotPassword, setForgotPassword] = useState<boolean>(false);
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
   const {
     register,
@@ -21,7 +24,7 @@ const LoginPage: React.FC = () => {
 
   const loginUser = async (data: any) => {
     try {
-      const resp = await httpClient.post("http://localhost:5000/login", {
+      await httpClient.post("http://localhost:5000/login", {
         ...data,
         cookieConsent,
       });
@@ -29,8 +32,17 @@ const LoginPage: React.FC = () => {
     } catch (error: any) {
       if (error.response.status === 401) {
         console.log("Invalid Credentials");
+        alert("Invalid Credentials");
       }
     }
+  };
+
+  const toggleForgotPassword = () => {
+    setForgotPassword(!forgotPassword);
+  };
+
+  const togglePasswordVisibility = () => {
+    setIsPasswordVisible(!isPasswordVisible);
   };
 
   return (
@@ -39,7 +51,6 @@ const LoginPage: React.FC = () => {
       <>
         <CookieConsent
           onAccept={() => {
-            // Set consent flag in localStorage or make an API call to backend
             setCookieConsent(true);
           }}
         >
@@ -59,16 +70,26 @@ const LoginPage: React.FC = () => {
             </div>
             <div>
               <LoginFormField
-                type="password"
+                type={isPasswordVisible ? "text" : "password"}
                 placeholder="Password"
                 name="password"
                 login={register}
                 error={errors.password}
               />
+              <button type="button" onClick={togglePasswordVisibility}>
+                {isPasswordVisible ? "Hide" : "Show"}
+              </button>
             </div>
+            <button type="button" onClick={toggleForgotPassword}>
+              Forgot
+            </button>
+            {forgotPassword ? <ForgotPassword /> : null}
             <button type="submit">Submit</button>
-            Implement a Register link here Implement a "Forgot Password" link
-            here Implement a Login with Google button here
+            {/* Implement a Register link here Implement a Login with Google button here */}
+            <div>
+              Don't have an Account?
+              <a href="/register">Register</a>
+            </div>
           </form>
         </div>
       </>

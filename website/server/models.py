@@ -1,4 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
+from time import time
 
 db = SQLAlchemy()
 
@@ -20,6 +21,7 @@ class User(db.Model):
     profile_pic_url = db.Column(db.String(255), nullable=True)
     
     organization = db.relationship('Organization', backref='User')
+
 
 class Organization(db.Model):
     __tablename__ = 'organization'

@@ -36,7 +36,7 @@ export type RegisterFormFieldProps = {
     options?: { label: string; value: string }[];
     max?: string;
     register: UseFormRegister<RegisterFormData>;
-    error: FieldError | undefined;
+    error?: FieldError | undefined;
     valueAsNumber?: boolean;
   };
   

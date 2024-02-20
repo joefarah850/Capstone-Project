@@ -8,3 +8,9 @@ flask-session
 redis
 requests
 cloudinary
+flask-mail
+jwt
+google-auth 
+google-auth-oauthlib 
+google-auth-httplib2
+google-api-python-client
