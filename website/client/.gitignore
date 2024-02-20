@@ -23,3 +23,5 @@ yarn-debug.log*
 yarn-error.log*
 
 client_secret_678379436489-ds902eds2kf20f6iu7gj011e0p7kprbe.apps.googleusercontent.com.json
+
+.env
