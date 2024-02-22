@@ -102,3 +102,39 @@ export const LoginUserSchema: ZodType<LoginFormData> = z
     email: z.string().email(),
     password: z.string(),
 });
+
+// Prediction Form
+
+export type PredictionFormData = {
+    propType: string;
+    region: string;
+    size: number;
+    bedrooms: string;
+    bathrooms: string;
+};
+
+export type PredictionFormFieldProps = {
+    type: string;
+    placeholder: string;
+    name: PredictionValidFieldNames;
+    predict: UseFormRegister<PredictionFormData>;
+    error: FieldError | undefined;
+    valueAsNumber?: boolean;
+    options?: { label: string; value: string }[];
+};
+
+export type PredictionValidFieldNames =
+| "propType"
+| "region"
+| "size"
+| "bedrooms"
+| "bathrooms";
+
+export const PredictionSchema: ZodType<PredictionFormData> = z
+ .object({
+    propType: z.string().min(1, { message: "Property type is required" }),
+    region: z.string().min(1, { message: "Region is required" }),
+    size: z.number().min(0.4, { message: "Size is too small" }).max(500, { message: "Size is too large" }),
+    bedrooms: z.string().min(1, { message: "Number of Bedrooms is required" }),
+    bathrooms: z.string().min(1, { message: "Number of Bathrooms is required" })
+ });

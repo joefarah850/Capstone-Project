@@ -85,7 +85,8 @@ const LoginPage: React.FC = () => {
             </button>
             {forgotPassword ? <ForgotPassword /> : null}
             <button type="submit">Submit</button>
-            {/* Implement a Register link here Implement a Login with Google button here */}
+            {/*Implement a Login with Google button here 
+            Implement email verification*/}
             <div>
               Don't have an Account?
               <a href="/register">Register</a>

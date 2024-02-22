@@ -4,11 +4,14 @@ from flask_bcrypt import Bcrypt
 from flask_session import Session
 from config import ApplicationConfig
 from flask_cors import CORS
-from models import db, User, Organization
+from models import Prop_Type, Region, db, User, Organization
 import requests
 import cloudinary
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired
 from flask_mail import Mail, Message
+from sklearn.preprocessing import StandardScaler, MinMaxScaler
+from sklearn.model_selection import train_test_split
+import numpy as np
 
 cloudinary.config( 
   cloud_name = ApplicationConfig.CLOUDINARY_CLOUD_NAME,
@@ -27,6 +30,8 @@ bcrypt = Bcrypt(app)
 server_session = Session(app)
 mail = Mail(app)
 s = URLSafeTimedSerializer(ApplicationConfig.SECRET_KEY)
+X = ApplicationConfig.FEATURES
+y = ApplicationConfig.LABEL
 
 db.init_app(app)
 
@@ -174,6 +179,90 @@ def register_user():
 #             } for organization in organizations
 #         ]
 #     }), 200
+
+@app.route('/get-types', methods=['GET'])
+def get_prop_type():
+    types = Prop_Type.query.all()
+
+    return jsonify({
+        "data": [
+            {
+                "id": prop_type.id,
+                "name": prop_type.name
+            } for prop_type in types
+        ]
+    }), 200
+
+@app.route('/get-regions', methods=['GET'])
+def get_regions():
+    regions = Region.query.all()
+
+    return jsonify({
+        "data": [
+            {
+                "id": region.id,
+                "name": region.name
+            } for region in regions
+        ]
+    }), 200
+
+def round_to_nearest(number: int) -> int:
+    quotient = number / 100000
+    rounded_quotient = round(quotient)
+    rounded_number = rounded_quotient * 100000
+
+    return rounded_number
+
+def process_data(data_dict: dict) -> list:
+    processed_data = []
+
+    size = float(data_dict["size"])
+    bedrooms = int(data_dict["bedrooms"]) if int(data_dict["bedrooms"]) != 0 else 1
+
+    processed_data.append(data_dict["bedrooms"])
+    processed_data.append(int(data_dict["bathrooms"]))
+    processed_data.append(size)
+
+    for column in X.columns:
+        if column.startswith("region_"):
+            region = "region_" + data_dict["region"]
+            processed_data.append(1 if column == region else 0)
+        elif column.startswith("type_"):
+            prop_type = "type_" + data_dict["propType"]
+            processed_data.append(1 if column == prop_type else 0)
+
+    return processed_data
+
+def make_prediction(processed_data: list) -> int:
+    X_train, X_test, y_train, y_test = train_test_split(X,y,train_size=0.80, test_size=0.20, random_state=1)
+
+    scaler = StandardScaler()
+    scaler_y = MinMaxScaler()
+
+    scaler.fit_transform(X_train)
+    scaler.transform(X_test)
+
+    y_train_array = y_train.to_numpy()
+    y_test_array = y_test.to_numpy()
+
+    scaler_y.fit_transform(y_train_array.reshape(-1, 1))
+    scaler_y.transform(y_test_array.reshape(-1, 1))
+
+    model = ApplicationConfig.MODEL
+
+    property = np.array(processed_data).reshape(1, -1)
+    predicted_class = model.predict(scaler.transform(property))
+    predicted_price = scaler_y.inverse_transform(predicted_class.reshape(-1, 1))[0][0]
+
+    return round_to_nearest(predicted_price)
+
+@app.route('/prediction', methods=['POST'])
+def post_prediction():
+    
+    data = request.json
+    data = process_data(data)
+
+    return jsonify({"message": "Prediction was made", "prediction": make_prediction(data)}), 200
 
 @app.route('/login', methods=['POST'])
 def login_user():

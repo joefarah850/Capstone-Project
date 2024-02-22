@@ -4,6 +4,7 @@ import httpClient from "../httpClient";
 import { User } from "../types";
 import { log } from "console";
 import { get } from "http";
+import PredictionForm from "../components/PredictionForm";
 
 const LandingPage = () => {
   const [user, setUser] = React.useState<User | null>(null);
@@ -25,17 +26,17 @@ const LandingPage = () => {
     }
   };
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const resp = await httpClient.get("http://localhost:5000/@me");
+  // useEffect(() => {
+  //   (async () => {
+  //     try {
+  //       const resp = await httpClient.get("http://localhost:5000/@me");
 
-        setUser(resp.data);
-      } catch (error: any) {
-        console.log(error);
-      }
-    })();
-  }, []);
+  //       setUser(resp.data);
+  //     } catch (error: any) {
+  //       console.log(error);
+  //     }
+  //   })();
+  // }, []);
 
   return (
     <>
@@ -61,6 +62,9 @@ const LandingPage = () => {
               <a href="/register">
                 <button>Register</button>
               </a>
+            </div>
+            <div>
+              <PredictionForm />
             </div>
           </div>
         )}

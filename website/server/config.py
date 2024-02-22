@@ -1,6 +1,8 @@
 from dotenv import load_dotenv
 import os
 import redis
+import pandas as pd
+import tensorflow as tf
 
 load_dotenv()
 
@@ -28,6 +30,10 @@ class ApplicationConfig:
     MAIL_USE_TLS = True
     MAIL_USERNAME = os.environ["MAIL_USERNAME"]
     MAIL_PASSWORD = os.environ["MAIL_PASSWORD"]
+
+    FEATURES = pd.read_csv(os.environ["FEATURES"])
+    LABEL = pd.read_csv(os.environ["LABEL"])
+    MODEL = tf.keras.models.load_model(os.environ["MODEL"])
     
     
 

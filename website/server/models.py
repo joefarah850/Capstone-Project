@@ -30,3 +30,19 @@ class Organization(db.Model):
     organization = db.Column(db.String(100), nullable=False, default="Individual")
 
     users = db.relationship('User', backref='Organization', lazy=True)
+
+class Prop_Type(db.Model):
+    __tablename__ = 'type'
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    name = db.Column(db.String(255), nullable=False)
+
+    # properties = db.relationship('Property', backref='Prop_Type', lazy=True)
+
+class Region(db.Model):
+    __tablename__ = 'region'
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    name = db.Column(db.String(255), nullable=False)
+
+    # properties = db.relationship('Property', backref='Region', lazy=True)
