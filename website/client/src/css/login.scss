@@ -1,0 +1,33 @@
+body {
+    background: linear-gradient(90deg, #84D2F6, #59A5D8, #386FA4, #133C55);
+}
+
+#login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 33%;
+    margin: auto;
+    margin-top: 10%;
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+    height: 50vh;
+    overflow: hidden;
+}
+
+#login-image {
+    height: 100%;
+    width: 50%;
+    overflow: hidden;
+    margin-left: 0;
+}
+
+img {
+    height: 100%;
+    transform: translateX(-25%);
+}
+
+#login-form {
+    max-width: 50%;
+}

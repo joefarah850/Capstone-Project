@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import LoginFormField from "../components/LoginFormField";
 import ForgotPassword from "../components/ForgotPassword";
+import "../css/login.scss";
 
 const LoginPage: React.FC = () => {
   const [cookieConsent, setCookieConsent] = useState<boolean>(false);
@@ -53,12 +54,13 @@ const LoginPage: React.FC = () => {
           onAccept={() => {
             setCookieConsent(true);
           }}
-        >
-          This website uses cookies to enhance the user experience.
-        </CookieConsent>
-        <div>
-          <h1>Login</h1>
-          <form onSubmit={handleSubmit(loginUser)}>
+        ></CookieConsent>
+        <div id="login-container">
+          <div id="login-image">
+            <img src={require("../images/dubai_night.jpeg")} alt="" />
+          </div>
+          <form id="login-form" onSubmit={handleSubmit(loginUser)}>
+            <h1>Login</h1>
             <div>
               <LoginFormField
                 type="email"

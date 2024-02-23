@@ -41,7 +41,6 @@ const LandingPage = () => {
   return (
     <>
       <div>
-        <h1>Hello World!</h1>
         {user != null ? (
           <div>
             <h2>Logged in</h2>
