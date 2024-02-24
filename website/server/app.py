@@ -218,9 +218,10 @@ def process_data(data_dict: dict) -> list:
 
     size = float(data_dict["size"])
     bedrooms = int(data_dict["bedrooms"]) if int(data_dict["bedrooms"]) != 0 else 1
+    bathrooms = int(data_dict["bedrooms"]) if int(data_dict["bedrooms"]) != 0 else 1
 
-    processed_data.append(data_dict["bedrooms"])
-    processed_data.append(int(data_dict["bathrooms"]))
+    processed_data.append(bedrooms)
+    processed_data.append(bathrooms)
     processed_data.append(size)
 
     for column in X.columns:
@@ -273,8 +274,10 @@ def login_user():
 
     consent_given = request.json.get("cookieConsent")
 
-    if not consent_given:
-        return jsonify({"message": "Consent for cookies not given"}), 403
+    # Will disable this for now (for testing purposes only)
+    # If consent is not given, user will not have access to entire website
+    # if not consent_given:
+    #     return jsonify({"message": "Consent for cookies not given"}), 403
 
     if user is None:
         return jsonify({"message": "User does not exist"}), 401

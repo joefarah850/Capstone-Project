@@ -35,7 +35,7 @@ const RegisterFormField: React.FC<RegisterFormFieldProps> = ({
         max={max}
         {...register(name, { valueAsNumber })}
       />
-      {error && <span className="error-message">{error.message}</span>}
+      {error && <span className="error-message-register">{error.message}</span>}
     </>
   );
 };

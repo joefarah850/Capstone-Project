@@ -1,26 +1,52 @@
+@font-face {
+    font-family: "Josefin Sans Italic";
+    src: url("../fonts/JosefinSans-Italic-VariableFont_wght.ttf");
+    font-optical-sizing: auto;
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Josefin Sans";
+    src: url("../fonts/JosefinSans-VariableFont_wght.ttf");
+    font-optical-sizing: auto;
+    font-weight: normal;
+    font-style: normal;
+}
+
+$primary-color: #133C55;
+$my-white: #efeff3;
+$error-color: rgb(201, 3, 3);
+
 body {
-    background: linear-gradient(90deg, #84D2F6, #59A5D8, #386FA4, #133C55);
+    background: linear-gradient(90deg, #84D2F6, #59A5D8, #386FA4, $primary-color);
 }
 
 #login-container {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 33%;
+    width: 40%;
     margin: auto;
     margin-top: 10%;
-    background-color: #f8f9fa;
+    background-color: $my-white;
     border-radius: 10px;
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
     height: 50vh;
     overflow: hidden;
+
+    @media (max-width: 1200px) {
+        width: 70%;
+    }
+
+    @media (max-width:500px) {
+        width: 90%;
+    }
+    
 }
 
 #login-image {
     height: 100%;
-    width: 50%;
+    width: 100%;
     overflow: hidden;
-    margin-left: 0;
 }
 
 img {
@@ -29,5 +55,300 @@ img {
 }
 
 #login-form {
-    max-width: 50%;
+   width: 150%;
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   position: relative;
+
+   #login-slide {
+    width: 100%;
+    transition: transform 0.5s ease; 
+    transition: 0.5s ease-out;
+
+  &.slide-left {
+    transform: translateX(-100%);
+    opacity: 0; 
+  }
+  
+
+   h1 {
+       position: relative;
+       text-align: center;
+       top: 5%;
+       color: $primary-color;
+       font-family: "Josefin Sans", sans-serif;
+   }
+
+   .login-fields {
+        position: relative;
+        top: 15%;
+        width: 100%;
+        color: $primary-color;
+
+        .fields {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+
+            #clear {
+                position: absolute;
+                right: 10%;
+                top: 4%;
+                color: #386FA4;
+                border: none;
+                background: inherit;
+                font-weight: bolder;
+                padding: 0;
+                opacity: 0.7;
+            }
+
+            #clear:hover {
+                color: $primary-color;
+                cursor: pointer;
+            }
+        }
+
+        input {
+            width: 80%;
+            margin: 0 auto 10px auto;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1.5px solid #ced4da;
+            color: $primary-color;
+            font-family: "Josefin Sans", sans-serif;
+            font-size: 1.1em;
+            background-color: $my-white;
+        }
+
+
+        input:focus {
+            outline: none;
+            border: 2px solid $primary-color;
+            padding: 9.5px;
+        }
+
+        input:-internal-autofill-selected {
+            background-color: inherit !important;
+            color: $primary-color !important;
+        }
+
+        .show-pass-field {
+            display: flex;
+            width: 90%;
+            margin: -2px auto 10px auto;
+
+            #show-password {
+                width: 10%;
+                margin: 0;
+                accent-color: $primary-color;
+            }
+
+            span {
+                font-size: .8em;
+            }
+        }
+
+        #buttons {
+            display: flex;
+            width: 86%;
+            margin: 10% auto 10px auto;
+            justify-content: space-between;
+            margin-bottom: 20px;
+
+            #forgot {
+                position: relative;
+                color: #386FA4;
+                border: none;
+                background: inherit;
+                font-weight: bolder;
+                padding: 0;
+            }
+
+            #forgot:hover {
+                color: $primary-color;
+                cursor: pointer;
+            }
+    
+            #submit {
+                position: relative;
+                width: 40%;
+                padding: 10px;
+                background-color: $primary-color;
+                border-radius: 10px;
+                border: 1px solid $primary-color;
+                font-size: 1.1em;
+                color: $my-white;
+                font-family: "Josefin Sans", sans-serif;
+            }
+
+            #submit:hover {
+                background-color: #386FA4;
+                cursor: pointer;
+            }
+        
+        }
+
+        #register {
+            position: relative;
+            width: 90%;
+            margin: 0 auto;
+            text-align: center;
+            margin-top: 20%;
+            color: $primary-color;
+            padding: 0;
+            font-size: .9em;
+            font-family: "Josefin Sans", sans-serif;
+
+            a {
+                color: #386FA4;
+                font-weight: bolder;
+            }
+        }
+   }
+}
+}
+
+.error-message-login {
+    color: $error-color;
+    font-family: "Josefin Sans", sans-serif;
+    font-size: .9em;
+    margin-left: 8%;
+    position: absolute;
+    top: -7%;
+    left: 0;
+}
+
+#forgot-password {
+    opacity: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    width: 100%;
+    transition: opacity 0.5s ease-in-out;
+    transition: transform 0.5s ease; 
+    transition: 0.5s ease-out;
+    
+
+  &.slide-left {
+    transform: translateX(100%);
+    opacity: 0; 
+  }
+
+    h2 {
+        position: relative;
+        margin-top: 20%;
+        color: $primary-color;
+        font-family: "Josefin Sans", sans-serif;
+    }
+
+    #recovery-email {
+        margin-top: 10%;
+        position: relative;
+        width: 100%;
+        color: $primary-color;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+
+        input {
+            width: 80%;
+            padding: 10px;
+            margin-top: 20px;
+            border-radius: 5px;
+            border: 1.5px solid #ced4da;
+            color: $primary-color;
+            font-family: "Josefin Sans", sans-serif;
+            font-size: 1.1em;
+            background-color: $my-white;
+        }
+
+        input:focus {
+            outline: none;
+            border: 2px solid $primary-color;
+            padding: 9.5px;
+        }
+
+        input:-internal-autofill-selected {
+            background-color: inherit !important;
+            color: $primary-color !important;
+        }
+
+        #clear {
+            position: absolute;
+            right: 10%;
+            top: 52%;
+            color: #386FA4;
+            border: none;
+            background: inherit;
+            font-weight: bolder;
+            padding: 0;
+            opacity: 0.7;
+        }
+
+        #clear:hover {
+            color: $primary-color;
+            cursor: pointer;
+        }
+    }
+
+    #buttons {
+        display: flex;
+        width: 86%;
+        margin: 10% auto 0 auto;
+        justify-content: space-between;
+
+        #cancel {
+            position: relative;
+            color: #386FA4;
+            border: none;
+            background: inherit;
+            font-weight: bolder;
+            padding: 0;
+            margin-left: 1%;
+        }
+
+        #cancel:hover {
+            color: $primary-color;
+            cursor: pointer;
+        }
+
+        #submit {
+            position: relative;
+            width: 40%;
+            padding: 10px;
+            background-color: $primary-color;
+            border-radius: 10px;
+            border: 1px solid $primary-color;
+            font-size: 1.1em;
+            color: $my-white;
+            font-family: "Josefin Sans", sans-serif;
+        }
+
+        #submit:hover {
+            background-color: #386FA4;
+            cursor: pointer;
+        }
+    }
+}
+
+.email-sent {
+    color: $primary-color;
+    font-family: "Josefin Sans", sans-serif;
+    font-size: 1.1em;
+    margin-bottom: 15%;
+    margin-top: 10%;
+    left: 0;
+}
+
+#policy {
+    color: $my-white;
+}
+
+#cookie-not-answered {
+    opacity: 0.5;
+    pointer-events: none;
 }

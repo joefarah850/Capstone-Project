@@ -28,7 +28,9 @@ const PredictionFormField: React.FC<PredictionFormFieldProps> = ({
           {...predict(name, { valueAsNumber })}
         />
       )}
-      {error && <span className="error-message">{error.message}</span>}
+      {error && (
+        <span className="error-message-prediction">{error.message}</span>
+      )}
     </>
   );
 };
