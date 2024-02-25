@@ -24,15 +24,14 @@ const RegisterPage: React.FC = () => {
   const [confirmPasswordError, setConfirmPasswordError] =
     useState<ReactNode>(null);
   const [confirmPassword, setConfirmPassword] = useState<string>("");
+  const [pass, setPass] = useState<string>("");
 
   library.add(faEye, faEyeSlash);
 
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
-    setError,
     reset,
   } = useForm<RegisterFormData>({
     resolver: zodResolver(UserSchema),
@@ -42,8 +41,6 @@ const RegisterPage: React.FC = () => {
   useEffect(() => {
     setProfilePic(require("../images/noprofilepic.png"));
   }, []);
-
-  const newPassword = watch("password");
 
   const registerUser = async (data: any) => {
     try {
@@ -110,9 +107,10 @@ const RegisterPage: React.FC = () => {
     setIsConfirmPasswordVisible(!isConfirmPasswordVisible);
   };
 
-  const handleConfirmPassword = (e: any) => {
+  useEffect(() => {
     if (
-      (confirmPassword !== newPassword || confirmPassword !== e.target.value) &&
+      pass !== confirmPassword &&
+      confirmPassword.length >= pass.length - 1 &&
       confirmPassword !== ""
     ) {
       setConfirmPasswordError(
@@ -121,7 +119,7 @@ const RegisterPage: React.FC = () => {
     } else {
       setConfirmPasswordError(null);
     }
-  };
+  }, [pass, confirmPassword]);
 
   return (
     <div>
@@ -196,7 +194,9 @@ const RegisterPage: React.FC = () => {
                   name="password"
                   register={register}
                   error={errors.password}
-                  onChange={(e) => handleConfirmPassword(e)}
+                  onChange={(e) => {
+                    setPass(e.target.value);
+                  }}
                 />
                 <button
                   id="clear-1"
@@ -221,7 +221,7 @@ const RegisterPage: React.FC = () => {
                   type={isConfirmPasswordVisible ? "text" : "password"}
                   placeholder="Confirm Password"
                   name="confirmPassword"
-                  onBlur={handleConfirmPassword}
+                  // onBlur={() => handleConfirmPassword(pass, confirmPassword)}
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   style={

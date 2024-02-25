@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import httpClient from "../httpClient";
 import CookieConsent, { resetCookieConsentValue } from "react-cookie-consent";
 import { LoginFormData, LoginUserSchema } from "../types";
-import { set, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import LoginFormField from "../components/LoginFormField";
 import ForgotPassword from "../components/ForgotPassword";
@@ -20,7 +20,6 @@ const LoginPage: React.FC = () => {
     register,
     handleSubmit,
     formState: { errors },
-    setError,
     reset,
   } = useForm<LoginFormData>({
     resolver: zodResolver(LoginUserSchema),

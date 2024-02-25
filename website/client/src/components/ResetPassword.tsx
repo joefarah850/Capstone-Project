@@ -1,4 +1,4 @@
-import React, { ReactNode, useState } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import httpClient from "../httpClient";
 import RegisterFormField from "./RegisterFormField";
@@ -20,6 +20,7 @@ const ResetPassword: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [passwordReset, setPasswordReset] = useState(false);
   const [confirmPassword, setConfirmPassword] = useState<string>("");
+  const [pass, setPass] = useState<string>("");
 
   library.add(faEye, faEyeSlash);
 
@@ -64,9 +65,10 @@ const ResetPassword: React.FC = () => {
     setIsConfirmPasswordVisible(!isConfirmPasswordVisible);
   };
 
-  const handleConfirmPassword = (e: any) => {
+  useEffect(() => {
     if (
-      (confirmPassword !== newPassword || confirmPassword !== e.target.value) &&
+      pass !== confirmPassword &&
+      confirmPassword.length >= pass.length - 1 &&
       confirmPassword !== ""
     ) {
       setConfirmPasswordError(
@@ -75,7 +77,7 @@ const ResetPassword: React.FC = () => {
     } else {
       setConfirmPasswordError(null);
     }
-  };
+  }, [pass, confirmPassword]);
 
   return (
     <div>
@@ -114,7 +116,7 @@ const ResetPassword: React.FC = () => {
                   name="password"
                   register={register}
                   error={errors.password}
-                  onChange={(e) => handleConfirmPassword(e)}
+                  onChange={(e) => setPass(e.target.value)}
                 />
                 <button
                   id="eye"
@@ -134,7 +136,6 @@ const ResetPassword: React.FC = () => {
                   placeholder="Confirm Password"
                   name="confirmPassword"
                   value={confirmPassword}
-                  onBlur={handleConfirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   style={
                     confirmPasswordError

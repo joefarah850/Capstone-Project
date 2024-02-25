@@ -19,6 +19,7 @@ class User(db.Model):
     update_date = db.Column(db.DateTime, nullable=True)
     organization_id = db.Column(db.Integer, db.ForeignKey('organization.id'), nullable=False, index=True)
     profile_pic_url = db.Column(db.String(255), nullable=True)
+    token_used = db.Column(db.Boolean, nullable=False, default=False)
     
     organization = db.relationship('Organization', backref='User')
 

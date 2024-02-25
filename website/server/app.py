@@ -66,11 +66,12 @@ def reset_password(token):
         return jsonify({"message": "The password reset link has expired!"}), 400
 
     user = User.query.filter_by(email=email).first()
-    if not user:
-        return jsonify({"message": "Invalid token!"}), 400
+    if not user or user.token_used:
+        return jsonify({"message": "Invalid token or token already used!"}), 400
 
     new_password = request.json.get('password')
     user.password = bcrypt.generate_password_hash(new_password).decode('utf-8')
+    user.token_used = True
     db.session.commit()
 
     return jsonify({"message": "Your password has been updated."}), 200

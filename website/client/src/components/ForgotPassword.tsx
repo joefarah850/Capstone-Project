@@ -62,7 +62,7 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = ({
       {emailSent ? (
         <>
           <span className="email-sent">
-            Password reset link was sent to your email
+            Password reset link was sent to your email.
           </span>
           <div id="buttons">
             <button id="cancel" type="button" onClick={handleBack}>
