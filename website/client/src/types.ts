@@ -22,7 +22,6 @@ export interface User {
 export type RegisterFormData = {
   email: string;
   password: string;
-  confirmPassword: string;
   firstName: string;
   lastName: string;
   dateOfBirth: string;
@@ -38,43 +37,37 @@ export type RegisterFormFieldProps = {
   register: UseFormRegister<RegisterFormData>;
   error?: FieldError | undefined;
   valueAsNumber?: boolean;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
 export type RegisterValidFieldNames =
   | "email"
   | "password"
-  | "confirmPassword"
   | "firstName"
   | "lastName"
   | "dateOfBirth"
   | "gender";
 
-export const UserSchema: ZodType<RegisterFormData> = z
-  .object({
-    email: z.string().email(),
-    firstName: z.string().min(1, { message: "First name is required" }),
-    lastName: z.string().min(1, { message: "Last name is required" }),
-    dateOfBirth: z.string().min(1, { message: "Date of birth is required" }),
-    gender: z.string({
-      invalid_type_error: "Gender is required",
-    }),
-    password: z
-      .string()
-      .min(8, { message: "Password is too short" })
-      .max(20, { message: "Password is too long" })
-      .regex(
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/,
-        {
-          message:
-            "Password must contain at least 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character",
-        }
-      ),
-    confirmPassword: z.string(),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords do not match",
-    path: ["confirmPassword"], // path of error
-  });
+export const UserSchema: ZodType<RegisterFormData> = z.object({
+  email: z.string().email(),
+  firstName: z.string().min(1, { message: "First name is required" }),
+  lastName: z.string().min(1, { message: "Last name is required" }),
+  dateOfBirth: z.string().min(1, { message: "Date of birth is required" }),
+  gender: z.string({
+    invalid_type_error: "Gender is required",
+  }),
+  password: z
+    .string()
+    .min(8, { message: "Password is too short" })
+    .max(20, { message: "Password is too long" })
+    .regex(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/,
+      {
+        message:
+          "Password must contain at least 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character",
+      }
+    ),
+});
 
 //  Login Page
 

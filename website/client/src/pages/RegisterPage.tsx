@@ -1,16 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 import httpClient from "../httpClient";
 import ReCAPTCHA from "react-google-recaptcha";
 import { RefObject } from "react";
-import "../style.css";
 import RegisterFormField from "../components/RegisterFormField";
 import { RegisterFormData, UserSchema } from "../types";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import ProfilePicPage from "./ProfilePicPage";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import { library } from "@fortawesome/fontawesome-svg-core";
 
 const RegisterPage: React.FC = () => {
   const [profilePic, setProfilePic] = useState<string>("");
+  const [message, setMessage] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [reCaptcha, setReCaptcha] = useState<string>("");
   const reCaptacharRef = React.createRef();
@@ -18,12 +21,19 @@ const RegisterPage: React.FC = () => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] =
     useState(false);
+  const [confirmPasswordError, setConfirmPasswordError] =
+    useState<ReactNode>(null);
+  const [confirmPassword, setConfirmPassword] = useState<string>("");
+
+  library.add(faEye, faEyeSlash);
 
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
     setError,
+    reset,
   } = useForm<RegisterFormData>({
     resolver: zodResolver(UserSchema),
     mode: "onBlur",
@@ -33,6 +43,8 @@ const RegisterPage: React.FC = () => {
     setProfilePic(require("../images/noprofilepic.png"));
   }, []);
 
+  const newPassword = watch("password");
+
   const registerUser = async (data: any) => {
     try {
       await httpClient.post("http://localhost:5000/register", {
@@ -41,10 +53,31 @@ const RegisterPage: React.FC = () => {
         reCaptcha,
       });
 
-      window.location.href = "/";
+      reset({
+        firstName: "",
+        lastName: "",
+        email: "",
+        password: "",
+        dateOfBirth: "",
+        gender: "",
+      });
+
+      setProfilePic(require("../images/noprofilepic.png"));
+      setReCaptcha("");
+      setConfirmPassword("");
+
+      setMessage("Account created successfully!");
     } catch (error: any) {
       if (error.response.status === 400) {
+        console.log(error.response.data.message);
         setErrorMessage(error.response.data.message);
+
+        reset({
+          password: "",
+        });
+
+        setReCaptcha("");
+        setConfirmPassword("");
       }
     }
   };
@@ -77,131 +110,193 @@ const RegisterPage: React.FC = () => {
     setIsConfirmPasswordVisible(!isConfirmPasswordVisible);
   };
 
+  const handleConfirmPassword = (e: any) => {
+    if (
+      (confirmPassword !== newPassword || confirmPassword !== e.target.value) &&
+      confirmPassword !== ""
+    ) {
+      setConfirmPasswordError(
+        <span className="error-message-register">Passwords do not match</span>
+      );
+    } else {
+      setConfirmPasswordError(null);
+    }
+  };
+
   return (
     <div>
-      <h1>Create an account</h1>
-      <p>{errorMessage}</p>
-      <form onSubmit={handleSubmit(registerUser)}>
-        <div>
-          <img id="profile-pic" src={profilePic} alt="" />
-          <button type="button" onClick={toggleProfileEditor}>
-            Add profile
-          </button>
-          {showProfileEditor && (
-            <div
-              style={{
-                position: "fixed",
-                top: "10%",
-                left: "10%",
-                width: "80%",
-                height: "80%",
-                zIndex: 100,
-                backgroundColor: "white",
-                overflow: "auto",
-              }}
-            >
-              <ProfilePicPage
-                onClose={toggleProfileEditor}
-                onProfilePicSubmit={(e: string) => setProfilePic(e)}
-              />
-              <button
-                type="button"
-                onClick={toggleProfileEditor}
-                style={{ position: "absolute", top: 0, right: 0 }}
-              >
-                Close
-              </button>
+      {/* <p>{errorMessage}</p> */}
+
+      <div id="register-container">
+        <div id="register-image">
+          <img src={require("../images/dubai_night.jpeg")} alt="" />
+        </div>
+        <form id="register-form" onSubmit={handleSubmit(registerUser)}>
+          <div
+            id="register-slide"
+            className={showProfileEditor ? "slide-left" : ""}
+          >
+            <h1>Create an account</h1>
+            <div className="register-fields">
+              <div className="profile-pic-container">
+                <img id="profile-pic" src={profilePic} alt="" />
+                <button
+                  id="profile-button"
+                  type="button"
+                  onClick={toggleProfileEditor}
+                >
+                  Add/Edit Profile Picture
+                </button>
+              </div>
+              <div id="first-last">
+                <div className="fields">
+                  <RegisterFormField
+                    type="text"
+                    placeholder="First Name"
+                    name="firstName"
+                    register={register}
+                    error={errors.firstName}
+                  />
+                </div>
+                <div className="fields">
+                  <RegisterFormField
+                    type="text"
+                    placeholder="Last Name"
+                    name="lastName"
+                    register={register}
+                    error={errors.lastName}
+                  />
+                </div>
+              </div>
+              <div className="fields">
+                {errorMessage !== "" ? (
+                  <span
+                    className="error-message-register"
+                    style={{
+                      fontSize: "20px",
+                      marginTop: "-20.5px",
+                      position: "relative",
+                    }}
+                  >
+                    {errorMessage}
+                  </span>
+                ) : null}
+                <RegisterFormField
+                  type="email"
+                  placeholder="Email"
+                  name="email"
+                  register={register}
+                  error={errors.email}
+                />
+              </div>
+              <div className="fields" id="pass">
+                <RegisterFormField
+                  type={isPasswordVisible ? "text" : "password"}
+                  placeholder="Password"
+                  name="password"
+                  register={register}
+                  error={errors.password}
+                  onChange={(e) => handleConfirmPassword(e)}
+                />
+                <button
+                  id="clear-1"
+                  type="button"
+                  onClick={togglePasswordVisibility}
+                  style={
+                    (errors.password?.message?.length ?? 0) > 45
+                      ? { top: "41%" }
+                      : { top: "17%" }
+                  }
+                >
+                  {isPasswordVisible ? (
+                    <FontAwesomeIcon icon={["fas", "eye-slash"]} />
+                  ) : (
+                    <FontAwesomeIcon icon={["fas", "eye"]} />
+                  )}
+                </button>
+              </div>
+              <div className="fields" id="confirm-pass">
+                {confirmPasswordError}
+                <input
+                  type={isConfirmPasswordVisible ? "text" : "password"}
+                  placeholder="Confirm Password"
+                  name="confirmPassword"
+                  onBlur={handleConfirmPassword}
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  style={
+                    confirmPasswordError
+                      ? {
+                          borderWidth: "2px",
+                          borderColor: "rgb(201, 3, 3)",
+                          padding: "9px",
+                        }
+                      : { padding: "9px", borderWidth: "2px" }
+                  }
+                />
+                <button
+                  id="clear-2"
+                  type="button"
+                  onClick={toggleConfirmPasswordVisibility}
+                >
+                  {isConfirmPasswordVisible ? (
+                    <FontAwesomeIcon icon={["fas", "eye-slash"]} />
+                  ) : (
+                    <FontAwesomeIcon icon={["fas", "eye"]} />
+                  )}
+                </button>
+              </div>
+              <div id="date-field">
+                <label>Date of Birth:</label>
+                <RegisterFormField
+                  type="date"
+                  max={maxDate()}
+                  placeholder="Date of Birth"
+                  name="dateOfBirth"
+                  register={register}
+                  error={errors.dateOfBirth}
+                />
+              </div>
+              <div id="radio-fields">
+                <RegisterFormField
+                  type="radio"
+                  options={[
+                    { label: "Male", value: "M" },
+                    { label: "Female", value: "F" },
+                  ]}
+                  name="gender"
+                  register={register}
+                  error={errors.gender}
+                  placeholder={""}
+                />
+              </div>
+              <div className="fields">
+                <ReCAPTCHA
+                  ref={reCaptacharRef as RefObject<ReCAPTCHA>}
+                  sitekey={process.env.REACT_APP_RECAPTCHA_SITE_KEY || ""}
+                  onChange={(token) => setReCaptcha(token || "")}
+                />
+              </div>
+              <div id="buttons">
+                <button id="submit-1" type="submit">
+                  Create
+                </button>
+              </div>
+              <span id="created">{message}</span>
             </div>
-          )}
-        </div>
-        <div>
-          <RegisterFormField
-            type="text"
-            placeholder="First Name"
-            name="firstName"
-            register={register}
-            error={errors.firstName}
+          </div>
+          <ProfilePicPage
+            onClose={toggleProfileEditor}
+            onProfilePicSubmit={(e: string) => setProfilePic(e)}
+            className={showProfileEditor ? "" : "slide-left"}
+            id="profile-pic-page"
           />
-        </div>
-        <div>
-          <RegisterFormField
-            type="text"
-            placeholder="Last Name"
-            name="lastName"
-            register={register}
-            error={errors.lastName}
-          />
-        </div>
-        <div>
-          <RegisterFormField
-            type="email"
-            placeholder="Email"
-            name="email"
-            register={register}
-            error={errors.email}
-          />
-        </div>
-        <div>
-          <RegisterFormField
-            type={isPasswordVisible ? "text" : "password"}
-            placeholder="Password"
-            name="password"
-            register={register}
-            error={errors.password}
-          />
-          <button type="button" onClick={togglePasswordVisibility}>
-            {isPasswordVisible ? "Hide" : "Show"}
-          </button>
-        </div>
-        <div>
-          <RegisterFormField
-            type={isConfirmPasswordVisible ? "text" : "password"}
-            placeholder="Confirm Password"
-            name="confirmPassword"
-            register={register}
-            error={errors.confirmPassword}
-          />
-          <button type="button" onClick={toggleConfirmPasswordVisibility}>
-            {isConfirmPasswordVisible ? "Hide" : "Show"}
-          </button>
-        </div>
-        <div>
-          <label>Date of Birth:</label>
-          <RegisterFormField
-            type="date"
-            max={maxDate()}
-            placeholder="Date of Birth"
-            name="dateOfBirth"
-            register={register}
-            error={errors.dateOfBirth}
-          />
-        </div>
-        <div>
-          <RegisterFormField
-            type="radio"
-            options={[
-              { label: "Male", value: "M" },
-              { label: "Female", value: "F" },
-            ]}
-            name="gender"
-            register={register}
-            error={errors.gender}
-            placeholder={""}
-          />
-        </div>
-        <div>
-          <ReCAPTCHA
-            ref={reCaptacharRef as RefObject<ReCAPTCHA>}
-            sitekey={process.env.REACT_APP_RECAPTCHA_SITE_KEY || ""}
-            onChange={(token) => setReCaptcha(token || "")}
-          />
-        </div>
-        <button type="submit">Submit</button>
-        <div>
-          Already have an account?
+        </form>
+        <div id="login">
+          Already have an account?&nbsp;
           <a href="/login">Login</a>
         </div>
-      </form>
+      </div>
     </div>
   );
 };

@@ -173,11 +173,11 @@ const LoginPage: React.FC = () => {
                       Forgot Password?
                     </button>
                     <button id="submit" type="submit">
-                      Submit
+                      Login
                     </button>
                   </div>
                   {/*Implement a Login with Google button here 
-            Implement email verification*/}
+                    Implement email verification*/}
                   <div id="register">
                     Don't have an Account?&nbsp;
                     <a href="/register">Register</a>

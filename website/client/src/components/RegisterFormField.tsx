@@ -1,5 +1,6 @@
 import React from "react";
 import { RegisterFormFieldProps } from "../types";
+import "../css/register.scss";
 
 const RegisterFormField: React.FC<RegisterFormFieldProps> = ({
   type,
@@ -10,8 +11,11 @@ const RegisterFormField: React.FC<RegisterFormFieldProps> = ({
   options,
   max,
   valueAsNumber,
+  onChange,
 }) => {
-  // Check if the input type is 'radio' and options are provided
+  const getErrorStyle = (errorMessage: any) => {
+    return { top: errorMessage.length > 45 ? "-43%" : "3%" };
+  };
   if (type === "radio" && options) {
     return (
       <>
@@ -21,7 +25,11 @@ const RegisterFormField: React.FC<RegisterFormFieldProps> = ({
             <input type="radio" value={option.value} {...register(name)} />
           </label>
         ))}
-        {error && <span className="error-message">{error.message}</span>}
+        {error && (
+          <span className="error-message" style={getErrorStyle(error.message)}>
+            {error.message}
+          </span>
+        )}
       </>
     );
   }
@@ -29,13 +37,26 @@ const RegisterFormField: React.FC<RegisterFormFieldProps> = ({
   // Fallback for other types of inputs
   return (
     <>
+      {error && (
+        <span
+          className="error-message-register"
+          style={getErrorStyle(error.message)}
+        >
+          {error.message}
+        </span>
+      )}
       <input
         type={type}
         placeholder={placeholder}
         max={max}
         {...register(name, { valueAsNumber })}
+        style={{
+          borderColor: error ? "rgb(201, 3, 3)" : "",
+          borderWidth: error ? "2px" : "2px",
+          padding: "9px",
+        }}
+        onChange={onChange}
       />
-      {error && <span className="error-message-register">{error.message}</span>}
     </>
   );
 };

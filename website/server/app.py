@@ -7,7 +7,7 @@ from flask_cors import CORS
 from models import Prop_Type, Region, db, User, Organization
 import requests
 import cloudinary
-from itsdangerous import URLSafeTimedSerializer, SignatureExpired
+from itsdangerous import BadTimeSignature, URLSafeTimedSerializer, SignatureExpired
 from flask_mail import Mail, Message
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
 from sklearn.model_selection import train_test_split
@@ -62,12 +62,12 @@ def reset_password(token):
     
     try:
         email = s.loads(token, salt='password-reset-salt', max_age=660)  # Token expires after 10 mins
-    except SignatureExpired:
-        return jsonify({"message": "The password reset link is expired"}), 400
+    except BadTimeSignature:
+        return jsonify({"message": "The password reset link has expired!"}), 400
 
     user = User.query.filter_by(email=email).first()
     if not user:
-        return jsonify({"message": "Invalid token"}), 400
+        return jsonify({"message": "Invalid token!"}), 400
 
     new_password = request.json.get('password')
     user.password = bcrypt.generate_password_hash(new_password).decode('utf-8')

@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import LoginFormField from "./LoginFormField";
 import "../css/login.scss";
+import "../css/register.scss";
 
 interface ForgotPasswordProps {
   className?: string;

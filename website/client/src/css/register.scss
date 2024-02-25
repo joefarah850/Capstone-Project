@@ -1,0 +1,432 @@
+@font-face {
+    font-family: "Josefin Sans Italic";
+    src: url("../fonts/JosefinSans-Italic-VariableFont_wght.ttf");
+    font-optical-sizing: auto;
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Josefin Sans";
+    src: url("../fonts/JosefinSans-VariableFont_wght.ttf");
+    font-optical-sizing: auto;
+    font-weight: normal;
+    font-style: normal;
+}
+
+$primary-color: #133C55;
+$my-white: #efeff3;
+$error-color: rgb(201, 3, 3);
+$gray: #737272;
+
+.error-message-register {
+    width: 80%;
+     color: $error-color;
+     font-family: "Josefin Sans", sans-serif;
+     font-size: .9em;
+     margin-left: 8%;
+     position: absolute;
+     left: 0;
+     top: 0;
+ }
+
+ #register-container {
+    display: flex;
+    width: 40%;
+    margin: auto;
+    margin-top: 2%;
+    background-color: $my-white;
+    border-radius: 10px;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+    height: 92vh;
+    overflow: hidden;
+
+    @media (max-width: 1200px) {
+        width: 70%;
+    }
+
+    @media (max-width:500px) {
+        width: 90%;
+    }
+
+    #login {
+        position: absolute;
+        width: 100%;
+        margin: 0 auto;
+        text-align: center;
+        margin-top: 10%;
+        color: $primary-color;
+        padding: 0;
+        font-size: .9em;
+        font-family: "Josefin Sans", sans-serif;
+        left: 8%;
+        bottom: 6%;
+
+        a {
+            color: #386FA4;
+            font-weight: bolder;
+        }
+    }
+    
+}
+
+
+.profile-pic-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    top: -8px;
+
+    
+
+    #profile-pic {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        display: block;
+        margin-bottom: 10px;
+        margin-left: 9%;
+    }
+    
+
+    #profile-button {
+        width: 51%;
+        border: none;
+        font-family: "Josefin Sans", sans-serif;
+        cursor: pointer;
+        color: $primary-color;
+        margin-bottom: 20px;
+        font-size: 1em;
+        text-decoration: underline;
+    }
+    
+    #profile-button:hover {
+        color: #386FA4;
+        cursor: pointer;
+    }
+
+    #avatar {
+        max-width: 100px;
+    }
+}
+
+#register-image {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+}
+
+img {
+    height: 100%;
+    transform: translateX(-35%);
+}
+
+#register-form {
+    width: 150%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+
+    #register-slide {
+        width: 100%;
+        transition: transform 0.5s ease; 
+        transition: 0.5s ease-out;
+    
+      &.slide-left {
+        transform: translateX(-100%);
+        opacity: 0; 
+      }
+   
+    h1 {
+        position: relative;
+        text-align: center;
+        top: 0%;
+        color: $primary-color;
+        font-family: "Josefin Sans", sans-serif;
+    }
+ 
+    .register-fields {
+         position: relative;
+         width: 100%;
+         color: $primary-color;
+         top: 0%;
+        
+ 
+         .fields {
+             display: flex;
+             flex-direction: column;
+             align-items: center;
+
+             .error-message-register {
+                width: 85%;
+                color: $error-color;
+                font-family: "Josefin Sans", sans-serif;
+                font-size: .9em;
+                position: relative;
+                left: 0;
+                margin: -16.5px auto 2px auto;
+             }
+             
+             
+         }
+
+         #pass, #confirm-pass {
+            position: relative;
+
+            #clear-1, #clear-2 {
+                position: absolute;
+                right: 10%;
+                top: 17%;
+                color: $primary-color;
+                border: none;
+                background: inherit;
+                font-weight: bolder;
+                padding: 0;
+            }
+
+            #clear:hover, #clear-2:hover {
+                color: $primary-color;
+                cursor: pointer;
+            }
+           }
+
+         #radio-fields {
+            display: flex;
+            width: 40%;
+            height: 5%;
+            margin: -20px auto 10px auto;
+            justify-content: space-between;
+            accent-color: $primary-color;
+            color: $primary-color;
+            font-family: "Josefin Sans", sans-serif;
+            font-size: 1.1em;
+            position: relative;
+
+            input {
+                margin-bottom: 10px;;
+            }
+
+            input:hover {
+                cursor: pointer;
+            }
+
+            label:hover {
+                cursor: pointer;
+            }
+
+            .error-message {
+                width: 100%;
+                color: $error-color;
+                font-family: "Josefin Sans", sans-serif;
+                font-size: .8em;
+                position: absolute;
+                margin: -20px auto 10px auto;
+                left: 4%;
+             }
+         }
+
+         #date-field {
+                display: flex;
+                width: 85%;
+                margin: 0 auto 20px auto;
+                justify-content: space-between;
+                accent-color: $primary-color;
+                color: $primary-color;
+                font-family: "Josefin Sans", sans-serif;
+                margin-bottom: 20px;
+                position: relative;
+
+                label {
+                    font-size: 1.1em;
+                    width: 50%;
+                    margin-right: 2%;
+                    margin-top: 10px;
+                }
+
+                input {
+                    color: $gray;
+                }
+
+                .error-message-register {
+                    width: 100%;
+                    color: $error-color;
+                    font-family: "Josefin Sans", sans-serif;
+                    font-size: .9em;
+                    position: absolute;
+                    left: 37.5%;
+                    margin: -16.5px auto 2px auto;
+                 }
+         }
+
+         #first-last {
+            display: flex;
+            width: 88.5%;
+            margin: 0 auto 0px auto;
+            justify-content: space-between;
+            accent-color: $primary-color;
+            color: $primary-color;
+            font-family: "Josefin Sans", sans-serif;
+
+            .error-message-register {
+                width: 100%;
+                color: $error-color;
+                font-family: "Josefin Sans", sans-serif;
+                font-size: .9em;
+                position: relative;
+                left: 0;
+                margin-bottom: 2px;
+                margin-top: -16.5px;
+                margin-left: 4%;
+             }
+     }
+
+         input {
+            height: 15px;
+             width: 80%;
+             margin: 0 auto 30px auto;
+             padding: 10px;
+             border-radius: 5px;
+             border: 1.5px solid #ced4da;
+             color: $primary-color;
+             font-family: "Josefin Sans", sans-serif;
+             font-size: 1.1em;
+             background-color: $my-white;
+         }
+ 
+ 
+         input:focus {
+             outline: none;
+             border: 2px solid $primary-color;
+             padding: 9.5px;
+         }
+ 
+         input:-internal-autofill-selected {
+             background-color: inherit !important;
+             color: $primary-color !important;
+         }
+ 
+
+      #buttons {
+        display: flex;
+        width: 100%;
+        align-items: center;
+        justify-content: center;
+        margin-top: 25px;
+        
+        
+         #submit-1, #submit-2 {
+            position: relative;
+            width: 40%;
+            padding: 10px;
+            background-color: $primary-color;
+            border-radius: 10px;
+            border: 1px solid $primary-color;
+            font-size: 1.1em;
+            color: $my-white;
+            font-family: "Josefin Sans", sans-serif;
+        }
+
+        #submit-1:hover, #submit-2:hover {
+            background-color: #386FA4;
+            cursor: pointer;
+        }
+    }
+}
+}
+ }
+
+
+ #profile-pic-page {
+    opacity: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    width: 100%;
+    transition: opacity 0.5s ease-in-out;
+    transition: transform 0.5s ease; 
+    transition: 0.5s ease-out;
+    font-family: "Josefin Sans", sans-serif;
+    color: $primary-color;
+    
+
+  &.slide-left {
+    transform: translateX(100%);
+    opacity: 0; 
+  }
+
+    h2 {
+        position: relative;
+        margin-top: 20%;
+        color: $primary-color;
+        font-family: "Josefin Sans", sans-serif;
+    }
+
+    #buttons {
+        display: flex;
+        width: 86%;
+        margin: 10% auto 0 auto;
+        justify-content: space-between;
+
+        #cancel {
+            position: relative;
+            color: #386FA4;
+            border: none;
+            background: inherit;
+            font-weight: bolder;
+            padding: 0;
+            margin-left: 1%;
+        }
+
+        #cancel:hover {
+            color: $primary-color;
+            cursor: pointer;
+        }
+
+        #submit {
+            position: relative;
+            width: 40%;
+            padding: 10px;
+            background-color: $primary-color;
+            border-radius: 10px;
+            border: 1px solid $primary-color;
+            font-size: 1.1em;
+            color: $my-white;
+            font-family: "Josefin Sans", sans-serif;
+        }
+
+        #submit:hover {
+            background-color: #386FA4;
+            cursor: pointer;
+        }
+    }
+
+    #avatar-hover
+    {
+        label:hover {
+            cursor: pointer;
+        }
+    }
+
+    #avatar-hover:hover {
+        cursor: pointer;
+    }
+}
+
+#created {
+    font-size: 20px;
+    color: $primary-color;
+    font-family: "Josefin Sans", sans-serif;
+    font-weight: bolder;
+    position: absolute;
+    bottom: -5.5%;
+    left: 0;
+    right: 0;
+    margin: auto;
+    text-align: center;
+
+}
