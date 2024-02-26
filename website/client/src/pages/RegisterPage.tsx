@@ -25,6 +25,7 @@ const RegisterPage: React.FC = () => {
     useState<ReactNode>(null);
   const [confirmPassword, setConfirmPassword] = useState<string>("");
   const [pass, setPass] = useState<string>("");
+  const [exists, setExists] = useState<boolean>(true);
 
   library.add(faEye, faEyeSlash);
 
@@ -68,6 +69,8 @@ const RegisterPage: React.FC = () => {
       if (error.response.status === 400) {
         console.log(error.response.data.message);
         setErrorMessage(error.response.data.message);
+
+        setExists(false);
 
         reset({
           password: "",
@@ -171,7 +174,6 @@ const RegisterPage: React.FC = () => {
                   <span
                     className="error-message-register"
                     style={{
-                      fontSize: "20px",
                       marginTop: "-20.5px",
                       position: "relative",
                     }}
@@ -185,6 +187,7 @@ const RegisterPage: React.FC = () => {
                   name="email"
                   register={register}
                   error={errors.email}
+                  exists={exists}
                 />
               </div>
               <div className="fields" id="pass">

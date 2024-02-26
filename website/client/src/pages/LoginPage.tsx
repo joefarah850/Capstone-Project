@@ -7,6 +7,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import LoginFormField from "../components/LoginFormField";
 import ForgotPassword from "../components/ForgotPassword";
 import "../css/login.scss";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import { library } from "@fortawesome/fontawesome-svg-core";
 
 const LoginPage: React.FC = () => {
   const [cookieConsent, setCookieConsent] = useState<boolean>(false);
@@ -15,6 +18,8 @@ const LoginPage: React.FC = () => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const errorMessage = "Incorrect Email or Password";
   const [isUnauthorized, setIsUnauthorized] = useState(false);
+
+  library.add(faEye, faEyeSlash);
 
   const {
     register,
@@ -142,7 +147,7 @@ const LoginPage: React.FC = () => {
                       x
                     </button>
                   </div>
-                  <div className="fields">
+                  <div className="fields" id="pass">
                     <LoginFormField
                       type={isPasswordVisible ? "text" : "password"}
                       placeholder="Password"
@@ -154,15 +159,19 @@ const LoginPage: React.FC = () => {
                         setIsUnauthorized(false);
                       }}
                     />
-                  </div>
-                  <div className="show-pass-field">
-                    <input
-                      id="show-password"
-                      type="checkbox"
+                    <button
+                      id="eye"
+                      type="button"
                       onClick={togglePasswordVisibility}
-                    />
-                    <span>Show password</span>
+                    >
+                      {isPasswordVisible ? (
+                        <FontAwesomeIcon icon={["fas", "eye-slash"]} />
+                      ) : (
+                        <FontAwesomeIcon icon={["fas", "eye"]} />
+                      )}
+                    </button>
                   </div>
+
                   <div id="buttons">
                     <button
                       id="forgot"

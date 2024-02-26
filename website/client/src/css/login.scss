@@ -112,7 +112,7 @@ img {
 
         input {
             width: 80%;
-            margin: 0 auto 10px auto;
+            margin: 0 auto 25px auto;
             padding: 10px;
             border-radius: 5px;
             border: 1.5px solid #ced4da;
@@ -134,21 +134,25 @@ img {
             color: $primary-color !important;
         }
 
-        .show-pass-field {
-            display: flex;
-            width: 90%;
-            margin: -2px auto 10px auto;
+        #pass {
+            position: relative;
 
-            #show-password {
-                width: 10%;
-                margin: 0;
-                accent-color: $primary-color;
+            #eye {
+                position: absolute;
+                right: 9%;
+                top: 20%;
+                color: $primary-color;
+                border: none;
+                background: inherit;
+                font-weight: bolder;
+                padding: 0;
             }
 
-            span {
-                font-size: .8em;
+            #eye:hover {
+                color: $primary-color;
+                cursor: pointer;
             }
-        }
+           }
 
         #buttons {
             display: flex;

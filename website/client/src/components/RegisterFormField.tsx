@@ -12,6 +12,7 @@ const RegisterFormField: React.FC<RegisterFormFieldProps> = ({
   max,
   valueAsNumber,
   onChange,
+  exists,
 }) => {
   const getErrorStyle = (errorMessage: any) => {
     return { top: errorMessage.length > 45 ? "-43%" : "3%" };
@@ -51,8 +52,8 @@ const RegisterFormField: React.FC<RegisterFormFieldProps> = ({
         max={max}
         {...register(name, { valueAsNumber })}
         style={{
-          borderColor: error ? "rgb(201, 3, 3)" : "",
-          borderWidth: error ? "2px" : "2px",
+          borderColor: error || exists === false ? "rgb(201, 3, 3)" : "",
+          borderWidth: error || exists === false ? "2px" : "2px",
           padding: "9px",
         }}
         onChange={onChange}

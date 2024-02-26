@@ -38,6 +38,7 @@ export type RegisterFormFieldProps = {
   error?: FieldError | undefined;
   valueAsNumber?: boolean;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  exists?: boolean;
 };
 
 export type RegisterValidFieldNames =
