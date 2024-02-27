@@ -4,7 +4,7 @@ import ReCAPTCHA from "react-google-recaptcha";
 import { RefObject } from "react";
 import RegisterFormField from "../components/RegisterFormField";
 import { RegisterFormData, UserSchema } from "../types";
-import { set, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import ProfilePicPage from "./ProfilePicPage";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -162,7 +162,7 @@ const RegisterPage: React.FC = () => {
     } else {
       setProfilePic(require("../images/noprofilepic.png"));
     }
-  }, []);
+  }, [setValue]);
 
   useEffect(() => {
     if (profilePic === "") {
@@ -320,6 +320,9 @@ const RegisterPage: React.FC = () => {
                   onFocus={() => {
                     setMessage("");
                   }}
+                  onPaste={(e) => {
+                    e.preventDefault();
+                  }}
                   style={
                     confirmPasswordError
                       ? {
@@ -404,10 +407,3 @@ const RegisterPage: React.FC = () => {
 };
 
 export default RegisterPage;
-function setValue(
-  arg0: string,
-  arg1: string,
-  arg2: { shouldValidate: boolean }
-) {
-  throw new Error("Function not implemented.");
-}

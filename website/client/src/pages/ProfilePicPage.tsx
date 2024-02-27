@@ -15,7 +15,6 @@ const ProfilePicPage: React.FC<ProfilePicPageProps> = ({
   className,
   id,
 }) => {
-  const [profilePic, setProfilePic] = useState(null);
   const [croppedImage, setCroppedImage] = useState<string | null>(null);
 
   const onCrop = (croppedView: string) => {
@@ -37,7 +36,6 @@ const ProfilePicPage: React.FC<ProfilePicPageProps> = ({
           width={300}
           height={300}
           onCrop={onCrop}
-          src={profilePic || undefined}
           labelStyle={{
             color: "#133C55",
             fontWeight: "bold",
