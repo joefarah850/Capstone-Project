@@ -13,6 +13,7 @@ const RegisterFormField: React.FC<RegisterFormFieldProps> = ({
   valueAsNumber,
   onChange,
   exists,
+  onFocus,
 }) => {
   const getErrorStyle = (errorMessage: any) => {
     return { top: errorMessage.length > 45 ? "-43%" : "3%" };
@@ -23,7 +24,12 @@ const RegisterFormField: React.FC<RegisterFormFieldProps> = ({
         {options.map((option, index) => (
           <label key={index}>
             {option.label}
-            <input type="radio" value={option.value} {...register(name)} />
+            <input
+              type="radio"
+              value={option.value}
+              {...register(name)}
+              onFocus={onFocus}
+            />
           </label>
         ))}
         {error && (
@@ -52,11 +58,12 @@ const RegisterFormField: React.FC<RegisterFormFieldProps> = ({
         max={max}
         {...register(name, { valueAsNumber })}
         style={{
-          borderColor: error || exists === false ? "rgb(201, 3, 3)" : "",
-          borderWidth: error || exists === false ? "2px" : "2px",
+          borderColor: error || exists ? "rgb(201, 3, 3)" : "",
+          borderWidth: error || exists ? "2px" : "2px",
           padding: "9px",
         }}
         onChange={onChange}
+        onFocus={onFocus}
       />
     </>
   );

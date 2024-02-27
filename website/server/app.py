@@ -121,7 +121,7 @@ def register_user():
     email_exists = User.query.filter_by(email=email).first() is not None
     
     if email_exists:
-        return jsonify({"message": "Email already exists"}), 400
+        return jsonify({"message": "Email already exists", "data": request.json}), 400
     
     hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
 
@@ -155,7 +155,7 @@ def register_user():
         db.session.commit()
 
     return jsonify({
-        "message": "User created successfully",
+        "message": "Account created successfully!",
         "data": {
             "id": new_user.id,
             "email": new_user.email,
@@ -164,6 +164,7 @@ def register_user():
             "gender": new_user.gender,
             "date_of_birth": new_user.date_of_birth,
             "account_creation_date": new_user.account_creation_date,
+            "profile_pic": new_user.profile_pic_url,
             # "organization_id": new_user.organization_id
         }
     }), 201

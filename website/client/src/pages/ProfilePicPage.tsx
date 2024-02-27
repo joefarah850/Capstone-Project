@@ -16,10 +16,17 @@ const ProfilePicPage: React.FC<ProfilePicPageProps> = ({
   id,
 }) => {
   const [profilePic, setProfilePic] = useState(null);
+  const [croppedImage, setCroppedImage] = useState<string | null>(null);
 
-  const onCrop = (view: any) => {
-    setProfilePic(view);
-    onProfilePicSubmit(view);
+  const onCrop = (croppedView: string) => {
+    setCroppedImage(croppedView);
+  };
+
+  const onSave = () => {
+    if (croppedImage) {
+      onProfilePicSubmit(croppedImage);
+      onClose();
+    }
   };
 
   return (
@@ -51,7 +58,7 @@ const ProfilePicPage: React.FC<ProfilePicPageProps> = ({
         <button id="cancel" type="button" onClick={onClose}>
           Back
         </button>
-        <button id="submit-2" type="button" onClick={onClose}>
+        <button id="submit-2" type="button" onClick={onSave}>
           Save
         </button>
       </div>

@@ -1,10 +1,10 @@
-import React, { ReactNode, useEffect, useState } from "react";
+import React, { ReactNode, useEffect, useRef, useState } from "react";
 import httpClient from "../httpClient";
 import ReCAPTCHA from "react-google-recaptcha";
 import { RefObject } from "react";
 import RegisterFormField from "../components/RegisterFormField";
 import { RegisterFormData, UserSchema } from "../types";
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import ProfilePicPage from "./ProfilePicPage";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -25,7 +25,8 @@ const RegisterPage: React.FC = () => {
     useState<ReactNode>(null);
   const [confirmPassword, setConfirmPassword] = useState<string>("");
   const [pass, setPass] = useState<string>("");
-  const [exists, setExists] = useState<boolean>(true);
+  const [exists, setExists] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   library.add(faEye, faEyeSlash);
 
@@ -33,52 +34,52 @@ const RegisterPage: React.FC = () => {
     register,
     handleSubmit,
     formState: { errors },
-    reset,
+    setValue,
   } = useForm<RegisterFormData>({
     resolver: zodResolver(UserSchema),
     mode: "onBlur",
   });
 
-  useEffect(() => {
-    setProfilePic(require("../images/noprofilepic.png"));
-  }, []);
-
   const registerUser = async (data: any) => {
+    setIsLoading(true);
     try {
-      await httpClient.post("http://localhost:5000/register", {
+      const resp = await httpClient.post("http://localhost:5000/register", {
         ...data,
         profilePic,
         reCaptcha,
       });
 
-      reset({
-        firstName: "",
-        lastName: "",
-        email: "",
-        password: "",
-        dateOfBirth: "",
-        gender: "",
-      });
+      localStorage.removeItem("registrationResponse");
 
-      setProfilePic(require("../images/noprofilepic.png"));
-      setReCaptcha("");
-      setConfirmPassword("");
+      localStorage.setItem(
+        "registrationResponse",
+        JSON.stringify({
+          message: resp.data.message,
+          data: resp.data.data,
+          error: false,
+        })
+      );
 
-      setMessage("Account created successfully!");
+      window.location.reload();
+      localStorage.setItem("autoReload", "true");
     } catch (error: any) {
       if (error.response.status === 400) {
-        console.log(error.response.data.message);
-        setErrorMessage(error.response.data.message);
+        localStorage.removeItem("registrationResponse");
 
-        setExists(false);
+        localStorage.setItem(
+          "registrationResponse",
+          JSON.stringify({
+            message: error.response.data.message,
+            data: error.response.data.data,
+            error: true,
+          })
+        );
 
-        reset({
-          password: "",
-        });
-
-        setReCaptcha("");
-        setConfirmPassword("");
+        window.location.reload();
+        localStorage.setItem("autoReload", "true");
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -113,7 +114,7 @@ const RegisterPage: React.FC = () => {
   useEffect(() => {
     if (
       pass !== confirmPassword &&
-      confirmPassword.length >= pass.length - 1 &&
+      confirmPassword.length >= pass.length &&
       confirmPassword !== ""
     ) {
       setConfirmPasswordError(
@@ -124,6 +125,77 @@ const RegisterPage: React.FC = () => {
     }
   }, [pass, confirmPassword]);
 
+  const handleConfirmPassword = (pass: string, confirmPassword: string) => {
+    if (pass !== confirmPassword) {
+      setConfirmPasswordError(
+        <span className="error-message-register">Passwords do not match</span>
+      );
+    } else {
+      setConfirmPasswordError(null);
+    }
+  };
+
+  const handleExists = () => {
+    setExists(false);
+    setErrorMessage("");
+  };
+
+  useEffect(() => {
+    const registrationResponse = localStorage.getItem("registrationResponse");
+
+    if (registrationResponse) {
+      const { message, data, error } = JSON.parse(registrationResponse);
+
+      if (error) {
+        setValue("email", data.email, { shouldValidate: true });
+        setValue("firstName", data.firstName, { shouldValidate: true });
+        setValue("lastName", data.lastName, { shouldValidate: true });
+        setValue("dateOfBirth", data.dateOfBirth, { shouldValidate: true });
+        setValue("gender", data.gender, { shouldValidate: true });
+        setProfilePic(data.profilePic);
+
+        setExists(true);
+        setErrorMessage(message);
+      } else {
+        setMessage(message);
+      }
+    } else {
+      setProfilePic(require("../images/noprofilepic.png"));
+    }
+  }, []);
+
+  useEffect(() => {
+    if (profilePic === "") {
+      setProfilePic(require("../images/noprofilepic.png"));
+    }
+  }, [profilePic]);
+
+  const hasRunOnce = useRef(false);
+
+  useEffect(() => {
+    if (hasRunOnce.current) {
+      return;
+    }
+    const navigationEntries = performance.getEntriesByType("navigation");
+    if (navigationEntries.length > 0) {
+      const navigationEntry =
+        navigationEntries[0] as PerformanceNavigationTiming;
+      // The 'type' property can be 'navigate', 'reload', 'back_forward', or 'prerender'
+      if (
+        navigationEntry.type === "reload" &&
+        localStorage.getItem("autoReload") !== "true"
+      ) {
+        localStorage.removeItem("registrationResponse");
+        setMessage("");
+        console.log("Page reloaded");
+      } else {
+        localStorage.removeItem("autoReload");
+        console.log("Page loaded normally");
+      }
+    }
+    hasRunOnce.current = true;
+  }, []);
+
   return (
     <div>
       {/* <p>{errorMessage}</p> */}
@@ -133,6 +205,11 @@ const RegisterPage: React.FC = () => {
           <img src={require("../images/dubai_night.jpeg")} alt="" />
         </div>
         <form id="register-form" onSubmit={handleSubmit(registerUser)}>
+          {isLoading && (
+            <div id="loading-container">
+              <img src={require("../images/loading.gif")} alt="Loading..." />
+            </div>
+          )}
           <div
             id="register-slide"
             className={showProfileEditor ? "slide-left" : ""}
@@ -157,6 +234,9 @@ const RegisterPage: React.FC = () => {
                     name="firstName"
                     register={register}
                     error={errors.firstName}
+                    onFocus={() => {
+                      setMessage("");
+                    }}
                   />
                 </div>
                 <div className="fields">
@@ -166,6 +246,9 @@ const RegisterPage: React.FC = () => {
                     name="lastName"
                     register={register}
                     error={errors.lastName}
+                    onFocus={() => {
+                      setMessage("");
+                    }}
                   />
                 </div>
               </div>
@@ -174,7 +257,7 @@ const RegisterPage: React.FC = () => {
                   <span
                     className="error-message-register"
                     style={{
-                      marginTop: "-20.5px",
+                      marginTop: "-16.5px",
                       position: "relative",
                     }}
                   >
@@ -188,6 +271,10 @@ const RegisterPage: React.FC = () => {
                   register={register}
                   error={errors.email}
                   exists={exists}
+                  onChange={handleExists}
+                  onFocus={() => {
+                    setMessage("");
+                  }}
                 />
               </div>
               <div className="fields" id="pass">
@@ -199,6 +286,9 @@ const RegisterPage: React.FC = () => {
                   error={errors.password}
                   onChange={(e) => {
                     setPass(e.target.value);
+                  }}
+                  onFocus={() => {
+                    setMessage("");
                   }}
                 />
                 <button
@@ -224,9 +314,12 @@ const RegisterPage: React.FC = () => {
                   type={isConfirmPasswordVisible ? "text" : "password"}
                   placeholder="Confirm Password"
                   name="confirmPassword"
-                  // onBlur={() => handleConfirmPassword(pass, confirmPassword)}
+                  onBlur={() => handleConfirmPassword(pass, confirmPassword)}
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
+                  onFocus={() => {
+                    setMessage("");
+                  }}
                   style={
                     confirmPasswordError
                       ? {
@@ -258,6 +351,9 @@ const RegisterPage: React.FC = () => {
                   name="dateOfBirth"
                   register={register}
                   error={errors.dateOfBirth}
+                  onFocus={() => {
+                    setMessage("");
+                  }}
                 />
               </div>
               <div id="radio-fields">
@@ -271,6 +367,9 @@ const RegisterPage: React.FC = () => {
                   register={register}
                   error={errors.gender}
                   placeholder={""}
+                  onFocus={() => {
+                    setMessage("");
+                  }}
                 />
               </div>
               <div className="fields">
@@ -305,3 +404,10 @@ const RegisterPage: React.FC = () => {
 };
 
 export default RegisterPage;
+function setValue(
+  arg0: string,
+  arg1: string,
+  arg2: { shouldValidate: boolean }
+) {
+  throw new Error("Function not implemented.");
+}

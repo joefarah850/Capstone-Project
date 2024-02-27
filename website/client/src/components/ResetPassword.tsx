@@ -79,6 +79,16 @@ const ResetPassword: React.FC = () => {
     }
   }, [pass, confirmPassword]);
 
+  const handleConfirmPassword = (pass: string, confirmPassword: string) => {
+    if (pass !== confirmPassword) {
+      setConfirmPasswordError(
+        <span className="error-message-register">Passwords do not match</span>
+      );
+    } else {
+      setConfirmPasswordError(null);
+    }
+  };
+
   return (
     <div>
       <div id="login-container">
@@ -137,6 +147,7 @@ const ResetPassword: React.FC = () => {
                   name="confirmPassword"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
+                  onBlur={() => handleConfirmPassword(pass, confirmPassword)}
                   style={
                     confirmPasswordError
                       ? {
