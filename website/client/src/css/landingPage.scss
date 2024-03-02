@@ -1,0 +1,110 @@
+@font-face {
+    font-family: "Josefin Sans Italic";
+    src: url("../fonts/JosefinSans-Italic-VariableFont_wght.ttf");
+    font-optical-sizing: auto;
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Josefin Sans";
+    src: url("../fonts/JosefinSans-VariableFont_wght.ttf");
+    font-optical-sizing: auto;
+    font-weight: normal;
+    font-style: normal;
+}
+
+$primary-color: #133C55;
+$my-white: #efeff3;
+$error-color: rgb(201, 3, 3);
+$gray: #737272;
+
+body {
+    font-family: "Josefin Sans", sans-serif;
+    background-color: $my-white;
+    color: $primary-color;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    height: 100vh;
+
+    div#root {
+        height: 100%;
+
+
+        footer {
+            position: relative;
+            background-color: $primary-color;
+            color: $my-white;
+            padding: 2rem 0;
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+    }
+}
+
+.container {
+    max-width: 100%;
+    margin: 0 auto;
+
+    #background {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 200%;
+        height: 100vh;
+        z-index: -1;
+    }
+
+    .divs {
+        background: $my-white;
+        width: 100%;
+        margin-top: 20px;
+    }
+}
+body {
+    font-family: "Josefin Sans", sans-serif;
+    background-color: $my-white;
+    color: $primary-color;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    height: 100vh;
+
+    div#root {
+        display: flex; // Make the root container a flex container
+        flex-direction: column; // Arrange children (content and footer) in a column
+        min-height: 100%; // Ensure it at least covers the viewport height
+
+        footer {
+            margin-top: auto; // Push the footer to the bottom
+            background-color: $primary-color;
+            color: $my-white;
+            padding: 2rem 0;
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+    }
+}
+
+.container {
+    max-width: 100%;
+    margin: 0 auto;
+    flex-grow: 1; // Allows the container to expand and fill available space
+
+    #background {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 200%;
+        height: 100vh;
+        z-index: -1;
+    }
+
+    .divs {
+        background: $my-white;
+        width: 100%;
+    }
+}

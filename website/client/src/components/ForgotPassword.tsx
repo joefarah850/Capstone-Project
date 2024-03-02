@@ -22,7 +22,6 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = ({
     register,
     watch,
     formState: { errors },
-    setError,
     reset,
   } = useForm<LoginFormData>({
     resolver: zodResolver(LoginUserSchema),

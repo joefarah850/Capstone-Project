@@ -1,0 +1,84 @@
+@font-face {
+    font-family: "Josefin Sans Italic";
+    src: url("../fonts/JosefinSans-Italic-VariableFont_wght.ttf");
+    font-optical-sizing: auto;
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Josefin Sans";
+    src: url("../fonts/JosefinSans-VariableFont_wght.ttf");
+    font-optical-sizing: auto;
+    font-weight: normal;
+    font-style: normal;
+}
+
+$primary-color: #133C55;
+$my-white: #efeff3;
+$error-color: rgb(201, 3, 3);
+$gray: #737272;
+
+
+.header {
+    background-color: #333;
+    color: #fff;
+    font-family: "Josefin Sans", sans-serif;
+    
+    .nav-container {
+        max-width: 100%;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .nav__logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #fff;
+            text-decoration: none;
+            margin-left: 5cap;
+        }
+
+        .nav__menu {
+            .nav__list {
+                list-style: none;
+                display: flex;
+                align-items: center;
+
+                .nav__item {
+                    margin: 0 1rem;
+
+                    &.disabled {
+                        opacity: 0.5;
+                        pointer-events: none;
+                        cursor: default;
+                    }
+
+                    .nav__link {
+                        color: #fff;
+                        text-decoration: none;
+                        transition: color 0.3s ease-in-out;
+
+                        &:hover {
+                            color: #4caf50;
+                        }
+
+                        img {
+                            width: 3rem;
+                            border: 1px solid transparent;
+                            margin-left: 1rem;
+
+                            &:hover {
+                                border-color: #4caf50;
+                                border-radius: 50%;
+                            }
+                        }
+                    }
+
+                      
+                }
+            }
+        }
+    }
+}

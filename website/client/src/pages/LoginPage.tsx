@@ -184,8 +184,6 @@ const LoginPage: React.FC = () => {
                       Login
                     </button>
                   </div>
-                  {/*Implement a Login with Google button here 
-                    Implement email verification*/}
                   <div id="register">
                     Don't have an Account?&nbsp;
                     <a href="/register">Register</a>

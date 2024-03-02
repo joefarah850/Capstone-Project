@@ -3,9 +3,7 @@ import LandingPage from "./pages/LandingPage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import NotFound from "./pages/NotFound";
-import ForgotPassword from "./components/ForgotPassword";
 import ResetPassword from "./components/ResetPassword";
-import PredictionForm from "./components/PredictionForm";
 
 const Router = () => {
   return (
