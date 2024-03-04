@@ -1,30 +1,11 @@
 import React, { useEffect } from "react";
-import { resetCookieConsentValue } from "react-cookie-consent";
 import httpClient from "../httpClient";
 import { User } from "../types";
 import PredictionForm from "../components/PredictionForm";
-import Navbar from "../components/Navbar";
 import "../css/landingPage.scss";
 
 const LandingPage = () => {
   const [user, setUser] = React.useState<User | null>(null);
-
-  const logoutUser = async () => {
-    await httpClient.post("http://localhost:5000/logout");
-
-    resetCookieConsentValue();
-
-    window.location.href = "/";
-  };
-
-  const getProfilePic = () => {
-    if (user != null) {
-      if (user.data.profile_pic === "../images/noprofilepic.png") {
-        return require("../images/noprofilepic.png");
-      }
-      return user.data.profile_pic;
-    }
-  };
 
   useEffect(() => {
     (async () => {
@@ -40,11 +21,6 @@ const LandingPage = () => {
 
   return (
     <>
-      <Navbar
-        profilePic={getProfilePic()}
-        className={user ? "" : "gray"}
-        isLoggedIn={!!user}
-      />
       <div>
         {/* {user != null ? (
           <div>
@@ -62,8 +38,7 @@ const LandingPage = () => {
             id="background"
           />
           <div>
-            <p>{user != null ? "Logged In" : "You are not logged in"}</p>
-            {user != null ? <button onClick={logoutUser}>Logout</button> : null}
+            <p>{user ? "Logged In" : "You are not logged in"}</p>
             <div className="divs">
               <a href="/login">
                 <button>Login</button>
@@ -72,7 +47,11 @@ const LandingPage = () => {
                 <button>Register</button>
               </a>
             </div>
-            <div className="divs">
+            <div className={user ? "divs" : "divs disabled"}>
+              <div className={user ? "" : "disabled-cover"}></div>
+              <span className={user ? "disabled" : ""}>
+                Login or Register *Lock Icon*
+              </span>
               <PredictionForm />
             </div>
             <div className="divs">

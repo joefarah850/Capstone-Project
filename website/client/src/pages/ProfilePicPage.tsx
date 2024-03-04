@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Avatar from "react-avatar-edit";
 import "../css/register.scss";
+import "../css/userPage.scss";
 
 interface ProfilePicPageProps {
   onClose: () => void;

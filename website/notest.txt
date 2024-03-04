@@ -1,31 +1,3 @@
-Considerations for Going Live
-To make your application accessible to all users, you'll need to complete the verification process for your app. This involves a review by Google to ensure your app complies with their policies, especially regarding user data and privacy.
-
-Start the Verification Process
-Prepare Your Application: Ensure your app complies with Google's API Services User Data Policy, including necessary privacy policies and secure handling of user data.
-
-Initiate the Verification Process:
-
-On the "OAuth consent screen" page in the Google Cloud Console, fill in all the required information about your application.
-Ensure that you've set the correct scopes your application needs.
-Click on the "Submit for verification" button at the bottom of the page when you're ready.
-Follow Up: The verification process might require you to provide additional information or make changes to your application. Google will communicate with you through the contact details provided on the consent screen.
-
-Additional Tips
-Scopes: If your app requests sensitive or restricted scopes, the verification process is more stringent. Minimize the requested scopes to only what's necessary for your app's functionality.
-Privacy Policy: Your app must have a privacy policy that complies with Google's requirements and is accessible from the OAuth consent screen.
-Security Assessment: For apps requesting access to certain sensitive or restricted scopes, a third-party security assessment might be required, which can be costly.
-
-----------------------------------------------------------------------------------------------------------------------------
-
-For Production
-In a production environment, you must use HTTPS to comply with OAuth 2.0 security requirements. Here are a few steps to achieve this:
-
-Obtain an SSL Certificate: For a live server, you'll need a valid SSL certificate. You can obtain a free certificate from Let's Encrypt or purchase one from another certificate authority.
-
-Configure Your Web Server: Use a production-grade web server like Nginx or Apache to serve your Flask application. Configure the web server to use your SSL certificate, enabling HTTPS.
-
-Update OAuth Redirect URIs: Ensure that the redirect URIs registered in your Google Cloud Console use https and match the URIs used by your application in production.
-
-----------------------------------------------------------------------------------------------------------------------------
+Cloud Database:
+- add token column to User
 

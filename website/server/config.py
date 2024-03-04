@@ -1,3 +1,4 @@
+from datetime import timedelta
 from dotenv import load_dotenv
 import os
 import redis
@@ -17,6 +18,7 @@ class ApplicationConfig:
     SESSION_PERMANENT = False
     SESSION_USE_SIGNER = True
     SESSION_REDIS = redis.from_url("redis://localhost:6379")
+    PERMANENT_SESSION_LIFETIME = timedelta(minutes=30)
 
     RECAPTCHA_SECRET_KEY = os.environ["RECAPTCHA_SECRET_KEY"]
 

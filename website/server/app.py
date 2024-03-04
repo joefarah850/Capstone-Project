@@ -1,13 +1,14 @@
 from datetime import datetime
-from flask import Flask, request, jsonify, session
+from flask import Flask, request, jsonify, session, redirect
 from flask_bcrypt import Bcrypt
 from flask_session import Session
 from config import ApplicationConfig
 from flask_cors import CORS
+from functools import wraps
 from models import Prop_Type, Region, db, User, Organization
 import requests
 import cloudinary
-from itsdangerous import BadTimeSignature, URLSafeTimedSerializer, SignatureExpired
+from itsdangerous import BadTimeSignature, URLSafeTimedSerializer
 from flask_mail import Mail, Message
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
 from sklearn.model_selection import train_test_split
@@ -76,8 +77,16 @@ def reset_password(token):
 
     return jsonify({"message": "Your password has been updated."}), 200
 
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'user_id' not in session:
+            return redirect('/login', 302)
+        return f(*args, **kwargs)
+    return decorated_function
 
 @app.route('/@me', methods=['GET'])
+@login_required
 def get_current_user():
     user_id = session.get("user_id")
 
@@ -89,11 +98,13 @@ def get_current_user():
     return jsonify({
         "message": "User retrieved successfully",
         "data": {
-            "id": user.id,
             "email": user.email,
-            "first_name": user.first_name,
-            "last_name": user.last_name,
-            "profile_pic": user.profile_pic_url
+            "firstName": user.first_name,
+            "lastName": user.last_name,
+            "profile_pic": user.profile_pic_url,
+            "dateOfBirth": user.date_of_birth,
+            "accountCreationDate": user.account_creation_date,
+            "lastLogin": user.last_login,
         }
     }), 200
 
@@ -292,15 +303,15 @@ def login_user():
 
     
     session["user_id"] = user.id
+    session.permanent = True
     
     return jsonify({
         "message": "User logged in successfully",
         "data": {
-            "id": user.id,
             "email": user.email,
             "first_name": user.first_name,
             "last_name": user.last_name,
-            "profile_pic": user.profile_pic_url
+            "profile_pic": user.profile_pic_url,
         }
     }), 200
 

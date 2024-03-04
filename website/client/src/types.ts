@@ -9,7 +9,7 @@ export interface User {
     password: string;
     firstName: string;
     lastName: string;
-    dataOfBirth: Date;
+    dateOfBirth: Date;
     accountCreationDate: Date;
     lastLogin: Date;
     updateDate: Date;

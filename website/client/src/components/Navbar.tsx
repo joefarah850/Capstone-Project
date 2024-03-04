@@ -3,17 +3,15 @@ import { NavLink } from "react-router-dom";
 import "../css/navbar.scss";
 
 interface NavbarProps {
-  className?: string;
-  id?: string;
   profilePic?: string;
   isLoggedIn?: boolean;
+  onLogout?: () => void;
 }
 
 const Navbar: React.FC<NavbarProps> = ({
-  className,
-  id,
   profilePic = require("../images/noprofilepic.png"),
   isLoggedIn,
+  onLogout,
 }) => {
   return (
     <header className="header">
@@ -29,8 +27,9 @@ const Navbar: React.FC<NavbarProps> = ({
                 Home
               </NavLink>
             </li>
-            <li className={`nav__item ${!isLoggedIn ? "disabled" : ""}`}>
-              <NavLink to="/favorite" className="nav__link">
+            <li className="nav__item" title="In development!">
+              {/* <NavLink to="/favorite" className={`nav__link ${!isLoggedIn ? "disabled" : ""}`}> */}
+              <NavLink to="/favorite" className="nav__link disabled">
                 Favorites
               </NavLink>
             </li>
@@ -39,10 +38,33 @@ const Navbar: React.FC<NavbarProps> = ({
                 About Us
               </NavLink>
             </li>
-            <li className={`nav__item ${!isLoggedIn ? "disabled" : ""}`}>
-              <NavLink to="/user-profile" className="nav__link">
+            {/* {isLoggedIn && (
+              <li className="nav__item">
+                <button onClick={onLogout} className="nav__link logout-button">
+                  Logout
+                </button>
+              </li>
+            )}*/}
+            <li className="nav__item profile-dropdown">
+              <NavLink
+                to="/user-page"
+                className={`nav__link ${!isLoggedIn ? "disabled" : ""}`}
+              >
                 <img src={profilePic} alt="profile-pic" />
               </NavLink>
+              {isLoggedIn && (
+                <div className="dropdown-content">
+                  <button
+                    onClick={() => (window.location.href = "/user-page")}
+                    className="dropdown-item"
+                  >
+                    Profile
+                  </button>
+                  <button onClick={onLogout} className="dropdown-item">
+                    Logout
+                  </button>
+                </div>
+              )}
             </li>
           </ul>
         </div>

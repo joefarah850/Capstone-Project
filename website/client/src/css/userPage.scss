@@ -1,0 +1,167 @@
+$primary-color: #133C55;
+$my-white: #efeff3;
+$error-color: rgb(201, 3, 3);
+$gray: #737272;
+$light-blue: #00b5ad;
+$orange: #f4a261;
+$dark-orange: #b9763f;  
+$dark-blue: #0F3057;
+
+
+
+#profile-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: $my-white;
+    width: 50%;
+    height: 70vh;
+    margin: 5% auto 0 auto;
+    border-radius: 10px;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+
+
+    #profile-form {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+    
+        #profile-slide {
+            width: 100%;
+            transition: transform 0.5s ease; 
+            transition: 0.5s ease-out;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        
+          &.slide-left {
+            transform: translateX(-100%);
+            opacity: 0; 
+          }
+    
+        }
+    }
+}
+
+.profile-pic-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+
+    
+
+    #profile-pic {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        display: block;
+        margin-bottom: 10px;
+        margin-left: 9%;
+    }
+    
+
+    #profile-button {
+        width: 51%;
+        border: none;
+        font-family: "Josefin Sans", sans-serif;
+        cursor: pointer;
+        color: $primary-color;
+        margin-bottom: 20px;
+        font-size: 1em;
+        text-decoration: underline;
+    }
+    
+    #profile-button:hover {
+        color: #386FA4;
+        cursor: pointer;
+    }
+
+    #avatar {
+        max-width: 100px;
+    }
+}
+
+#profile-pic-userpage {
+    opacity: 1;
+    display: flex;
+    margin-top: -5%;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    width: 100%;
+    transition: opacity 0.5s ease-in-out;
+    transition: transform 0.5s ease; 
+    transition: 0.5s ease-out;
+    font-family: "Josefin Sans", sans-serif;
+    color: $primary-color;
+    
+
+  &.slide-left {
+    transform: translateX(100%);
+    opacity: 0; 
+  }
+
+    h2 {
+        position: relative;
+        color: $primary-color;
+        font-family: "Josefin Sans", sans-serif;
+    }
+
+    #buttons {
+        display: flex;
+        width: 40%;
+        margin: 10% auto 0 auto;
+        justify-content: space-between;
+
+        #cancel {
+            position: relative;
+            color: #386FA4;
+            border: none;
+            background: inherit;
+            font-weight: bolder;
+            padding: 0;
+            margin-left: 1%;
+        }
+
+        #cancel:hover {
+            color: $primary-color;
+            cursor: pointer;
+        }
+
+        #submit-2 {
+            position: relative;
+            width: 40%;
+            padding: 10px;
+            background-color: $primary-color;
+            border-radius: 10px;
+            border: 1px solid $primary-color;
+            font-size: 1.1em;
+            color: $my-white;
+            font-family: "Josefin Sans", sans-serif;
+        }
+
+        #submit-2:hover {
+            background-color: #386FA4;
+            cursor: pointer;
+        }
+    }
+
+    #avatar-hover
+    {
+        label:hover {
+            cursor: pointer;
+        }
+    }
+
+    #avatar-hover:hover {
+        cursor: pointer;
+    }
+}
