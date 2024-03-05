@@ -9,7 +9,7 @@ $dark-blue: #0F3057;
 
 
 
-#profile-container {
+#profile-user-container {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -22,7 +22,7 @@ $dark-blue: #0F3057;
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
 
 
-    #profile-form {
+    #profile-user-form {
         width: 100%;
         display: flex;
         flex-direction: column;
@@ -30,7 +30,7 @@ $dark-blue: #0F3057;
         align-items: center;
         position: relative;
     
-        #profile-slide {
+        #profile-user-slide {
             width: 100%;
             transition: transform 0.5s ease; 
             transition: 0.5s ease-out;
@@ -43,12 +43,23 @@ $dark-blue: #0F3057;
             transform: translateX(-100%);
             opacity: 0; 
           }
+
+          &.slide-up {
+            transform: translateY(-100%);
+            opacity: 0; 
+          }
     
+        }
+
+        .uneditable {
+            opacity: .7;
+            pointer-events: none;
+
         }
     }
 }
 
-.profile-pic-container {
+.profile-user-pic-container {
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -58,17 +69,16 @@ $dark-blue: #0F3057;
 
     
 
-    #profile-pic {
+    #profile-user-pic {
         width: 60px;
         height: 60px;
         border-radius: 50%;
         display: block;
         margin-bottom: 10px;
-        margin-left: 9%;
     }
     
 
-    #profile-button {
+    #profile-user-button {
         width: 51%;
         border: none;
         font-family: "Josefin Sans", sans-serif;
@@ -79,7 +89,7 @@ $dark-blue: #0F3057;
         text-decoration: underline;
     }
     
-    #profile-button:hover {
+    #profile-user-button:hover {
         color: #386FA4;
         cursor: pointer;
     }
@@ -89,7 +99,7 @@ $dark-blue: #0F3057;
     }
 }
 
-#profile-pic-userpage {
+#profile-user-pic-userpage {
     opacity: 1;
     display: flex;
     margin-top: -5%;
@@ -164,4 +174,29 @@ $dark-blue: #0F3057;
     #avatar-hover:hover {
         cursor: pointer;
     }
+}
+
+#organization-userpage {
+    opacity: 0;
+    display: flex;
+    margin-top: -5%;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    width: 100%;
+    transition: opacity 0.5s ease-in-out;
+    transition: transform 0.5s ease;
+    transition: 0.5s ease-out;
+    transform: translateY(200%);
+
+    &.slide-up {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+img {
+    width: 100%;
+    height: 100%;
+    transform: translateX(0);
 }

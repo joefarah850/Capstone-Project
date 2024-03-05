@@ -94,15 +94,6 @@ const RegisterPage: React.FC = () => {
     return maxDate;
   };
 
-  //   useEffect(() => {
-  //     const getOrganizations = async () => {
-  //       const resp = await httpClient.get("http://localhost:5000/organizations");
-  //       setOrganization(await resp.data.data);
-  //       console.log(resp.data.data);
-  //     };
-  //     getOrganizations();
-  //   }, []);
-
   const togglePasswordVisibility = () => {
     setIsPasswordVisible(!isPasswordVisible);
   };

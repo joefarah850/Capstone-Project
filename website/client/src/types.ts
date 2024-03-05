@@ -15,9 +15,39 @@ export interface User {
     updateDate: Date;
     organizationId: number;
     profile_pic: string;
+    country: string;
+    phone: string;
+    city: string;
   };
   message: string;
 }
+
+export type OrganizationFormData = {
+  name: string;
+  email: string;
+  website: string;
+};
+
+export type OrganizationFormFieldProps = {
+  type: string;
+  placeholder: string;
+  name: OrganizationValidFieldNames;
+  register: UseFormRegister<OrganizationFormData>;
+  error: FieldError | undefined;
+  valueAsNumber?: boolean;
+  isUnauthorized?: boolean;
+  onFocus?: () => void;
+};
+
+export type OrganizationValidFieldNames = "email" | "website" | "name";
+
+export const OrganizationUserSchema: ZodType<OrganizationFormData> = z.object({
+  name: z.string().min(1, { message: "Name is required" }),
+  email: z.string().email({ message: "Invalid Email" }),
+  website: z
+    .string()
+    .url({ message: "Enter a URL with 'http://' or 'https://'" }),
+});
 
 export type RegisterFormData = {
   email: string;

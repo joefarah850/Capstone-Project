@@ -95,6 +95,8 @@ def get_current_user():
     
     user = User.query.filter_by(id=user_id).first()
 
+    organization_name = user.organization.organization if user.organization else None
+
     return jsonify({
         "message": "User retrieved successfully",
         "data": {
@@ -105,6 +107,62 @@ def get_current_user():
             "dateOfBirth": user.date_of_birth,
             "accountCreationDate": user.account_creation_date,
             "lastLogin": user.last_login,
+            "organization": organization_name,
+            "country": user.country,
+            "city": user.city,
+            "phone": user.phone
+        }
+    }), 200
+
+@app.route('/update-user', methods=['POST'])
+@login_required
+def update_profile():
+    user_id = session.get("user_id")
+
+    if not user_id:
+        return jsonify({"message": "User not logged in"}), 401
+
+    user = User.query.filter_by(id=user_id).first()
+
+    first_name = request.json.get("firstName")
+    last_name = request.json.get("lastName")
+    date_of_birth = request.json.get("dateOfBirth")
+    country = request.json.get("country")
+    city = request.json.get("city")
+    phone = request.json.get("phone")
+    organization_id = request.json.get("organizationId")
+
+    if first_name:
+        user.first_name = first_name
+    if last_name:
+        user.last_name = last_name
+    if date_of_birth:
+        user.date_of_birth = date_of_birth
+    if country:
+        user.country = country
+    if city:
+        user.city = city
+    if phone:
+        user.phone = phone
+    if organization_id:
+        user.organization_id = organization_id
+
+    db.session.commit()
+
+    return jsonify({
+        "message": "Profile updated successfully",
+        "data": {
+            "email": user.email,
+            "firstName": user.first_name,
+            "lastName": user.last_name,
+            "profile_pic": user.profile_pic_url,
+            "dateOfBirth": user.date_of_birth,
+            "accountCreationDate": user.account_creation_date,
+            "lastLogin": user.last_login,
+            "organization": user.organization.organization if user.organization else None,
+            "country": user.country,
+            "city": user.city,
+            "phone": user.phone
         }
     }), 200
 
@@ -180,18 +238,49 @@ def register_user():
         }
     }), 201
 
-# @app.route('/organizations', methods=['GET'])
-# def get_organizations():
-#     organizations = Organization.query.all()
+@app.route('/organizations', methods=['GET'])
+def get_organizations():
+    organizations = Organization.query.all()
 
-#     return jsonify({
-#         "data": [
-#             {
-#                 "id": organization.id,
-#                 "name": organization.organization
-#             } for organization in organizations
-#         ]
-#     }), 200
+    return jsonify({
+        "data": [
+            {
+                "id": organization.id,
+                "name": organization.organization
+            } for organization in organizations
+        ]
+    }), 200
+
+@app.route('/new-organization', methods=['POST'])
+def create_organization():
+    name = request.json.get("name")
+    email = request.json.get("email")
+    website = request.json.get("website")
+
+    email_exists = Organization.query.filter_by(org_email=email).first() is not None
+    
+    if email_exists:
+        return jsonify({"message": "Email already exists", "data": request.json}), 400
+    
+    url_exists = Organization.query.filter_by(org_url=website).first() is not None
+
+    if url_exists:
+        return jsonify({"message": "Organization already exists", "data": request.json}), 400
+
+    new_organization = Organization(organization=name,
+                                    org_url=website,
+                                    org_email=email)
+
+    db.session.add(new_organization)
+    db.session.commit()
+
+    return jsonify({
+        "message": "Organization created successfully",
+        "data": {
+            "id": new_organization.id,
+            "name": new_organization.organization
+        }
+    }), 201
 
 @app.route('/get-types', methods=['GET'])
 def get_prop_type():
@@ -303,7 +392,7 @@ def login_user():
 
     
     session["user_id"] = user.id
-    session.permanent = True
+    # session.permanent = True
     
     return jsonify({
         "message": "User logged in successfully",

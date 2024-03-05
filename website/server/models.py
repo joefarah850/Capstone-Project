@@ -20,17 +20,21 @@ class User(db.Model):
     organization_id = db.Column(db.Integer, db.ForeignKey('organization.id'), nullable=False, index=True)
     profile_pic_url = db.Column(db.String(255), nullable=True)
     token_used = db.Column(db.Boolean, nullable=False, default=False)
+    country = db.Column(db.String(100), nullable=False)
+    city = db.Column(db.String(100), nullable=False)
+    phone = db.Column(db.String(45), nullable=False)
     
     organization = db.relationship('Organization', backref='User')
 
-
+# Organization Design to be added
 class Organization(db.Model):
     __tablename__ = 'organization'
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     organization = db.Column(db.String(100), nullable=False, default="Individual")
-
-    users = db.relationship('User', backref='Organization', lazy=True)
+    org_url = db.Column(db.String(255), nullable=True)
+    org_email = db.Column(db.String(255), nullable=False)
+    
 
 class Prop_Type(db.Model):
     __tablename__ = 'type'

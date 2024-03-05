@@ -1,3 +1,5 @@
 Cloud Database:
 - add token column to User
-
+- add org_url and org_email to Organization
+- !add org design in the future
+- add phone, country, and city to User
