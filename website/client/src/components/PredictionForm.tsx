@@ -131,6 +131,7 @@ const PredictionForm: React.FC<PredictionFormProps> = ({ className }) => {
             predict={register}
             error={errors.size}
             valueAsNumber={true}
+            disabled={className !== ""}
           />
           {errors.size && (
             <span className="error-message-prediction">
@@ -147,6 +148,7 @@ const PredictionForm: React.FC<PredictionFormProps> = ({ className }) => {
             error={errors.bedrooms}
             valueAsNumber={true}
             options={numbers}
+            disabled={className !== ""}
           />
           {errors.bedrooms && (
             <span className="error-message-prediction">
@@ -163,6 +165,7 @@ const PredictionForm: React.FC<PredictionFormProps> = ({ className }) => {
             error={errors.bathrooms}
             valueAsNumber={true}
             options={numbers}
+            disabled={className !== ""}
           />
           {errors.bathrooms && (
             <span className="error-message-prediction">
@@ -181,6 +184,7 @@ const PredictionForm: React.FC<PredictionFormProps> = ({ className }) => {
               value: type.name,
               label: type.name,
             }))}
+            disabled={className !== ""}
           />
           {errors.propType && (
             <span className="error-message-prediction">
@@ -199,6 +203,7 @@ const PredictionForm: React.FC<PredictionFormProps> = ({ className }) => {
               value: region.name,
               label: region.name,
             }))}
+            disabled={className !== ""}
           />
           {errors.region && (
             <span className="error-message-prediction">

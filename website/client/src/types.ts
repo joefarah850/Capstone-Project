@@ -141,6 +141,7 @@ export type PredictionFormFieldProps = {
   error: FieldError | undefined;
   valueAsNumber?: boolean;
   options?: { label: string; value: string }[];
+  disabled?: boolean;
 };
 
 export type PredictionValidFieldNames =

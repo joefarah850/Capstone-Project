@@ -10,6 +10,7 @@ const PredictionFormField: React.FC<PredictionFormFieldProps> = ({
   error,
   valueAsNumber,
   options,
+  disabled,
 }) => {
   return (
     <>
@@ -23,6 +24,7 @@ const PredictionFormField: React.FC<PredictionFormFieldProps> = ({
               borderWidth: error ? "2px" : "2px",
               // padding: "9px",
             }}
+            disabled={disabled}
           >
             <option value="">{placeholder}</option>
             {options?.map((option) => (
@@ -44,6 +46,7 @@ const PredictionFormField: React.FC<PredictionFormFieldProps> = ({
               // padding: "9px",
             }}
             className="pred-fields"
+            disabled={disabled}
           />
         </>
       )}
