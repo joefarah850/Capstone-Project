@@ -101,6 +101,21 @@ const UserPage: React.FC = () => {
     getOrganizations();
   }, []);
 
+  const formatDate = (date: Date) => {
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    const seconds = date.getSeconds();
+
+    return `${month.toString().padStart(2, "0")}/${day
+      .toString()
+      .padStart(2, "0")}/${year} ${hours.toString().padStart(2, "0")}:${minutes
+      .toString()
+      .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+  };
+
   return (
     <>
       {user != null ? (
@@ -130,98 +145,131 @@ const UserPage: React.FC = () => {
                   </div>
                   <div className="user-details">
                     <h1>{`${user.data.firstName} ${user.data.lastName}`}</h1>
-                    <p>
-                      <strong>Email:</strong> {user.data.email}
-                    </p>
-                    <p>
-                      <strong>Date of Birth:</strong>{" "}
-                      {user.data.dateOfBirth.toDateString()}
-                    </p>
-                    <p>
-                      <strong>Account Created:</strong>{" "}
-                      {user.data.accountCreationDate.toDateString()}
-                    </p>
-                    <p>
-                      <strong>Last Login:</strong>{" "}
-                      {user.data.lastLogin.toDateString()}
-                    </p>
-                    <div className={editable ? "" : "uneditable"}>
+                    <div className="pair">
                       <div>
-                        <strong>Phone Number:</strong>{" "}
-                        <PhoneInput
-                          placeholder="Enter phone number"
-                          value={phoneNumber || ""}
-                          onChange={(e) => setPhoneNumber(e || "")}
+                        <strong>Email:</strong>{" "}
+                        <input disabled type="text" value={user.data.email} />
+                      </div>
+                      <div>
+                        <strong>Date of Birth:</strong>{" "}
+                        <input
+                          disabled
+                          type="text"
+                          value={user.data.dateOfBirth.toDateString()}
                         />
                       </div>
-                      <p>
-                        <strong>Country:</strong>{" "}
-                        <select
-                          name=""
-                          id=""
-                          onChange={(e) =>
-                            setCountry(labelCountry.getLabel(e.target.value))
-                          }
-                          value={country}
-                        >
-                          {countries.map((country: any) => {
-                            return (
-                              <option key={country.value} value={country.value}>
-                                {country.label}
-                              </option>
-                            );
-                          })}
-                        </select>
-                      </p>
-                      <p>
-                        <strong>City: </strong>
-                        <input
-                          type="text"
-                          onChange={(e) => setCity(e.target.value)}
-                          value={city}
-                        />
-                      </p>
-                      <p>
-                        <strong>Organization:</strong>{" "}
-                        <select
-                          name=""
-                          id=""
-                          onChange={(e) =>
-                            setOrganizationId(Number(e.target.value))
-                          }
-                        >
-                          {organizations.map((org: any) => {
-                            return (
-                              <option key={org.id} value={org.id}>
-                                {org.name}
-                              </option>
-                            );
-                          })}
-                        </select>
-                        <button type="button" onClick={toggleNewOrg}>
-                          Add organization
-                        </button>
-                      </p>
-                      <button type="button" onClick={saveChanges}>
-                        Save Changes
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setEditable(false);
-                          load();
-                        }}
-                      >
-                        Cancel
-                      </button>
                     </div>
-                    <button
-                      type="button"
-                      onClick={toggleEdit}
-                      className={!editable ? "" : "uneditable"}
-                    >
-                      Edit Profile
-                    </button>
+                    <div className={editable ? "" : "uneditable"}>
+                      <div className="pair">
+                        <div>
+                          <strong>Phone Number:</strong>{" "}
+                          <PhoneInput
+                            placeholder="Enter phone number"
+                            value={phoneNumber || ""}
+                            onChange={(e) => setPhoneNumber(e || "")}
+                          />
+                        </div>
+                        <div>
+                          <strong>Country:</strong>{" "}
+                          <select
+                            name=""
+                            id=""
+                            onChange={(e) =>
+                              setCountry(labelCountry.getLabel(e.target.value))
+                            }
+                            value={country}
+                            defaultValue={"AE"}
+                          >
+                            {countries.map((country: any) => {
+                              return (
+                                <option
+                                  key={country.value}
+                                  value={country.value}
+                                >
+                                  {country.label}
+                                </option>
+                              );
+                            })}
+                          </select>
+                        </div>
+                      </div>
+                      <div className="pair">
+                        <div>
+                          <strong>City: </strong>
+                          <input
+                            type="text"
+                            onChange={(e) => setCity(e.target.value)}
+                            value={city}
+                            placeholder="Enter city name"
+                          />
+                        </div>
+                        <div>
+                          <strong>Organization:</strong>{" "}
+                          <div id="new-org">
+                            <select
+                              name=""
+                              id=""
+                              onChange={(e) =>
+                                setOrganizationId(Number(e.target.value))
+                              }
+                            >
+                              {organizations.map((org: any) => {
+                                return (
+                                  <option key={org.id} value={org.id}>
+                                    {org.name}
+                                  </option>
+                                );
+                              })}
+                            </select>
+                            <button type="button" onClick={toggleNewOrg}>
+                              <span id="add">+</span>
+                              {/* <span id="text-add">Add</span> */}
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="pair">
+                      <div>
+                        <strong>Account Created:</strong>{" "}
+                        <input
+                          disabled
+                          type="text"
+                          value={formatDate(user.data.accountCreationDate)}
+                        />
+                      </div>
+                      <div>
+                        <strong>Last Login:</strong>{" "}
+                        <input
+                          disabled
+                          type="text"
+                          value={formatDate(user.data.lastLogin)}
+                        />
+                      </div>
+                    </div>
+                    <div className="buttons">
+                      {!editable ? (
+                        <button type="button" onClick={toggleEdit}>
+                          Edit Profile
+                        </button>
+                      ) : (
+                        <>
+                          <button type="button" onClick={saveChanges} id="save">
+                            Save Changes
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setEditable(false);
+                              load();
+                            }}
+                            id="cancel"
+                          >
+                            Cancel
+                          </button>
+                        </>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>

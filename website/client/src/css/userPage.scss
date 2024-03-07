@@ -9,6 +9,7 @@ $dark-blue: #0F3057;
 
 body {
     width: 100%;
+    height: 100vh;
 }
 
 #profile-user-container {
@@ -16,13 +17,13 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background-color: $primary-color;
-    width: 50%;
+    background-color: $my-white;
+    width: 45%;
     height: 70vh;
-    margin: 5% auto 0 auto;
+    margin: 10% auto 0  auto;
     border-radius: 10px;
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
-    color: $my-white;
+    color: $primary-color;
     overflow: hidden;
 
 
@@ -60,6 +61,223 @@ body {
             pointer-events: none;
 
         }
+
+        .user-profile {
+            width: 100%;
+            .user-details {
+                
+
+                h1 {
+                    font-size: 2.8rem;
+                    margin-top: 0;
+                    text-align: center;
+                    width: 100%;
+                    margin-bottom: 0;;
+                }
+
+                .pair {
+                    display: flex;
+                    justify-content: space-between;
+                    width: 80%;
+                    font-size: 1rem;
+                    font-family: "Josefin Sans", sans-serif;
+                    color: $primary-color;
+                    font-weight: bold;
+                    // text-align: center;
+                    margin: 1em auto;
+
+                    div {
+                        width: 40%;
+                        display: flex;
+                        flex-direction: column;
+                        font-size: 1rem;
+                        margin-top: 0;
+                        margin-bottom: 0;
+
+                        .PhoneInput {
+                            width: 101%;
+                            display: flex;
+                            flex-direction: row;
+                            justify-content: center;
+                            align-items: center;
+                            margin-top: 0;
+                            margin-bottom: 0;
+                            font-size: 1rem;
+                            font-family: "Josefin Sans", sans-serif;
+                            color: $primary-color;
+                            font-weight: bold;
+                            text-align: center;
+
+
+                            .PhoneInputInput {
+                                width: 80%;
+                            }
+
+                            .PhoneInputCountry {
+                                width: 20%;
+                                margin: auto 0;
+
+                                .PhoneInputCountrySelect{
+                                    padding: 0;
+                                }
+
+                                .PhoneInputCountryIcon {
+                                    width: fit-content;
+                                }
+
+                                .PhoneInputCountrySelectArrow {
+                                    width: 10.8%;
+                                    margin-top: 5px;
+                                    margin-left: 2px;
+                                }
+
+                            }
+                        }
+
+                        strong {
+                            margin-bottom: .5em;
+                        }
+                        
+
+                        input{
+                            width: 90%;
+                            padding: 11px 10px;
+                            border: 2px solid $primary-color;
+                            border-radius: 5px;
+                            font-size: 1rem;
+                            color: $primary-color;
+                            background-color: $my-white;
+                            font-family: "Josefin Sans", sans-serif;
+                        }
+            
+                        select {
+                            width: 101%;
+                            padding: 10px;
+                            border: 2px solid $primary-color;
+                            border-radius: 5px;
+                            font-size: 1rem;
+                            color: $primary-color;
+                            background-color: $my-white;
+                            font-family: "Josefin Sans", sans-serif;
+                
+                            &:focus {
+                                border-color: $dark-blue;
+                                outline: none;
+                            }
+                        }
+
+                        #new-org {
+                            display: flex;
+                            flex-direction: row;
+                            justify-content: space-between;
+                            align-items: center;
+                            width: 100%;
+                            gap: 10px;
+
+                            button {
+                                border: none;
+                                padding: 0;
+                                display: flex;
+                                flex-direction: column;
+                                justify-content: center;
+                                align-items: center;
+
+
+                                #add {
+                                    width: 100%;
+                                    padding: 0 20%;
+                                    height: fit-content;
+                                    border-radius: 50%;
+                                    font-size: 2em;
+                                    color: $primary-color;
+                                    font-family: "Josefin Sans", sans-serif;
+                                    transition: 0.3s ease-out;
+                                    transform-style: preserve-3d;
+                                
+                                }
+
+                                @keyframes spin {
+                                    from {
+                                        transform: rotateZ(0deg);
+                                    }
+                                    to {
+                                        transform: rotateZ(180deg);
+                                    }
+                                }
+
+                                #add:hover {
+                                    color: #386FA4;
+                                    animation: spin 1s ease-out 1;
+                                    cursor: pointer;
+                                }
+
+                                #text-add {
+                                    margin-top: 2px;
+                                    font-size: 1em;
+                                    color: $primary-color;
+                                    font-weight: bold;
+                                    font-family: "Josefin Sans", sans-serif;
+                                
+                                }
+                            }
+                        }
+    
+                    }
+                }
+
+                .buttons {
+                    display: flex;
+                    justify-content: center;
+                    width: 100%;
+                    font-size: 1rem;
+                    font-family: "Josefin Sans", sans-serif;
+                    color: $primary-color;
+                    font-weight: bold;
+                    text-align: center;
+                    margin: 2em auto 1em auto;
+
+                    button {
+                        width: 20%;
+                        padding: 7px;
+                        border-radius: 10px;
+                        border: 1px solid $primary-color;
+                        font-size: 1.1em;
+                        color: $my-white;
+                        font-family: "Josefin Sans", sans-serif;
+                        background-color: $primary-color;
+                    }
+
+                    button:hover {
+                        background-color: #386FA4;
+                        cursor: pointer;
+                    }
+
+                    #save {
+                        background-color: $primary-color;
+                        color: $my-white;
+                    }
+
+                    #save:hover {
+                        background-color: #386FA4;
+                        cursor: pointer;
+                    }
+
+                    #cancel {
+                        margin-left: 5%;
+                        background-color: $my-white;
+                        color: $primary-color;
+
+                    }
+
+                    #cancel:hover {
+                        color: $my-white;
+                        cursor: pointer;
+                        background-color: $gray;
+
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -70,6 +288,7 @@ body {
     align-items: center;
     justify-content: center;
     position: relative;
+    margin-top: 1em;
 
     
 
@@ -125,7 +344,7 @@ body {
 
     h2 {
         position: relative;
-        color: $my-white;
+        color: $primary-color;
         font-family: "Josefin Sans", sans-serif;
     }
 
@@ -204,3 +423,4 @@ img {
     height: 100%;
     transform: translateX(0);
 }
+

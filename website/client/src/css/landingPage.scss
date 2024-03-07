@@ -92,17 +92,19 @@ body {
                 display: flex;
                 justify-content: space-between;
                 width: 50%;
+                
 
                 button {
                     width: 45%;
                     padding: .5rem;
                     border: none;
                     border-radius: 10px;
-                    font-size: 1em;
+                    font-size: 1.2em;
                     font-weight: bold;
                     background-color: $my-white;
                     color: $primary-color;
                     transition: 0.3s;
+                    font-family: "Josefin Sans", sans-serif;
 
                     &:hover {
                         cursor: pointer;

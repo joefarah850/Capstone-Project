@@ -133,21 +133,21 @@ def update_profile():
     organization_id = request.json.get("organizationId")
 
     if first_name:
-        user.first_name = first_name
+        user.first_name = first_name.capitalize()
     if last_name:
-        user.last_name = last_name
+        user.last_name = last_name.capitalize()
     if date_of_birth:
         user.date_of_birth = date_of_birth
     if country:
         user.country = country
     if city:
-        user.city = city
+        user.city = city.capitalize()
     if phone:
         user.phone = phone
     if organization_id:
-        user.organization_id = organization_id
+        user.organization_id = organization_id.capitalize()
 
-    user.update_date = datetime.now()
+    user.update_date = datetime.utcnow()
 
     db.session.commit()
 
@@ -176,7 +176,7 @@ def register_user():
     last_name = request.json.get("lastName")
     gender = request.json.get("gender")
     date_of_birth = request.json.get("dateOfBirth")
-    account_creation_date = datetime.now()
+    account_creation_date = datetime.utcnow()
     organization_id = request.json.get("organization_id")
     profile_pic_url = request.json.get("profilePic")
 
@@ -389,7 +389,7 @@ def login_user():
     if not bcrypt.check_password_hash(user.password, password):
         return jsonify({"message": "Incorrect password"}), 401
     
-    user.last_login = datetime.now()
+    user.last_login = datetime.utcnow()
     db.session.commit()
 
     
