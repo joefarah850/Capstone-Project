@@ -1,0 +1,198 @@
+@font-face {
+    font-family: "Josefin Sans Italic";
+    src: url("../fonts/JosefinSans-Italic-VariableFont_wght.ttf");
+    font-optical-sizing: auto;
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Josefin Sans";
+    src: url("../fonts/JosefinSans-VariableFont_wght.ttf");
+    font-optical-sizing: auto;
+    font-weight: normal;
+    font-style: normal;
+}
+
+$primary-color: #133C55;
+$my-white: #efeff3;
+$error-color: rgb(201, 3, 3);
+$gray: #737272;
+$light-blue: #00b5ad;
+$orange: #f4a261;
+$dark-orange: #b9763f;  
+$dark-blue: #0F3057;
+
+.pred-container {
+    margin-top: 5%;
+    margin-bottom: 5%;
+    background-color: $my-white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    height: 13rem;
+    font-family: "Josefin Sans", sans-serif;
+    position: relative;
+
+    .disabled {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        opacity: 0.87;
+        background-color: $my-white;
+        pointer-events: none;
+        z-index: 100;
+        left: 0;
+        top: 0;
+        border-radius: 8px;
+    }
+
+    #disabled {
+        text-align: center;
+        width: 100%;
+
+        #disabled-span {
+            position: absolute;
+            opacity: 1;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 3rem;
+            font-weight: bolder;
+            color: $primary-color;
+            z-index: 101;
+            width: 100%;
+        }
+    }
+    
+
+    form {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: space-between;
+    }
+
+    .form-field {
+        display: flex;
+        flex-direction: column;
+        position: relative;
+
+        .pred-fields {
+            padding: 10px 15px;
+            border: 1px solid $primary-color;
+            border-radius: 5px;
+            font-size: 1rem;
+            color: $primary-color;
+            background-color: $my-white;
+            font-family: "Josefin Sans", sans-serif;
+    
+            &:focus {
+                border-color: $dark-blue;
+                outline: none;
+            }
+        }
+
+        .error-message-prediction {
+            color: $error-color;
+            width: 110%;
+            font-size: 0.9rem;
+            position: absolute;
+            bottom: -20px; // Adjust as needed to position the error message below the field
+            left: 0;
+        }
+
+    }
+
+    
+        
+        #prediction {
+            display: flex;
+            margin-left: auto;
+            margin-right: auto;
+            font-size: 1.5rem;
+            margin-top: -.5em;
+            font-weight: bold;
+            color: $primary-color;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            font-family: "Josefin Sans", sans-serif;
+
+            input {
+                padding: 5px 5px;
+                border: 2px solid $primary-color;
+                border-radius: 5px;
+                font-size: 1.7rem;
+                color: $primary-color;
+                font-weight: bold;
+                text-align: center;
+            }
+
+            select {
+                padding: 5px 5px;
+                border: 2px solid $primary-color;
+                border-radius: 5px;
+                font-size: 1rem;
+                color: $primary-color;
+                margin-left: 2em;
+                background-color: $my-white;
+    
+                &:focus {
+                    border-color: $dark-blue;
+                    outline: none;
+                }
+            }
+        }
+    
+        
+        #button {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: baseline;
+            
+
+            #get-prediction-button {
+                font-family: "Josefin Sans", sans-serif;
+                background-color: $primary-color;
+                color: $my-white;
+                border: none;
+                padding: 10px 15px;
+                border-radius: 10px;
+                cursor: pointer;
+                transition: background-color 0.3s;
+                width: 20%; // Make the button full width
+                font-size: 1.5em;
+                margin-top: 0.8em;
+                font-weight: bold;
+        
+                &:hover {
+                    background-color: darken($primary-color, 10%);
+                }
+            }
+
+            #reset {
+                text-align: center;
+                background-color: $my-white;
+                margin-left: .8em;
+                width: 10%;
+                font-size: .9em;
+                font-weight: bold;
+                cursor: pointer;
+                padding: 0;
+                border: none;
+                border-radius: 10px;
+                color: $primary-color;
+                transition: background-color 0.3s;
+        
+                &:hover {
+                    color: lighten($primary-color, 20%);
+                }
+            }
+        }
+    
+}

@@ -4,8 +4,16 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import PredictionFormField from "./PredictionFormField";
 import httpClient from "../httpClient";
+import "../css/prediction.scss";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faLock } from "@fortawesome/free-solid-svg-icons";
+import { library } from "@fortawesome/fontawesome-svg-core";
 
-const PredictionForm: React.FC = () => {
+interface PredictionFormProps {
+  className?: string;
+}
+
+const PredictionForm: React.FC<PredictionFormProps> = ({ className }) => {
   const [propertyType, setPropType] = useState([]);
   const [propRegion, setRegion] = useState([]);
   const [prediction, setPrediction] = useState<number>(0);
@@ -18,13 +26,16 @@ const PredictionForm: React.FC = () => {
     label: `${index}`, // Convert the number to a string for the label
   }));
 
+  library.add(faLock);
+
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<PredictionFormData>({
     resolver: zodResolver(PredictionSchema),
-    mode: "onBlur",
+    mode: "onChange",
   });
 
   const handlePredict = async (data: any) => {
@@ -36,6 +47,7 @@ const PredictionForm: React.FC = () => {
     );
     setPrediction(resp.data.prediction);
     setShowPrediction(resp.data.prediction);
+    getRates();
   };
 
   const getPropType = async () => {
@@ -51,35 +63,35 @@ const PredictionForm: React.FC = () => {
   const apiKey = process.env.REACT_APP_CONVERSION_KEY;
   const baseUrl = process.env.REACT_APP_API_BASE_URL;
 
-  // const getRates = async () => {
-  //   try {
-  //     const url = `${baseUrl}/${apiKey}/latest/AED`;
-  //     const response = await fetch(url);
-  //     const data = await response.json();
+  const getRates = async () => {
+    try {
+      const url = `${baseUrl}/${apiKey}/latest/AED`;
+      const response = await fetch(url);
+      const data = await response.json();
 
-  //     if (data.result === "success") {
-  //       setRates(data.conversion_rates);
-  //     } else {
-  //       console.error("Failed to fetch rates:", data.error);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error fetching conversion rates:", error);
-  //   }
-  // };
+      if (data.result === "success") {
+        setRates(data.conversion_rates);
+      } else {
+        console.error("Failed to fetch rates:", data.error);
+      }
+    } catch (error) {
+      console.error("Error fetching conversion rates:", error);
+    }
+  };
 
-  // const calculteRate = async (toCurrency: string) => {
-  //   try {
-  //     const url = `${baseUrl}/${apiKey}/latest/AED`;
-  //     const response = await fetch(url);
-  //     const data = await response.json();
+  const calculteRate = async (toCurrency: string) => {
+    try {
+      const url = `${baseUrl}/${apiKey}/latest/AED`;
+      const response = await fetch(url);
+      const data = await response.json();
 
-  //     const rate = data.conversion_rates[toCurrency];
-  //     setCurrency(toCurrency);
-  //     return prediction * rate;
-  //   } catch (error) {
-  //     console.error("Error fetching conversion rates:", error);
-  //   }
-  // };
+      const rate = data.conversion_rates[toCurrency];
+      setCurrency(toCurrency);
+      return prediction * rate;
+    } catch (error) {
+      console.error("Error fetching conversion rates:", error);
+    }
+  };
 
   const formatCurrency = (value: number, currencyCode: string) => {
     return new Intl.NumberFormat("en-US", {
@@ -97,71 +109,140 @@ const PredictionForm: React.FC = () => {
   }, []);
 
   return (
-    <div>
-      <form onSubmit={handleSubmit(handlePredict)}>
-        <PredictionFormField
-          type="text"
-          placeholder="Size"
-          name="size"
-          predict={register}
-          error={errors.size}
-          valueAsNumber={true}
-        />
-        <PredictionFormField
-          type="dropdown"
-          placeholder="Number of Bedrooms"
-          name="bedrooms"
-          predict={register}
-          error={errors.bedrooms}
-          valueAsNumber={true}
-          options={numbers}
-        />
-        <PredictionFormField
-          type="dropdown"
-          placeholder="Number of Bathrooms"
-          name="bathrooms"
-          predict={register}
-          error={errors.bathrooms}
-          valueAsNumber={true}
-          options={numbers}
-        />
-        <PredictionFormField
-          type="dropdown"
-          placeholder="Type of Property"
-          name="propType"
-          predict={register}
-          error={errors.propType}
-          options={propertyType.map((type: any) => ({
-            value: type.name,
-            label: type.name,
-          }))}
-        />
-        <PredictionFormField
-          type="dropdown"
-          placeholder="Region"
-          name="region"
-          predict={register}
-          error={errors.region}
-          options={propRegion.map((region: any) => ({
-            value: region.name,
-            label: region.name,
-          }))}
-        />
-        <div>
-          <button type="submit">Get Prediction</button>
+    <div className="pred-container">
+      <div className={className}></div>
+      {className === "" ? null : (
+        <div id="disabled">
+          <span id="disabled-span">
+            {" "}
+            <FontAwesomeIcon icon={["fas", "lock"]} />
+            <br></br>
+            <br></br>
+            Please log in to access this feature.
+          </span>
         </div>
-        <div>
+      )}
+      <form onSubmit={handleSubmit(handlePredict)}>
+        <div className="form-field">
+          <PredictionFormField
+            type="text"
+            placeholder="Size"
+            name="size"
+            predict={register}
+            error={errors.size}
+            valueAsNumber={true}
+          />
+          {errors.size && (
+            <span className="error-message-prediction">
+              {errors.size.message}
+            </span>
+          )}
+        </div>
+        <div className="form-field">
+          <PredictionFormField
+            type="dropdown"
+            placeholder="Number of Bedrooms"
+            name="bedrooms"
+            predict={register}
+            error={errors.bedrooms}
+            valueAsNumber={true}
+            options={numbers}
+          />
+          {errors.bedrooms && (
+            <span className="error-message-prediction">
+              {errors.bedrooms.message}
+            </span>
+          )}
+        </div>
+        <div className="form-field">
+          <PredictionFormField
+            type="dropdown"
+            placeholder="Number of Bathrooms"
+            name="bathrooms"
+            predict={register}
+            error={errors.bathrooms}
+            valueAsNumber={true}
+            options={numbers}
+          />
+          {errors.bathrooms && (
+            <span className="error-message-prediction">
+              {errors.bathrooms.message}
+            </span>
+          )}
+        </div>
+        <div className="form-field">
+          <PredictionFormField
+            type="dropdown"
+            placeholder="Type of Property"
+            name="propType"
+            predict={register}
+            error={errors.propType}
+            options={propertyType.map((type: any) => ({
+              value: type.name,
+              label: type.name,
+            }))}
+          />
+          {errors.propType && (
+            <span className="error-message-prediction">
+              {errors.propType.message}
+            </span>
+          )}
+        </div>
+        <div className="form-field">
+          <PredictionFormField
+            type="dropdown"
+            placeholder="Region"
+            name="region"
+            predict={register}
+            error={errors.region}
+            options={propRegion.map((region: any) => ({
+              value: region.name,
+              label: region.name,
+            }))}
+          />
+          {errors.region && (
+            <span className="error-message-prediction">
+              {errors.region.message}
+            </span>
+          )}
+        </div>
+        <div id="button">
+          <button id="get-prediction-button" type="submit">
+            Get Prediction
+          </button>
           {prediction === 0 ? null : (
-            <>
-              <h2>Prediction: {formatCurrency(showPrediction, currency)}</h2>
-              <div>
+            <button id="reset" type="button" onClick={() => reset()}>
+              Clear Prediction
+            </button>
+          )}
+        </div>
+        <div
+          id="prediction"
+          style={{
+            opacity: prediction === 0 ? "0.7" : "",
+            color: prediction === 0 ? "gray" : "",
+          }}
+        >
+          {/* {prediction === 0 ? null : ( */}
+          <>
+            <h2>Prediction:&nbsp;&nbsp; </h2>
+            <input
+              type="text"
+              value={
+                prediction === 0 ? "" : formatCurrency(showPrediction, currency)
+              }
+              disabled
+              style={{ borderColor: prediction === 0 ? "gray" : "" }}
+            />
+            {prediction === 0 ? null : (
+              <div id="currencies">
                 <select
                   name="currencies"
                   id="currency"
-                  // onChange={async (e) => {
-                  //   const rate = await calculteRate(e.target.value);
-                  //   setShowPrediction(rate || 0);
-                  // }}
+                  onChange={async (e) => {
+                    const rate = await calculteRate(e.target.value);
+                    setShowPrediction(rate || 0);
+                  }}
                 >
                   {Object.keys(rates).map((currency, index) => (
                     <option key={index} value={currency}>
@@ -170,8 +251,8 @@ const PredictionForm: React.FC = () => {
                   ))}
                 </select>
               </div>
-            </>
-          )}
+            )}
+          </>
         </div>
       </form>
     </div>

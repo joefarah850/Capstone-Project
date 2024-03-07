@@ -19,50 +19,7 @@ $my-white: #efeff3;
 $error-color: rgb(201, 3, 3);
 $gray: #737272;
 
-body {
-    font-family: "Josefin Sans", sans-serif;
-    background-color: $my-white;
-    color: $primary-color;
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    height: 100vh;
 
-    div#root {
-        height: 100%;
-
-
-        footer {
-            position: relative;
-            background-color: $primary-color;
-            color: $my-white;
-            padding: 2rem 0;
-            text-align: center;
-            font-size: 1.2rem;
-            font-weight: bold;
-        }
-    }
-}
-
-.container {
-    max-width: 100%;
-    margin: 0 auto;
-
-    #background {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 200%;
-        height: 100vh;
-        z-index: -1;
-    }
-
-    .divs {
-        background: $my-white;
-        width: 100%;
-        margin-top: 20px;
-    }
-}
 body {
     font-family: "Josefin Sans", sans-serif;
     background-color: $my-white;
@@ -92,15 +49,78 @@ body {
 .container {
     max-width: 100%;
     margin: 0 auto;
-    flex-grow: 1; // Allows the container to expand and fill available space
+    flex-grow: 1;
+    overflow-y: scroll;
 
-    #background {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 200%;
-        height: 100vh;
-        z-index: -1;
+    .intro{
+        width: 100%;
+        height: 50vh;
+        display: flex;
+        position: relative;
+        margin-bottom: 10%;
+        margin-top: 19%;
+
+        #getting-started {
+            position: absolute;
+            right:8%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: $my-white;
+            top: 0;
+
+            h2 {
+                font-size: 2.5em;
+                margin-bottom: 1rem;
+                margin-top: 0;
+            }
+
+            #help-video {
+                position: relative;
+                height: 17rem;
+                width: 100%;
+                border-radius: 10px;
+                margin-bottom: 1rem;
+            }
+
+            #help-video:hover {
+                cursor: pointer;
+            }
+
+            .get-started-buttons {
+                display: flex;
+                justify-content: space-between;
+                width: 50%;
+
+                button {
+                    width: 45%;
+                    padding: .5rem;
+                    border: none;
+                    border-radius: 10px;
+                    font-size: 1em;
+                    font-weight: bold;
+                    background-color: $my-white;
+                    color: $primary-color;
+                    transition: 0.3s;
+
+                    &:hover {
+                        cursor: pointer;
+                        background-color: $primary-color;
+                        color: $my-white;
+                    }
+                }
+            }
+
+
+        }
+
+        #slogan {
+            position: absolute;
+            left: 8%;
+            color: $my-white;
+            font-size: 1.85em;
+        }
     }
 
     .divs {
@@ -111,15 +131,6 @@ body {
         &.disabled {
             pointer-events: none;
             cursor: default;
-        }
-
-        .disabled-cover {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            opacity: 0.7;
-            z-index: 10;
-            background-color: $my-white;
         }
 
         span {
@@ -134,3 +145,4 @@ body {
         }
     }
 }
+

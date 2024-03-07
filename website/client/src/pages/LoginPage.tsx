@@ -79,7 +79,7 @@ const LoginPage: React.FC = () => {
     resetCookieConsentValue(),
     (
       <>
-        <CookieConsent
+        {/* <CookieConsent
           enableDeclineButton
           onAccept={() => {
             setCookieConsent(true);
@@ -110,8 +110,9 @@ const LoginPage: React.FC = () => {
           <a href="/privacy-policy" id="policy">
             Learn more
           </a>
-        </CookieConsent>
-        <div id={cookieConsent || cookieDecline ? "" : "cookie-not-answered"}>
+        </CookieConsent> */}
+        {/* <div id={cookieConsent || cookieDecline ? "" : "cookie-not-answered"}> */}
+        <div>
           <div id="login-container">
             <div id="login-image">
               <img src={require("../images/dubai_night.jpeg")} alt="" />

@@ -28,6 +28,9 @@ $dark-blue: #0F3057;
     background-color: $primary-color;
     color: $my-white;
     font-family: "Josefin Sans", sans-serif;
+    position: fixed;
+    z-index: 1000;
+    width: 100%;
     
     .nav-container {
         max-width: 100%;
@@ -35,6 +38,7 @@ $dark-blue: #0F3057;
         display: flex;
         justify-content: space-between;
         align-items: center;
+        
 
         .nav__logo {
             font-size: 2rem;

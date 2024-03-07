@@ -25,7 +25,8 @@ const Router = () => {
 
   const getProfilePic = () => {
     if (user != null) {
-      if (user.data.profile_pic === "./images/noprofilepic.png") {
+      console.log(user.data.profile_pic);
+      if (user.data.profile_pic === "../images/noprofilepic.png") {
         return require("./images/noprofilepic.png");
       }
       return user.data.profile_pic;

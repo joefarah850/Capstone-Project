@@ -23,34 +23,34 @@ const UserPage: React.FC = () => {
   const countries = useMemo(() => countryList().getData(), []);
   const labelCountry = useMemo(() => countryList(), []);
 
+  const load = async () => {
+    try {
+      const resp = await httpClient.get("http://localhost:5000/@me");
+
+      const userData: User = {
+        ...resp.data,
+        data: {
+          ...resp.data.data,
+          dateOfBirth: new Date(resp.data.data.dateOfBirth),
+          accountCreationDate: new Date(resp.data.data.accountCreationDate),
+          lastLogin: new Date(resp.data.data.lastLogin),
+        },
+      };
+
+      setUser(userData);
+      setProfilePic(userData.data.profile_pic);
+      setCountry(userData.data.country);
+      setCity(userData.data.city);
+      setPhoneNumber(userData.data.phone);
+      setOrganizationId(userData.data.organizationId);
+    } catch (error: any) {
+      console.log(error);
+      window.location.replace("/login");
+    }
+  };
+
   useEffect(() => {
-    (async () => {
-      try {
-        const resp = await httpClient.get("http://localhost:5000/@me");
-
-        const userData: User = {
-          ...resp.data,
-          data: {
-            ...resp.data.data,
-            dateOfBirth: new Date(resp.data.data.dateOfBirth),
-            accountCreationDate: new Date(resp.data.data.accountCreationDate),
-            lastLogin: new Date(resp.data.data.lastLogin),
-          },
-        };
-
-        setUser(userData);
-        setProfilePic(userData.data.profile_pic);
-        setCountry(userData.data.country);
-        setCity(userData.data.city);
-        setPhoneNumber(userData.data.phone);
-        setOrganizationId(userData.data.organizationId);
-
-        console.log(user);
-      } catch (error: any) {
-        console.log(error);
-        window.location.replace("/login");
-      }
-    })();
+    load();
   }, []);
 
   const saveChanges = async () => {
@@ -87,7 +87,7 @@ const UserPage: React.FC = () => {
   };
 
   useEffect(() => {
-    if (profilePic === "") {
+    if (profilePic === "" || profilePic === "../images/noprofilepic.png") {
       setProfilePic(require("../images/noprofilepic.png"));
     }
   }, [profilePic]);
@@ -95,7 +95,6 @@ const UserPage: React.FC = () => {
   const getOrganizations = async () => {
     const resp = await httpClient.get("http://localhost:5000/organizations");
     setOrganizations(await resp.data.data);
-    console.log(resp.data.data);
   };
 
   useEffect(() => {
@@ -205,6 +204,15 @@ const UserPage: React.FC = () => {
                       </p>
                       <button type="button" onClick={saveChanges}>
                         Save Changes
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setEditable(false);
+                          load();
+                        }}
+                      >
+                        Cancel
                       </button>
                     </div>
                     <button

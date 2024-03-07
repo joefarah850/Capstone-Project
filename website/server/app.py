@@ -147,6 +147,8 @@ def update_profile():
     if organization_id:
         user.organization_id = organization_id
 
+    user.update_date = datetime.now()
+
     db.session.commit()
 
     return jsonify({

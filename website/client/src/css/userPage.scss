@@ -7,19 +7,23 @@ $orange: #f4a261;
 $dark-orange: #b9763f;  
 $dark-blue: #0F3057;
 
-
+body {
+    width: 100%;
+}
 
 #profile-user-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background-color: $my-white;
+    background-color: $primary-color;
     width: 50%;
     height: 70vh;
     margin: 5% auto 0 auto;
     border-radius: 10px;
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+    color: $my-white;
+    overflow: hidden;
 
 
     #profile-user-form {
@@ -121,7 +125,7 @@ $dark-blue: #0F3057;
 
     h2 {
         position: relative;
-        color: $primary-color;
+        color: $my-white;
         font-family: "Josefin Sans", sans-serif;
     }
 

@@ -154,7 +154,7 @@ export const PredictionSchema: ZodType<PredictionFormData> = z.object({
   propType: z.string().min(1, { message: "Property type is required" }),
   region: z.string().min(1, { message: "Region is required" }),
   size: z
-    .number()
+    .number({ invalid_type_error: "Size is required" })
     .min(0.4, { message: "Size is too small" })
     .max(500, { message: "Size is too large" }),
   bedrooms: z.string().min(1, { message: "Number of Bedrooms is required" }),

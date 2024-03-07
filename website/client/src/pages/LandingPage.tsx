@@ -32,27 +32,35 @@ const LandingPage = () => {
           </div>
         ) : ( */}
         <div className="container">
-          <img
-            src={require("../images/dubai_night.jpeg")}
-            alt="background"
-            id="background"
-          />
           <div>
-            <p>{user ? "Logged In" : "You are not logged in"}</p>
-            <div className="divs">
-              <a href="/login">
-                <button>Login</button>
-              </a>
-              <a href="/register">
-                <button>Register</button>
-              </a>
+            <div className="intro">
+              <div id="slogan">
+                <h1>
+                  Enhance Investment<br></br>Decisions<br></br>
+                  <br></br>Predict with AI<br></br>Invest Smart
+                </h1>
+              </div>
+              <div id="getting-started">
+                <h2>Get Started</h2>
+                <video id="help-video" controls>
+                  <source
+                    src={require("../videos/help.mp4")}
+                    type="video/mp4"
+                  />
+                  Your browser does not support the video tag.
+                </video>
+                <div className="get-started-buttons">
+                  <button onClick={() => (window.location.href = "/login")}>
+                    Login
+                  </button>
+                  <button onClick={() => (window.location.href = "/register")}>
+                    Register
+                  </button>
+                </div>
+              </div>
             </div>
-            <div className={user ? "divs" : "divs disabled"}>
-              <div className={user ? "" : "disabled-cover"}></div>
-              <span className={user ? "disabled" : ""}>
-                Login or Register *Lock Icon*
-              </span>
-              <PredictionForm />
+            <div>
+              <PredictionForm className={user ? "" : "disabled"} />
             </div>
             <div className="divs">
               <div>
