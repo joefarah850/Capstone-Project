@@ -125,24 +125,63 @@ body {
 
     .divs {
         background: $my-white;
-        width: 100%;
+        width: 90%;
+        position: relative;
+        margin: 0 auto;
+        padding: 3rem 2rem;
+        border-radius: 10px;
+        margin-top: 15%;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 15%;
+
+        h2 {
+        text-align: center;
+        font-size: 3em;
+        padding-top: -2rem;
+        margin-top: 0;
+        margin-bottom: 3rem;
+        }
+
+
+        .divs2 {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 2rem;
+        font-family: "Josefin Sans", sans-serif;
         position: relative;
 
-        &.disabled {
-            pointer-events: none;
-            cursor: default;
-        }
 
-        span {
-            position: absolute;
-            opacity: 1;
-            right: 20%;
-            z-index: 11;
-
-            &.disabled {
-                display: none;
+        .info {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            margin: 0 auto;
+            position: relative;
+            
+            img {
+                width: 70%;
+                border-radius: 10px;
             }
+
+            &:not(:last-child)::after {
+                content: '';
+                position: absolute;
+                right: -2.5%; 
+                top: 0; 
+                bottom: 0; 
+                width: 2px;
+                background: $gray;
+                opacity: 0.5;
+              }
         }
+    }
     }
 }
 

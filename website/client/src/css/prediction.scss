@@ -65,6 +65,17 @@ $dark-blue: #0F3057;
             color: $primary-color;
             z-index: 101;
             width: 100%;
+
+            a {
+                color: $primary-color;
+                font-weight: bold;
+                transition: color 0.3s;
+
+                &:hover {
+                    color: lighten($primary-color, 15%);
+                }
+            
+            }
         }
     }
     
@@ -89,6 +100,11 @@ $dark-blue: #0F3057;
             color: $primary-color;
             background-color: $my-white;
             font-family: "Josefin Sans", sans-serif;
+
+
+            &::placeholder {
+                color: $primary-color;
+            }
     
             &:focus {
                 border-color: $dark-blue;
@@ -195,4 +211,9 @@ $dark-blue: #0F3057;
             }
         }
     
+}
+
+#size {
+    width: 10rem;
+    padding-bottom: .7rem;
 }

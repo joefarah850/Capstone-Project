@@ -41,6 +41,7 @@ const PredictionForm: React.FC<PredictionFormProps> = ({ className }) => {
   const handlePredict = async (data: any) => {
     data.bedrooms = parseInt(data.bedrooms);
     data.bathrooms = parseInt(data.bathrooms);
+    data.size = parseFloat(data.size);
     const resp = await httpClient.post(
       "http://localhost:5000/prediction",
       data
@@ -77,6 +78,24 @@ const PredictionForm: React.FC<PredictionFormProps> = ({ className }) => {
     } catch (error) {
       console.error("Error fetching conversion rates:", error);
     }
+  };
+
+  const handleReset = () => {
+    console.log("reset");
+    try {
+      reset({
+        size: "",
+        bedrooms: "",
+        bathrooms: "",
+        propType: "",
+        region: "",
+      });
+    } catch (error) {
+      console.error("Error resetting form:", error);
+    }
+    // reset();
+    setPrediction(0);
+    setShowPrediction(0);
   };
 
   const calculteRate = async (toCurrency: string) => {
@@ -118,20 +137,23 @@ const PredictionForm: React.FC<PredictionFormProps> = ({ className }) => {
             <FontAwesomeIcon icon={["fas", "lock"]} />
             <br></br>
             <br></br>
-            Please log in to access this feature.
+            Please <a href="/login">login</a> to access this feature.
           </span>
         </div>
       )}
       <form onSubmit={handleSubmit(handlePredict)}>
         <div className="form-field">
           <PredictionFormField
-            type="text"
+            id="size"
+            type="number"
             placeholder="Size"
             name="size"
             predict={register}
             error={errors.size}
             valueAsNumber={true}
             disabled={className !== ""}
+            min={1}
+            max={500}
           />
           {errors.size && (
             <span className="error-message-prediction">
@@ -216,7 +238,7 @@ const PredictionForm: React.FC<PredictionFormProps> = ({ className }) => {
             Get Prediction
           </button>
           {prediction === 0 ? null : (
-            <button id="reset" type="button" onClick={() => reset()}>
+            <button id="reset" type="button" onClick={handleReset}>
               Clear Prediction
             </button>
           )}

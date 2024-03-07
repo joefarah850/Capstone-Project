@@ -128,7 +128,7 @@ export const LoginUserSchema: ZodType<LoginFormData> = z.object({
 export type PredictionFormData = {
   propType: string;
   region: string;
-  size: number;
+  size: number | string;
   bedrooms: string;
   bathrooms: string;
 };
@@ -142,6 +142,9 @@ export type PredictionFormFieldProps = {
   valueAsNumber?: boolean;
   options?: { label: string; value: string }[];
   disabled?: boolean;
+  min?: number;
+  max?: number;
+  id?: string;
 };
 
 export type PredictionValidFieldNames =
@@ -152,12 +155,12 @@ export type PredictionValidFieldNames =
   | "bathrooms";
 
 export const PredictionSchema: ZodType<PredictionFormData> = z.object({
-  propType: z.string().min(1, { message: "Property type is required" }),
-  region: z.string().min(1, { message: "Region is required" }),
+  propType: z.string().min(1, { message: "Required" }),
+  region: z.string().min(1, { message: "Required" }),
   size: z
-    .number({ invalid_type_error: "Size is required" })
+    .number({ invalid_type_error: "Required" })
     .min(0.4, { message: "Size is too small" })
     .max(500, { message: "Size is too large" }),
-  bedrooms: z.string().min(1, { message: "Number of Bedrooms is required" }),
-  bathrooms: z.string().min(1, { message: "Number of Bathrooms is required" }),
+  bedrooms: z.string().min(1, { message: "Required" }),
+  bathrooms: z.string().min(1, { message: "Required" }),
 });

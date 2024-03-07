@@ -49,43 +49,50 @@ const LandingPage = () => {
                   />
                   Your browser does not support the video tag.
                 </video>
-                <div className="get-started-buttons">
-                  <button onClick={() => (window.location.href = "/login")}>
-                    Login
-                  </button>
-                  <button onClick={() => (window.location.href = "/register")}>
-                    Register
-                  </button>
-                </div>
+                {user == null ? (
+                  <div className="get-started-buttons">
+                    <button onClick={() => (window.location.href = "/login")}>
+                      Login
+                    </button>
+                    <button
+                      onClick={() => (window.location.href = "/register")}
+                    >
+                      Register
+                    </button>
+                  </div>
+                ) : null}
               </div>
             </div>
             <div>
               <PredictionForm className={user ? "" : "disabled"} />
             </div>
             <div className="divs">
-              <div>
-                <img src="" alt="" />
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce
-                  nec libero at lectus tincidunt tincidunt. Nulla facilisi. Nunc
-                  sit amet odio nec libero tincidunt tincidunt. Nulla facilisi.
-                  Nunc sit amet odio nec libero tincidunt tincidunt. Nulla
-                  facilisi. Nunc sit amet odio nec libero tincidunt tincidunt.
-                  Nulla facilisi. Nunc sit amet odio nec libero tincidunt
-                  tincidunt. Nulla facilisi.
-                </p>
-              </div>
-              <div>
-                <img src="" alt="" />
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce
-                  nec libero at lectus tincidunt tincidunt. Nulla facilisi. Nunc
-                  sit amet odio nec libero tincidunt tincidunt. Nulla facilisi.
-                  Nunc sit amet odio nec libero tincidunt tincidunt. Nulla
-                  facilisi. Nunc sit amet odio nec libero tincidunt tincidunt.
-                  Nulla facilisi. Nunc sit amet odio nec libero tincidunt
-                  tincidunt. Nulla facilisi.
-                </p>
+              <h2>How it works</h2>
+              <div className="divs2">
+                <div className="info">
+                  <img src={require("../images/ai_image1.png")} alt="" />
+                  <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                    Fusce nec libero at lectus tincidunt tincidunt. Nulla
+                    facilisi. Nunc sit amet odio nec libero tincidunt tincidunt.
+                    Nulla facilisi. Nunc sit amet odio nec libero tincidunt
+                    tincidunt. Nulla facilisi. Nunc sit amet odio nec libero
+                    tincidunt tincidunt. Nulla facilisi. Nunc sit amet odio nec
+                    libero tincidunt tincidunt. Nulla facilisi.
+                  </p>
+                </div>
+                <div className="info">
+                  <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                    Fusce nec libero at lectus tincidunt tincidunt. Nulla
+                    facilisi. Nunc sit amet odio nec libero tincidunt tincidunt.
+                    Nulla facilisi. Nunc sit amet odio nec libero tincidunt
+                    tincidunt. Nulla facilisi. Nunc sit amet odio nec libero
+                    tincidunt tincidunt. Nulla facilisi. Nunc sit amet odio nec
+                    libero tincidunt tincidunt. Nulla facilisi.
+                  </p>
+                  <img src={require("../images/ai_image2.png")} alt="" />
+                </div>
               </div>
             </div>
           </div>

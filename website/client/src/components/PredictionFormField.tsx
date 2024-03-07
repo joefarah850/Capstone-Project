@@ -11,6 +11,9 @@ const PredictionFormField: React.FC<PredictionFormFieldProps> = ({
   valueAsNumber,
   options,
   disabled,
+  min,
+  max,
+  id,
 }) => {
   return (
     <>
@@ -47,6 +50,9 @@ const PredictionFormField: React.FC<PredictionFormFieldProps> = ({
             }}
             className="pred-fields"
             disabled={disabled}
+            min={min}
+            max={max}
+            id={id}
           />
         </>
       )}
