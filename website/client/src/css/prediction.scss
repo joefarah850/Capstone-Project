@@ -92,6 +92,33 @@ $dark-blue: #0F3057;
         flex-direction: column;
         position: relative;
 
+        #size-unit {
+            width: 3rem;
+            padding: 4px 2px;
+            border: 2px solid $primary-color;
+            border-radius: 5px;
+            font-size: 1rem;
+            color: $primary-color;
+            background-color: $my-white;
+            margin-left: -2rem;
+            margin-top: auto;
+            margin-bottom: auto;
+            font-family: "Josefin Sans", sans-serif;
+
+
+            &::placeholder {
+                color: $primary-color;
+            }
+    
+            &:focus {
+                border-color: $dark-blue;
+                outline: none;
+            }
+            &:hover {
+                cursor: pointer;
+            }
+        }
+
         .pred-fields {
             padding: 10px 15px;
             border: 1px solid $primary-color;
@@ -110,6 +137,12 @@ $dark-blue: #0F3057;
                 border-color: $dark-blue;
                 outline: none;
             }
+
+            
+                &:hover {
+                    cursor: pointer;
+                }
+            
         }
 
         .error-message-prediction {
@@ -146,6 +179,8 @@ $dark-blue: #0F3057;
                 color: $primary-color;
                 font-weight: bold;
                 text-align: center;
+
+                
             }
 
             select {
@@ -216,4 +251,8 @@ $dark-blue: #0F3057;
 #size {
     width: 10rem;
     padding-bottom: .7rem;
+
+    &:hover {
+        cursor: text;
+    }
 }

@@ -283,6 +283,7 @@ const RegisterPage: React.FC = () => {
                   }}
                 />
                 <button
+                  tabIndex={-1}
                   id="clear-1"
                   type="button"
                   onClick={togglePasswordVisibility}
@@ -325,6 +326,7 @@ const RegisterPage: React.FC = () => {
                   }
                 />
                 <button
+                  tabIndex={-1}
                   id="clear-2"
                   type="button"
                   onClick={toggleConfirmPasswordVisibility}

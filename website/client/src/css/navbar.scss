@@ -78,6 +78,7 @@ $dark-blue: #0F3057;
                         img {
                             width: 3rem;
                             border: 1px solid transparent;
+                            transform: translateX(0);
 
                             &:hover {
                                 border-color: $orange;

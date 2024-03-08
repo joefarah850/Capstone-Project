@@ -14,6 +14,7 @@ const PredictionFormField: React.FC<PredictionFormFieldProps> = ({
   min,
   max,
   id,
+  style,
 }) => {
   return (
     <>
@@ -43,11 +44,15 @@ const PredictionFormField: React.FC<PredictionFormFieldProps> = ({
             type={type}
             placeholder={placeholder}
             {...predict(name, { valueAsNumber })}
-            style={{
-              borderColor: error ? "rgb(201, 3, 3)" : "",
-              borderWidth: error ? "2px" : "2px",
-              // padding: "9px",
-            }}
+            style={
+              style
+                ? style
+                : {
+                    borderColor: error ? "rgb(201, 3, 3)" : "",
+                    borderWidth: error ? "2px" : "2px",
+                    // padding: "9px",
+                  }
+            }
             className="pred-fields"
             disabled={disabled}
             min={min}

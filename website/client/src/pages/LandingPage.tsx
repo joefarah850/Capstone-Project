@@ -96,12 +96,12 @@ const LandingPage = () => {
               </div>
             </div>
           </div>
+          <footer>
+            <p>© 2021 Invest Smart</p>
+          </footer>
         </div>
         {/* )} */}
       </div>
-      <footer>
-        <p>Footer</p>
-      </footer>
     </>
   );
 };

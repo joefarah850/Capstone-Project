@@ -144,6 +144,7 @@ const LoginPage: React.FC = () => {
                       id="clear"
                       onClick={clear}
                       title="clear"
+                      tabIndex={-1}
                     >
                       x
                     </button>

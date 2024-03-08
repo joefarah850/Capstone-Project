@@ -86,7 +86,13 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = ({
                 setIsUnauthorized(false);
               }}
             />
-            <button type="button" id="clear" onClick={clear} title="clear">
+            <button
+              type="button"
+              id="clear"
+              onClick={clear}
+              title="clear"
+              tabIndex={-1}
+            >
               x
             </button>
           </div>

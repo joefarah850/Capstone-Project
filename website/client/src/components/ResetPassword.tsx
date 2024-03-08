@@ -129,6 +129,7 @@ const ResetPassword: React.FC = () => {
                   onChange={(e) => setPass(e.target.value)}
                 />
                 <button
+                  tabIndex={-1}
                   id="eye"
                   type="button"
                   onClick={togglePasswordVisibility}
@@ -160,6 +161,7 @@ const ResetPassword: React.FC = () => {
                 />
                 {confirmPasswordError}
                 <button
+                  tabIndex={-1}
                   id="eye"
                   type="button"
                   onClick={toggleConfirmPasswordVisibility}

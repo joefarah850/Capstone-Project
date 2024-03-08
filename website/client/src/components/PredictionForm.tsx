@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { PredictionFormData, PredictionSchema } from "../types";
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import PredictionFormField from "./PredictionFormField";
 import httpClient from "../httpClient";
@@ -20,6 +20,8 @@ const PredictionForm: React.FC<PredictionFormProps> = ({ className }) => {
   const [rates, setRates] = useState([]);
   const [currency, setCurrency] = useState("AED");
   const [showPrediction, setShowPrediction] = useState<number>(0);
+  const [sizeUnit, setSizeUnit] = useState("m2");
+  const [customErrors, setCustomErrors] = useState("");
 
   const numbers = Array.from({ length: 7 }, (_, index) => ({
     value: `${index}`, // Since index is 0-based, add 1 to start from 1
@@ -32,6 +34,8 @@ const PredictionForm: React.FC<PredictionFormProps> = ({ className }) => {
     register,
     handleSubmit,
     reset,
+    watch,
+    setValue,
     formState: { errors },
   } = useForm<PredictionFormData>({
     resolver: zodResolver(PredictionSchema),
@@ -41,7 +45,13 @@ const PredictionForm: React.FC<PredictionFormProps> = ({ className }) => {
   const handlePredict = async (data: any) => {
     data.bedrooms = parseInt(data.bedrooms);
     data.bathrooms = parseInt(data.bathrooms);
-    data.size = parseFloat(data.size);
+
+    if (sizeUnit === "ft2") {
+      data.size = parseFloat(data.size) * 0.092903;
+    } else {
+      data.size = parseFloat(data.size);
+    }
+
     const resp = await httpClient.post(
       "http://localhost:5000/prediction",
       data
@@ -96,6 +106,7 @@ const PredictionForm: React.FC<PredictionFormProps> = ({ className }) => {
     // reset();
     setPrediction(0);
     setShowPrediction(0);
+    setSizeUnit("m2");
   };
 
   const calculteRate = async (toCurrency: string) => {
@@ -127,6 +138,39 @@ const PredictionForm: React.FC<PredictionFormProps> = ({ className }) => {
     // getRates();
   }, []);
 
+  const watchedSize = watch("size");
+
+  type Unit = "m2" | "ft2";
+
+  useEffect(() => {
+    console.log(watchedSize);
+    if (!watchedSize) {
+      return;
+    }
+    const validateSize = () => {
+      const sizeLimits = {
+        m2: { min: 5, max: 500 },
+        ft2: { min: 5 * 10.7639, max: 500 * 10.7639 },
+      };
+
+      const unit: Unit = sizeUnit === "ft2" ? "ft2" : "m2";
+      const currentLimits = sizeLimits[unit];
+      const size = parseFloat(watchedSize.toString());
+
+      if (isNaN(size)) {
+        setCustomErrors("Required");
+      } else if (size < currentLimits.min) {
+        setCustomErrors("Size is too small");
+      } else if (size > currentLimits.max) {
+        setCustomErrors("Size is too large");
+      } else {
+        setCustomErrors("");
+      }
+    };
+
+    validateSize();
+  }, [watchedSize, sizeUnit]);
+
   return (
     <div className="pred-container">
       <div className={className}></div>
@@ -145,21 +189,40 @@ const PredictionForm: React.FC<PredictionFormProps> = ({ className }) => {
         <div className="form-field">
           <PredictionFormField
             id="size"
-            type="number"
+            type="float"
             placeholder="Size"
             name="size"
             predict={register}
             error={errors.size}
             valueAsNumber={true}
             disabled={className !== ""}
-            min={1}
+            min={5}
             max={500}
+            style={{
+              borderColor: customErrors || errors.size ? "rgb(201, 3, 3)" : "",
+              borderWidth: customErrors || errors.size ? "2px" : "2px",
+            }}
           />
           {errors.size && (
             <span className="error-message-prediction">
               {errors.size.message}
             </span>
           )}
+          {customErrors && (
+            <span className="error-message-prediction">{customErrors}</span>
+          )}
+        </div>
+        <div className="form-field">
+          <select
+            name="sizeUnit"
+            onChange={(e) => setSizeUnit(e.target.value)}
+            disabled={className !== ""}
+            id="size-unit"
+            value={sizeUnit}
+          >
+            <option value="m2">m²</option>
+            <option value="ft2">ft²</option>
+          </select>
         </div>
         <div className="form-field">
           <PredictionFormField
@@ -234,7 +297,15 @@ const PredictionForm: React.FC<PredictionFormProps> = ({ className }) => {
           )}
         </div>
         <div id="button">
-          <button id="get-prediction-button" type="submit">
+          <button
+            id="get-prediction-button"
+            type="submit"
+            onClick={() => {
+              watchedSize === ""
+                ? setCustomErrors("Required")
+                : setCustomErrors("");
+            }}
+          >
             Get Prediction
           </button>
           {prediction === 0 ? null : (

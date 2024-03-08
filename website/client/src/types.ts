@@ -145,6 +145,7 @@ export type PredictionFormFieldProps = {
   min?: number;
   max?: number;
   id?: string;
+  style?: React.CSSProperties;
 };
 
 export type PredictionValidFieldNames =
@@ -157,10 +158,7 @@ export type PredictionValidFieldNames =
 export const PredictionSchema: ZodType<PredictionFormData> = z.object({
   propType: z.string().min(1, { message: "Required" }),
   region: z.string().min(1, { message: "Required" }),
-  size: z
-    .number({ invalid_type_error: "Required" })
-    .min(0.4, { message: "Size is too small" })
-    .max(500, { message: "Size is too large" }),
+  size: z.number({ invalid_type_error: "Required" }),
   bedrooms: z.string().min(1, { message: "Required" }),
   bathrooms: z.string().min(1, { message: "Required" }),
 });
