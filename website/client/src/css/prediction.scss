@@ -33,7 +33,7 @@ $dark-blue: #0F3057;
     width: 90%;
     margin-left: auto;
     margin-right: auto;
-    height: 13rem;
+    height: 14.3rem;
     font-family: "Josefin Sans", sans-serif;
     position: relative;
 
@@ -255,4 +255,15 @@ $dark-blue: #0F3057;
     &:hover {
         cursor: text;
     }
+}
+
+
+#note {
+    font-size: 1rem;
+    color: darken($gray, 20%);
+    margin-top: -1rem;
+    text-align: center;
+    font-family: "Josefin Sans", sans-serif;
+    margin-right: auto;
+    margin-left: auto;
 }

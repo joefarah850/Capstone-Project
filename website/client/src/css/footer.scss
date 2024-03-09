@@ -1,0 +1,98 @@
+@font-face {
+    font-family: "Josefin Sans Italic";
+    src: url("../fonts/JosefinSans-Italic-VariableFont_wght.ttf");
+    font-optical-sizing: auto;
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Josefin Sans";
+    src: url("../fonts/JosefinSans-VariableFont_wght.ttf");
+    font-optical-sizing: auto;
+    font-weight: normal;
+    font-style: normal;
+}
+
+$primary-color: #133C55;
+$my-white: #efeff3;
+$error-color: rgb(201, 3, 3);
+$gray: #737272;
+$light-blue: #00b5ad;
+$orange: #f4a261;
+$dark-orange: #b9763f;  
+$dark-blue: #0F3057;
+
+.footer {
+    background-color: $primary-color;
+    color: $my-white;
+    font-family: 'Josefin Sans', sans-serif;
+    padding: 1rem 0;
+    font-size: 0.875rem;
+  
+    a {
+      color: $my-white;
+      text-decoration: none;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  
+    .footer-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1.2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1rem;
+  
+      .contact-info, .legal-links, .company-address, .mission-statement {
+        text-align: center;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        gap: 2rem;
+      }
+  
+      .social-media-icons {
+        display: flex;
+        gap: 1rem;
+  
+        a {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          background-color: $my-white;
+          color: $primary-color;
+          transition: background-color 0.3s ease-in-out;
+  
+          &:hover {
+            background-color: $orange;
+          }
+  
+          svg {
+            width: 24px;
+            height: 24px;
+          }
+        }
+      }
+  
+      .company-address {
+        font-style: italic;
+      }
+    }
+  }
+  
+  // Responsive adjustments
+  @media (max-width: 768px) {
+    .footer-content {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+  }
+  

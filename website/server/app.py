@@ -145,7 +145,7 @@ def update_profile():
     if phone:
         user.phone = phone
     if organization_id:
-        user.organization_id = organization_id.capitalize()
+        user.organization_id = organization_id
 
     user.update_date = datetime.utcnow()
 
@@ -394,7 +394,7 @@ def login_user():
 
     
     session["user_id"] = user.id
-    # session.permanent = True
+    session.permanent = True
     
     return jsonify({
         "message": "User logged in successfully",

@@ -3,6 +3,7 @@ import httpClient from "../httpClient";
 import { User } from "../types";
 import PredictionForm from "../components/PredictionForm";
 import "../css/landingPage.scss";
+import Footer from "../components/Footer";
 
 const LandingPage = () => {
   const [user, setUser] = React.useState<User | null>(null);
@@ -22,22 +23,26 @@ const LandingPage = () => {
   return (
     <>
       <div>
-        {/* {user != null ? (
-          <div>
-            <h2>Logged in</h2>
-            <img src={getProfilePic()} alt="Profile Pic" />
-            <h3>Email: {user.data.email}</h3>
-            <h3>ID: {user.data.id}</h3>
-            <h3>{user.message}</h3>
-          </div>
-        ) : ( */}
         <div className="container">
           <div>
             <div className="intro">
               <div id="slogan">
                 <h1>
-                  Enhance Investment<br></br>Decisions<br></br>
+                  Enhance Investment<br></br>Decisions
+                  <br></br>
                   <br></br>Predict with AI<br></br>Invest Smart
+                  <br></br>
+                  <span
+                    style={{
+                      fontSize: "0.5em",
+                      color: "white",
+                      fontWeight: "normal",
+                      position: "relative",
+                      top: "-10px",
+                    }}
+                  >
+                    (Dubai Market Only)
+                  </span>
                 </h1>
               </div>
               <div id="getting-started">
@@ -67,40 +72,49 @@ const LandingPage = () => {
               <PredictionForm className={user ? "" : "disabled"} />
             </div>
             <div className="divs">
-              <h2>How it works</h2>
               <div className="divs2">
                 <div className="info">
-                  <img src={require("../images/ai_image1.png")} alt="" />
+                  <h2>Mission Statement</h2>
+                  <img
+                    src={require("../images/ai_image1.png")}
+                    alt=""
+                    id="img1"
+                  />
                   <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Fusce nec libero at lectus tincidunt tincidunt. Nulla
-                    facilisi. Nunc sit amet odio nec libero tincidunt tincidunt.
-                    Nulla facilisi. Nunc sit amet odio nec libero tincidunt
-                    tincidunt. Nulla facilisi. Nunc sit amet odio nec libero
-                    tincidunt tincidunt. Nulla facilisi. Nunc sit amet odio nec
-                    libero tincidunt tincidunt. Nulla facilisi.
+                    Empowering the real estate industry with cutting-edge AI
+                    technology, our Real Estate Market Analysis Tool
+                    revolutionizes the way professionals, investors, and
+                    everyday users engage with the market. By automating and
+                    enhancing the accuracy of property analysis and market trend
+                    predictions, we provide a time-efficient, data-driven
+                    solution that supports informed decision-making. Our mission
+                    is to transform real estate market analysis, making it
+                    accessible, reliable, and pivotal for success in today's
+                    fast-paced environment.
                   </p>
                 </div>
                 <div className="info">
+                  <h2>How it works</h2>
                   <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Fusce nec libero at lectus tincidunt tincidunt. Nulla
-                    facilisi. Nunc sit amet odio nec libero tincidunt tincidunt.
-                    Nulla facilisi. Nunc sit amet odio nec libero tincidunt
-                    tincidunt. Nulla facilisi. Nunc sit amet odio nec libero
-                    tincidunt tincidunt. Nulla facilisi. Nunc sit amet odio nec
-                    libero tincidunt tincidunt. Nulla facilisi.
+                    Through the leveraging of Artificial Neural Networks, we are
+                    able to analyze vast amounts of real-time Dubai real estate
+                    market data gathered from property listing websites. By
+                    inputting property features and other relevant data, our
+                    tool processes this information through sophisticated
+                    machine learning models to predict property prices and
+                    provide actionable market insights. The process is
+                    streamlined and user-friendly, ensuring that even those with
+                    no technical background can benefit from our powerful
+                    analytics. Furthermore, this tool is successful at giving
+                    data driven insight with an astounding accuracy of 90%
                   </p>
                   <img src={require("../images/ai_image2.png")} alt="" />
                 </div>
               </div>
             </div>
           </div>
-          <footer>
-            <p>© 2021 Invest Smart</p>
-          </footer>
+          <Footer />
         </div>
-        {/* )} */}
       </div>
     </>
   );

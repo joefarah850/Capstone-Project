@@ -1,0 +1,56 @@
+@font-face {
+    font-family: "Josefin Sans Italic";
+    src: url("../fonts/JosefinSans-Italic-VariableFont_wght.ttf");
+    font-optical-sizing: auto;
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Josefin Sans";
+    src: url("../fonts/JosefinSans-VariableFont_wght.ttf");
+    font-optical-sizing: auto;
+    font-weight: normal;
+    font-style: normal;
+}
+
+$primary-color: #133C55;
+$my-white: #efeff3;
+$error-color: rgb(201, 3, 3);
+$gray: #737272;
+
+
+body {
+    font-family: "Josefin Sans", sans-serif;
+    background-color: $my-white;
+    color: $primary-color;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    height: 100vh;
+}
+
+.container-privacy {
+    max-width: 100%;
+    margin: 0 auto;
+    flex-grow: 1;
+    overflow-y: scroll;
+
+    .divs-privacy {
+        background: $my-white;
+        width: 90%;
+        position: relative;
+        margin: 0 auto;
+        padding: 2rem 2rem;
+        border-radius: 10px;
+        margin-top: 2%;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        margin-bottom: 3%;
+        font-size: 1.2em;
+        
+
+       
+    
+}
+
+}

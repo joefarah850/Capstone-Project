@@ -43,6 +43,8 @@ const UserPage: React.FC = () => {
       setCity(userData.data.city);
       setPhoneNumber(userData.data.phone);
       setOrganizationId(userData.data.organizationId);
+
+      console.log(userData.data.country);
     } catch (error: any) {
       console.log(error);
       window.location.replace("/login");
@@ -116,6 +118,11 @@ const UserPage: React.FC = () => {
       .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
   };
 
+  useEffect(() => {
+    // This code runs whenever phoneNumber changes
+    console.log(phoneNumber);
+  }, [phoneNumber]);
+
   return (
     <>
       {user != null ? (
@@ -164,9 +171,13 @@ const UserPage: React.FC = () => {
                         <div>
                           <strong>Phone Number:</strong>{" "}
                           <PhoneInput
+                            international
+                            withCountryCallingCode
                             placeholder="Enter phone number"
                             value={phoneNumber || ""}
-                            onChange={(e) => setPhoneNumber(e || "")}
+                            onChange={(e) => {
+                              setPhoneNumber(e || "");
+                            }}
                           />
                         </div>
                         <div>
@@ -174,11 +185,11 @@ const UserPage: React.FC = () => {
                           <select
                             name=""
                             id=""
-                            onChange={(e) =>
-                              setCountry(labelCountry.getLabel(e.target.value))
-                            }
+                            onChange={(e) => {
+                              setCountry(e.target.value);
+                            }}
                             value={country}
-                            defaultValue={"AE"}
+                            defaultValue={country ? country : "AE"}
                           >
                             {countries.map((country: any) => {
                               return (
@@ -223,7 +234,6 @@ const UserPage: React.FC = () => {
                             </select>
                             <button type="button" onClick={toggleNewOrg}>
                               <span id="add">+</span>
-                              {/* <span id="text-add">Add</span> */}
                             </button>
                           </div>
                         </div>

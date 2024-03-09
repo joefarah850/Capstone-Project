@@ -11,6 +11,9 @@ import React from "react";
 import { User } from "./types";
 import Layout from "./components/Layout";
 import { resetCookieConsentValue } from "react-cookie-consent";
+import AboutUs from "./pages/AboutUs";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import TermsAndConditions from "./pages/TermsAndConditions";
 
 const Router = () => {
   const [user, setUser] = React.useState<User | null>(null);
@@ -60,6 +63,20 @@ const Router = () => {
             </Layout>
           }
         />
+        <Route
+          path="/about-us"
+          element={
+            <Layout
+              user={user}
+              getProfilePic={getProfilePic}
+              onLogout={onLogout}
+            >
+              <AboutUs />
+            </Layout>
+          }
+        />
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+        <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/reset-password/:token" element={<ResetPassword />} />
