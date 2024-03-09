@@ -76,8 +76,8 @@ const LandingPage = () => {
                 <div className="info">
                   <h2>Mission Statement</h2>
                   <img
-                    src={require("../images/ai_image1.png")}
-                    alt=""
+                    src={require("../images/ai_image3.png")}
+                    alt="Mission Statement"
                     id="img1"
                   />
                   <p>
@@ -108,7 +108,10 @@ const LandingPage = () => {
                     analytics. Furthermore, this tool is successful at giving
                     data driven insight with an astounding accuracy of 90%
                   </p>
-                  <img src={require("../images/ai_image2.png")} alt="" />
+                  <img
+                    src={require("../images/ai_image4.png")}
+                    alt="How It Works"
+                  />
                 </div>
               </div>
             </div>
