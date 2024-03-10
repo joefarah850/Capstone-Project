@@ -41,7 +41,7 @@ const LandingPage = () => {
                       top: "-10px",
                     }}
                   >
-                    (Dubai Market Only)
+                    Dubai Market
                   </span>
                 </h1>
               </div>
