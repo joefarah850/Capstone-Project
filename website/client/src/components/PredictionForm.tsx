@@ -6,7 +6,11 @@ import PredictionFormField from "./PredictionFormField";
 import httpClient from "../httpClient";
 import "../css/prediction.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faLock } from "@fortawesome/free-solid-svg-icons";
+import {
+  faLock,
+  faStar as faStarSolid,
+} from "@fortawesome/free-solid-svg-icons";
+import { faStar as faStarRegular } from "@fortawesome/free-regular-svg-icons";
 import { library } from "@fortawesome/fontawesome-svg-core";
 
 interface PredictionFormProps {
@@ -22,13 +26,14 @@ const PredictionForm: React.FC<PredictionFormProps> = ({ className }) => {
   const [showPrediction, setShowPrediction] = useState<number>(0);
   const [sizeUnit, setSizeUnit] = useState("m2");
   const [customErrors, setCustomErrors] = useState("");
+  const [favorite, setFavorite] = useState(false);
 
   const numbers = Array.from({ length: 7 }, (_, index) => ({
     value: `${index}`, // Since index is 0-based, add 1 to start from 1
     label: `${index}`, // Convert the number to a string for the label
   }));
 
-  library.add(faLock);
+  library.add(faLock, faStarSolid, faStarRegular);
 
   const {
     register,
@@ -170,6 +175,10 @@ const PredictionForm: React.FC<PredictionFormProps> = ({ className }) => {
 
     validateSize();
   }, [watchedSize, sizeUnit]);
+
+  const toggleFavorite = () => {
+    setFavorite(!favorite);
+  };
 
   return (
     <div className="pred-container">
@@ -333,22 +342,40 @@ const PredictionForm: React.FC<PredictionFormProps> = ({ className }) => {
               style={{ borderColor: prediction === 0 ? "gray" : "" }}
             />
             {prediction === 0 ? null : (
-              <div id="currencies">
-                <select
-                  name="currencies"
-                  id="currency"
-                  onChange={async (e) => {
-                    const rate = await calculteRate(e.target.value);
-                    setShowPrediction(rate || 0);
-                  }}
-                >
-                  {Object.keys(rates).map((currency, index) => (
-                    <option key={index} value={currency}>
-                      {currency}
-                    </option>
-                  ))}
-                </select>
-              </div>
+              <>
+                <div id="currencies">
+                  <select
+                    name="currencies"
+                    id="currency"
+                    onChange={async (e) => {
+                      const rate = await calculteRate(e.target.value);
+                      setShowPrediction(rate || 0);
+                    }}
+                  >
+                    {Object.keys(rates).map((currency, index) => (
+                      <option key={index} value={currency}>
+                        {currency}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                {favorite ? (
+                  <FontAwesomeIcon
+                    icon={["fas", "star"]}
+                    // onClick={toggleFavorite}
+                    title="Remove from favorites"
+                    id="disabled-star"
+                  />
+                ) : (
+                  <FontAwesomeIcon
+                    icon={["far", "star"]}
+                    // onClick={toggleFavorite}
+                    // title="Add to favorites"
+                    title="Coming soon!"
+                    id="disabled-star"
+                  />
+                )}
+              </>
             )}
           </>
         </div>

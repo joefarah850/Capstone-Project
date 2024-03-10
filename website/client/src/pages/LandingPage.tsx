@@ -106,7 +106,7 @@ const LandingPage = () => {
                     streamlined and user-friendly, ensuring that even those with
                     no technical background can benefit from our powerful
                     analytics. Furthermore, this tool is successful at giving
-                    data driven insight with an astounding accuracy of 90%
+                    data driven insight with an astounding accuracy of 90%.
                   </p>
                   <img
                     src={require("../images/ai_image4.png")}
