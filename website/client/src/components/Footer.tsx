@@ -1,5 +1,5 @@
 import React from "react";
-import { FaTwitter, FaFacebook, FaLinkedin, FaInstagram } from "react-icons/fa";
+import { FaTwitter, FaLinkedin, FaInstagram } from "react-icons/fa";
 import "../css/footer.scss";
 
 const Footer: React.FC = () => {
@@ -30,6 +30,7 @@ const Footer: React.FC = () => {
             href="https://twitter.com/SLUMadrid"
             aria-label="Twitter"
             target="_blank"
+            rel="noopener noreferrer"
           >
             <FaTwitter />
           </a>
@@ -37,6 +38,7 @@ const Footer: React.FC = () => {
             href="https://www.instagram.com/slumadrid/?hl=en"
             aria-label="Instagram"
             target="_blank"
+            rel="noopener noreferrer"
           >
             <FaInstagram />
           </a>
@@ -44,6 +46,7 @@ const Footer: React.FC = () => {
             href="https://www.linkedin.com/in/joe-farah-2036051b5/"
             aria-label="LinkedIn"
             target="_blank"
+            rel="noopener noreferrer"
           >
             <FaLinkedin />
           </a>
