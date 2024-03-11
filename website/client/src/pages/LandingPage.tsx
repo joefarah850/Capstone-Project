@@ -47,13 +47,21 @@ const LandingPage = () => {
               </div>
               <div id="getting-started">
                 <h2>Get Started</h2>
-                <video id="help-video" controls>
-                  <source
-                    src={require("../videos/help.mp4")}
-                    type="video/mp4"
-                  />
-                  Your browser does not support the video tag.
-                </video>
+                <img
+                  id="help-video" //</div>controls>
+                  // <source
+                  // src={require("../videos/help.mp4")}
+                  src={require("../images/thumbnail.png")}
+                  style={{
+                    width: "100%",
+                    transform: "translateX(0)",
+                    borderRadius: "10px",
+                    border: "2px solid #133C55",
+                  }}
+                  // type="video/mp4"
+                />
+                {/* Your browser does not support the video tag. */}
+                {/* </img> */}
                 {user == null ? (
                   <div className="get-started-buttons">
                     <button onClick={() => (window.location.href = "/login")}>
