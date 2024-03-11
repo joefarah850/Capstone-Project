@@ -14,6 +14,7 @@ import { resetCookieConsentValue } from "react-cookie-consent";
 import AboutUs from "./pages/AboutUs";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsAndConditions from "./pages/TermsAndConditions";
+import { useIdleTimer } from "react-idle-timer";
 
 const Router = () => {
   const [user, setUser] = React.useState<User | null>(null);
@@ -23,12 +24,19 @@ const Router = () => {
 
     resetCookieConsentValue();
 
+    localStorage.removeItem("registrationResponse");
+
     window.location.href = "/";
   };
 
+  useIdleTimer({
+    timeout: 1000 * 60 * 30, // 30 minutes
+    onIdle: onLogout,
+    debounce: 500,
+  });
+
   const getProfilePic = () => {
     if (user != null) {
-      console.log(user.data.profile_pic);
       if (user.data.profile_pic === "../images/noprofilepic.png") {
         return require("./images/noprofilepic.png");
       }

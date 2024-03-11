@@ -37,6 +37,8 @@ const LoginPage: React.FC = () => {
         ...data,
         cookieConsent,
       });
+      localStorage.removeItem("registrationResponse");
+
       window.location.href = "/";
     } catch (error: any) {
       if (error.response.status === 401) {

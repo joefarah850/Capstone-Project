@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import Navbar from "./Navbar";
 import "../css/layout.scss";
@@ -17,6 +17,10 @@ const Layout: React.FC<LayoutProps> = ({
   onLogout,
 }) => {
   const location = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location]);
 
   return (
     <>

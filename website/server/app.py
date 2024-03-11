@@ -85,6 +85,7 @@ def login_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
+
 @app.route('/@me', methods=['GET'])
 @login_required
 def get_current_user():
@@ -394,7 +395,7 @@ def login_user():
 
     
     session["user_id"] = user.id
-    session.permanent = True
+
     
     return jsonify({
         "message": "User logged in successfully",
@@ -405,6 +406,7 @@ def login_user():
             "profile_pic": user.profile_pic_url,
         }
     }), 200
+
 
 @app.route('/logout', methods=['POST'])
 def logout_user():

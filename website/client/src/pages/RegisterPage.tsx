@@ -41,7 +41,11 @@ const RegisterPage: React.FC = () => {
   });
 
   const registerUser = async (data: any) => {
+    localStorage.removeItem("registrationResponse");
     setIsLoading(true);
+
+    const delay = (ms: number) =>
+      new Promise((resolve) => setTimeout(resolve, ms));
     try {
       const resp = await httpClient.post("http://localhost:5000/register", {
         ...data,
@@ -49,23 +53,22 @@ const RegisterPage: React.FC = () => {
         reCaptcha,
       });
 
-      localStorage.removeItem("registrationResponse");
+      // localStorage.setItem(
+      //   "registrationResponse",
+      //   JSON.stringify({
+      //     message: resp.data.message,
+      //     data: resp.data.data,
+      //     error: false,
+      //   })
+      // );
 
-      localStorage.setItem(
-        "registrationResponse",
-        JSON.stringify({
-          message: resp.data.message,
-          data: resp.data.data,
-          error: false,
-        })
-      );
-
-      window.location.reload();
-      localStorage.setItem("autoReload", "true");
+      // window.location.reload();
+      // localStorage.setItem("autoReload", "true");
+      setMessage(resp.data.message);
+      await delay(1500);
+      window.location.href = "/";
     } catch (error: any) {
       if (error.response.status === 400) {
-        localStorage.removeItem("registrationResponse");
-
         localStorage.setItem(
           "registrationResponse",
           JSON.stringify({
@@ -197,9 +200,12 @@ const RegisterPage: React.FC = () => {
         </div>
         <form id="register-form" onSubmit={handleSubmit(registerUser)}>
           {isLoading && (
-            <div id="loading-container">
-              <img src={require("../images/loading.gif")} alt="Loading..." />
-            </div>
+            <>
+              <div id="loading-container">
+                <img src={require("../images/loading.gif")} alt="Loading..." />
+              </div>
+              <span id="created">{message}</span>
+            </>
           )}
           <div
             id="register-slide"
@@ -380,7 +386,6 @@ const RegisterPage: React.FC = () => {
                   Create
                 </button>
               </div>
-              <span id="created">{message}</span>
             </div>
           </div>
           <ProfilePicPage

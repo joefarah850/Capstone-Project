@@ -15,10 +15,9 @@ class ApplicationConfig:
     SQLALCHEMY_DATABASE_URI = f'mysql://{os.environ["DB_USER_TEST"]}:{os.environ["DB_PASSWORD_TEST"]}@{os.environ["DB_HOST_TEST"]}/{os.environ["DB_NAME_TEST"]}'
 
     SESSION_TYPE = "redis"
-    SESSION_PERMANENT = False
+    # SESSION_PERMANENT = False
     SESSION_USE_SIGNER = True
     SESSION_REDIS = redis.from_url("redis://localhost:6379")
-    PERMANENT_SESSION_LIFETIME = timedelta(minutes=30)
 
     RECAPTCHA_SECRET_KEY = os.environ["RECAPTCHA_SECRET_KEY"]
 
