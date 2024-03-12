@@ -100,6 +100,7 @@ body {
                         margin-top: 0;
                         margin-bottom: 0;
 
+
                         .PhoneInput {
                             width: 101%;
                             display: flex;
@@ -143,6 +144,21 @@ body {
                                 }
 
                             }
+                        }
+
+                        .phone-error {
+                            .PhoneInputInput {
+                                border: 2px solid $error-color;
+                            }
+                        }
+
+                        .error-message-phone {
+                            color: $error-color;
+                            font-size: 0.8rem;
+                            margin-top: 0.5em;
+                            margin-bottom: 0;
+                            font-weight: normal;
+                            margin-left: 5em
                         }
 
                         strong {

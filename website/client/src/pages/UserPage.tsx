@@ -5,8 +5,9 @@ import "../css/userPage.scss";
 import ProfilePicPage from "./ProfilePicPage";
 import Organization from "../components/Organization";
 import countryList from "react-select-country-list";
-import PhoneInput from "react-phone-number-input";
+import PhoneInput, { isValidPhoneNumber } from "react-phone-number-input";
 import "react-phone-number-input/style.css";
+import { set } from "react-hook-form";
 
 const UserPage: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -19,9 +20,10 @@ const UserPage: React.FC = () => {
   const [city, setCity] = useState<string>("");
   const [phoneNumber, setPhoneNumber] = useState<string>("");
   const [editable, setEditable] = useState<boolean>(false);
+  const [phoneError, setPhoneError] = useState<string>("");
 
   const countries = useMemo(() => countryList().getData(), []);
-  const labelCountry = useMemo(() => countryList(), []);
+  // const labelCountry = useMemo(() => countryList(), []);
 
   const load = async () => {
     try {
@@ -177,8 +179,20 @@ const UserPage: React.FC = () => {
                             value={phoneNumber || ""}
                             onChange={(e) => {
                               setPhoneNumber(e || "");
+                              setPhoneError("");
                             }}
+                            onBlur={() => {
+                              if (!isValidPhoneNumber(phoneNumber)) {
+                                setPhoneError("Invalid phone number");
+                              }
+                            }}
+                            className={phoneError ? "phone-error" : ""}
                           />
+                          {phoneError && (
+                            <span className="error-message-phone">
+                              {phoneError}
+                            </span>
+                          )}
                         </div>
                         <div>
                           <strong>Country:</strong>{" "}
@@ -204,7 +218,10 @@ const UserPage: React.FC = () => {
                           </select>
                         </div>
                       </div>
-                      <div className="pair">
+                      <div
+                        className="pair"
+                        style={{ marginTop: phoneError ? "-19px" : "" }}
+                      >
                         <div>
                           <strong>City: </strong>
                           <input
@@ -264,7 +281,14 @@ const UserPage: React.FC = () => {
                         </button>
                       ) : (
                         <>
-                          <button type="button" onClick={saveChanges} id="save">
+                          <button
+                            type="button"
+                            onClick={saveChanges}
+                            id="save"
+                            style={{
+                              pointerEvents: phoneError ? "none" : "auto",
+                            }}
+                          >
                             Save Changes
                           </button>
                           <button
@@ -272,6 +296,7 @@ const UserPage: React.FC = () => {
                             onClick={() => {
                               setEditable(false);
                               load();
+                              setPhoneError("");
                             }}
                             id="cancel"
                           >
