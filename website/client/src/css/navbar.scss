@@ -45,7 +45,16 @@ $dark-blue: #0F3057;
             font-weight: bold;
             color: $my-white;
             text-decoration: none;
-            margin-left: 5cap;
+            margin-left: 1rem;
+            display: flex;
+            align-items: center;
+            transition: color 0.3s ease-in-out;
+            justify-content: center;
+
+            img {
+                width: 4rem;
+                transform: translateX(0);
+            }
         }
 
         .nav__menu {

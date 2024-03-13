@@ -169,6 +169,48 @@ def update_profile():
         }
     }), 200
 
+@app.route('/update-profile-pic', methods=['POST'])
+@login_required
+def update_profile_pic():
+    user_id = session.get("user_id")
+
+    if not user_id:
+        return jsonify({"message": "User not logged in"}), 401
+
+    user = User.query.filter_by(id=user_id).first()
+
+    profile_pic_url = request.json.get("profilePic")
+
+    if "data:image" in profile_pic_url:
+        upload = cloudinary.uploader.upload(profile_pic_url, public_id=f"{user.id}_profile_pic", folder="profile_pics", overwrite=True, resource_type="image")
+
+        profile_pic = upload.get("url")
+
+        user.profile_pic_url = profile_pic
+        db.session.commit()
+    else:
+        profile_pic = "../images/noprofilepic.png"
+
+        user.profile_pic_url = profile_pic
+        db.session.commit()
+
+    return jsonify({
+        "message": "Profile picture updated successfully",
+        "data": {
+            "email": user.email,
+            "firstName": user.first_name,
+            "lastName": user.last_name,
+            "profile_pic": user.profile_pic_url,
+            "dateOfBirth": user.date_of_birth,
+            "accountCreationDate": user.account_creation_date,
+            "lastLogin": user.last_login,
+            "organization": user.organization.organization if user.organization else None,
+            "country": user.country,
+            "city": user.city,
+            "phone": user.phone
+        }
+    }), 200
+
 @app.route('/register', methods=['POST'])
 def register_user():
     email = request.json.get("email")

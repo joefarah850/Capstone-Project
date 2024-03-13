@@ -46,7 +46,6 @@ const LandingPage = () => {
                 </h1>
               </div>
               <div id="getting-started">
-                <h2>Get Started</h2>
                 <img
                   id="help-video" //</div>controls>
                   // <source
@@ -56,7 +55,8 @@ const LandingPage = () => {
                     width: "100%",
                     transform: "translateX(0)",
                     borderRadius: "10px",
-                    border: "2px solid #133C55",
+                    // border: "2px solid #133C55",
+                    boxShadow: "0px 0px 15px 1px #133C55",
                   }}
                   // type="video/mp4"
                 />

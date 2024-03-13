@@ -22,6 +22,7 @@
     "react": "^18.2.0",
     "react-avatar-edit": "^1.2.0",
     "react-cookie-consent": "^9.0.0",
+    "react-custom-confirm": "^1.0.5",
     "react-dom": "^18.2.0",
     "react-google-recaptcha": "^3.1.0",
     "react-hook-form": "^7.50.1",
@@ -65,7 +66,7 @@
     "@types/react-google-recaptcha": "^2.1.9",
     "@types/react-select-country-list": "^2.2.3",
     "@types/react-transition-group": "^4.4.10",
-    "sass": "^1.71.1",
-    "react-scripts": "5.0.1"
+    "react-scripts": "5.0.1",
+    "sass": "^1.71.1"
   }
 }

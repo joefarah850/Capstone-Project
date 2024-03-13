@@ -7,7 +7,10 @@ import Organization from "../components/Organization";
 import countryList from "react-select-country-list";
 import PhoneInput, { isValidPhoneNumber } from "react-phone-number-input";
 import "react-phone-number-input/style.css";
-import { set } from "react-hook-form";
+import emitter from "../eventEmitter";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import { library } from "@fortawesome/fontawesome-svg-core";
 
 const UserPage: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -24,6 +27,8 @@ const UserPage: React.FC = () => {
 
   const countries = useMemo(() => countryList().getData(), []);
   // const labelCountry = useMemo(() => countryList(), []);
+
+  library.add(faTrash);
 
   const load = async () => {
     try {
@@ -45,8 +50,6 @@ const UserPage: React.FC = () => {
       setCity(userData.data.city);
       setPhoneNumber(userData.data.phone);
       setOrganizationId(userData.data.organizationId);
-
-      console.log(userData.data.country);
     } catch (error: any) {
       console.log(error);
       window.location.replace("/login");
@@ -69,6 +72,23 @@ const UserPage: React.FC = () => {
       console.log(resp.data);
 
       setEditable(false);
+    } catch (error: any) {
+      console.log(error);
+    }
+  };
+
+  const saveProfilePic = async (profilePic: string) => {
+    setProfilePic(profilePic);
+    emitter.emit("profilePicUpdated", profilePic);
+    try {
+      const resp = await httpClient.post(
+        "http://localhost:5000/update-profile-pic",
+        {
+          profilePic: profilePic,
+        }
+      );
+
+      console.log(resp.data);
     } catch (error: any) {
       console.log(error);
     }
@@ -120,6 +140,14 @@ const UserPage: React.FC = () => {
       .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
   };
 
+  const deleteProfilePic = async () => {
+    if (
+      window.confirm("Are you sure you want to delete your profile picture?")
+    ) {
+      saveProfilePic("../images/noprofilepic.png");
+    }
+  };
+
   useEffect(() => {
     // This code runs whenever phoneNumber changes
     console.log(phoneNumber);
@@ -143,7 +171,14 @@ const UserPage: React.FC = () => {
               >
                 <div className="user-profile">
                   <div className="profile-user-pic-container">
-                    <img id="profile-user-pic" src={profilePic} alt="" />
+                    <div id="profile-pic-trash">
+                      <img id="profile-user-pic" src={profilePic} alt="" />
+                      <FontAwesomeIcon
+                        icon={["fas", "trash"]}
+                        id="trash"
+                        onClick={deleteProfilePic}
+                      />
+                    </div>
                     <button
                       id="profile-user-button"
                       type="button"
@@ -310,7 +345,7 @@ const UserPage: React.FC = () => {
               </div>
               <ProfilePicPage
                 onClose={toggleProfileEditor}
-                onProfilePicSubmit={(e: string) => setProfilePic(e)}
+                onProfilePicSubmit={(e: string) => saveProfilePic(e)}
                 className={showProfileEditor ? "" : "slide-left"}
                 id="profile-user-pic-userpage"
               />

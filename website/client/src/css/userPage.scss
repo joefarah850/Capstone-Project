@@ -324,13 +324,36 @@ body {
 
     
 
-    #profile-user-pic {
-        width: 60px;
-        height: 60px;
-        border-radius: 50%;
-        display: block;
-        margin-bottom: 10px;
-        transform: translateX(0);
+    #profile-pic-trash {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+
+        #profile-user-pic {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: block;
+            margin-bottom: 10px;
+            transform: translateX(0);
+        }
+
+        #trash {
+            position: absolute;
+            bottom: 15%;
+            right: -20%;
+            width: 10px;
+
+            &:hover {
+                cursor: pointer;
+            }
+
+            path:hover {
+                fill: #386FA4;
+            }
+        }
+
     }
     
 
@@ -383,7 +406,7 @@ body {
 
     #buttons {
         display: flex;
-        width: 40%;
+        width: 45%;
         margin: 10% auto 0 auto;
         justify-content: space-between;
 

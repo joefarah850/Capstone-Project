@@ -15,9 +15,13 @@ import AboutUs from "./pages/AboutUs";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsAndConditions from "./pages/TermsAndConditions";
 import { useIdleTimer } from "react-idle-timer";
+import emitter from "./eventEmitter";
 
 const Router = () => {
   const [user, setUser] = React.useState<User | null>(null);
+  const [profilePic, setProfilePic] = React.useState<string>(
+    "../images/noprofilepic.png"
+  );
 
   const onLogout = async () => {
     await httpClient.post("http://localhost:5000/logout");
@@ -37,12 +41,30 @@ const Router = () => {
 
   const getProfilePic = () => {
     if (user != null) {
-      if (user.data.profile_pic === "../images/noprofilepic.png") {
+      if (
+        user.data.profile_pic === "../images/noprofilepic.png" &&
+        profilePic === "../images/noprofilepic.png"
+      ) {
         return require("./images/noprofilepic.png");
+      }
+      if (profilePic !== "../images/noprofilepic.png") {
+        return profilePic;
       }
       return user.data.profile_pic;
     }
   };
+
+  useEffect(() => {
+    const updateProfilePic = (newProfilePic: string): void => {
+      setProfilePic(newProfilePic);
+    };
+
+    emitter.on("profilePicUpdated", updateProfilePic);
+
+    return () => {
+      emitter.off("profilePicUpdated", updateProfilePic);
+    };
+  }, []);
 
   useEffect(() => {
     (async () => {

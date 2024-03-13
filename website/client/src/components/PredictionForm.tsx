@@ -29,8 +29,13 @@ const PredictionForm: React.FC<PredictionFormProps> = ({ className }) => {
   const [favorite, setFavorite] = useState(false);
 
   const numbers = Array.from({ length: 7 }, (_, index) => ({
-    value: `${index}`, // Since index is 0-based, add 1 to start from 1
-    label: `${index}`, // Convert the number to a string for the label
+    value: `${index}`,
+    label: index === 0 ? "Studio" : `${index}`,
+  }));
+
+  const numbers2 = Array.from({ length: 7 }, (_, index) => ({
+    value: `${index}`,
+    label: `${index}`,
   }));
 
   library.add(faLock, faStarSolid, faStarRegular);
@@ -148,7 +153,6 @@ const PredictionForm: React.FC<PredictionFormProps> = ({ className }) => {
   type Unit = "m2" | "ft2";
 
   useEffect(() => {
-    console.log(watchedSize);
     if (!watchedSize) {
       return;
     }
@@ -258,7 +262,7 @@ const PredictionForm: React.FC<PredictionFormProps> = ({ className }) => {
             predict={register}
             error={errors.bathrooms}
             valueAsNumber={true}
-            options={numbers}
+            options={numbers2}
             disabled={className !== ""}
           />
           {errors.bathrooms && (

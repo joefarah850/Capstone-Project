@@ -17,6 +17,7 @@ const Navbar: React.FC<NavbarProps> = ({
     <header className="header">
       <nav className="nav-container">
         <NavLink to="/" className="nav__logo">
+          <img src={require("../images/logo.png")} alt="" />
           TechProp.ai
         </NavLink>
 
