@@ -2,7 +2,7 @@ import React, { ReactNode, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import httpClient from "../httpClient";
 import RegisterFormField from "./RegisterFormField";
-import { set, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { RegisterFormData, UserSchema } from "../types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import "../css/login.scss";
@@ -28,7 +28,6 @@ const ResetPassword: React.FC = () => {
     register,
     watch,
     formState: { errors },
-    setError,
     reset,
   } = useForm<RegisterFormData>({
     resolver: zodResolver(UserSchema),

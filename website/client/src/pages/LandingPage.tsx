@@ -58,6 +58,7 @@ const LandingPage = () => {
                     // border: "2px solid #133C55",
                     boxShadow: "0px 0px 15px 1px #133C55",
                   }}
+                  alt="Thumbnail"
                   // type="video/mp4"
                 />
                 {/* Your browser does not support the video tag. */}

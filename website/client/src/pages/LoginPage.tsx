@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import httpClient from "../httpClient";
+// eslint-disable-next-line
 import CookieConsent, { resetCookieConsentValue } from "react-cookie-consent";
 import { LoginFormData, LoginUserSchema } from "../types";
 import { useForm } from "react-hook-form";
@@ -12,7 +13,9 @@ import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { library } from "@fortawesome/fontawesome-svg-core";
 
 const LoginPage: React.FC = () => {
+  // eslint-disable-next-line
   const [cookieConsent, setCookieConsent] = useState<boolean>(false);
+  // eslint-disable-next-line
   const [cookieDecline, setCookieDecline] = useState<boolean>(false);
   const [forgotPassword, setForgotPassword] = useState<boolean>(false);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);

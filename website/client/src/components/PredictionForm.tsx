@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { PredictionFormData, PredictionSchema } from "../types";
-import { set, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import PredictionFormField from "./PredictionFormField";
 import httpClient from "../httpClient";
@@ -45,7 +45,6 @@ const PredictionForm: React.FC<PredictionFormProps> = ({ className }) => {
     handleSubmit,
     reset,
     watch,
-    setValue,
     formState: { errors },
   } = useForm<PredictionFormData>({
     resolver: zodResolver(PredictionSchema),
@@ -180,6 +179,7 @@ const PredictionForm: React.FC<PredictionFormProps> = ({ className }) => {
     validateSize();
   }, [watchedSize, sizeUnit]);
 
+  // eslint-disable-next-line
   const toggleFavorite = () => {
     setFavorite(!favorite);
   };

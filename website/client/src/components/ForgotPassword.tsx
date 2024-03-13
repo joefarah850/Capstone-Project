@@ -21,6 +21,7 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = ({
   const {
     register,
     watch,
+    // eslint-disable-next-line
     formState: { errors },
     reset,
   } = useForm<LoginFormData>({

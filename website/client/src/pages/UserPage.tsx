@@ -11,6 +11,7 @@ import emitter from "../eventEmitter";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { library } from "@fortawesome/fontawesome-svg-core";
+import { confirm } from "react-confirm-box";
 
 const UserPage: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -29,6 +30,13 @@ const UserPage: React.FC = () => {
   // const labelCountry = useMemo(() => countryList(), []);
 
   library.add(faTrash);
+
+  const confirmOptions = {
+    labels: {
+      confirmable: "Yes",
+      cancellable: "No",
+    },
+  };
 
   const load = async () => {
     try {
@@ -141,9 +149,11 @@ const UserPage: React.FC = () => {
   };
 
   const deleteProfilePic = async () => {
-    if (
-      window.confirm("Are you sure you want to delete your profile picture?")
-    ) {
+    const result = await confirm(
+      "Are you sure you want to delete your profile picture?",
+      confirmOptions
+    );
+    if (result) {
       saveProfilePic("../images/noprofilepic.png");
     }
   };

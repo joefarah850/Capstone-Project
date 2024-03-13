@@ -116,7 +116,7 @@ const PrivacyPolicy: React.FC = () => {
                         accessible from{" "}
                         <a
                           href="http://localhost:3000/"
-                          rel="external nofollow noopener"
+                          rel="external nofollow noopener noreferrer"
                           target="_blank"
                         >
                           http://localhost:3000/
