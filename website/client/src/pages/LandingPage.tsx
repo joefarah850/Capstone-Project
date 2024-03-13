@@ -46,23 +46,22 @@ const LandingPage = () => {
                 </h1>
               </div>
               <div id="getting-started">
-                <img
-                  id="help-video" //</div>controls>
-                  // <source
-                  // src={require("../videos/help.mp4")}
-                  src={require("../images/thumbnail.png")}
-                  style={{
-                    width: "100%",
-                    transform: "translateX(0)",
-                    borderRadius: "10px",
-                    // border: "2px solid #133C55",
-                    boxShadow: "0px 0px 15px 1px #133C55",
-                  }}
-                  alt="Thumbnail"
-                  // type="video/mp4"
-                />
-                {/* Your browser does not support the video tag. */}
-                {/* </img> */}
+                <div id="help-video">
+                  <div
+                    id="video"
+                    style={{
+                      display: "block",
+                    }}
+                  >
+                    <iframe
+                      src="https://www.youtube.com/embed/UBWGKvQnMBE"
+                      title="Getting started with TechProp.ai"
+                      frameBorder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      allowFullScreen
+                    ></iframe>
+                  </div>
+                </div>
                 {user == null ? (
                   <div className="get-started-buttons">
                     <button onClick={() => (window.location.href = "/login")}>

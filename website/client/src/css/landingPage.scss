@@ -62,11 +62,34 @@ body {
             }
 
             #help-video {
-                position: relative;
-                height: 17rem;
-                width: 100%;
-                border-radius: 10px;
-                margin-bottom: 1rem;
+
+                #thumbnail {
+                    position: relative;
+                    height: 17rem;
+                    width: 100%;
+                    border-radius: 10px;
+                    margin-bottom: 1rem;
+                    transform: translateX(0);
+
+                    &:hover {
+                        cursor: pointer;
+                        filter: brightness(0.9);
+                    }
+                }
+
+                #video {
+                    position: relative;
+                    width: 484.070px;
+                    height: 272px;
+                    border-radius: 10px;
+                    margin-bottom: 1.2rem;
+
+                    iframe {
+                        width: 100%;
+                        height: 100%;
+                        border-radius: 10px;   
+                    }
+                }
             }
 
             #help-video:hover {
