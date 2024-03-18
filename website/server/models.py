@@ -51,3 +51,29 @@ class Region(db.Model):
     name = db.Column(db.String(255), nullable=False)
 
     # properties = db.relationship('Property', backref='Region', lazy=True)
+
+class Property(db.Model):
+    __tablename__ = 'property'
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    predicted_price = db.Column(db.Float, nullable=False)
+    type_id = db.Column(db.Integer, db.ForeignKey('type.id'), nullable=False)
+    region_id = db.Column(db.Integer, db.ForeignKey('region.id'), nullable=False)
+    size = db.Column(db.Numeric(precision=10, scale=2))
+    num_rooms = db.Column(db.Integer, nullable=False)
+    num_bathrooms = db.Column(db.Integer, nullable=False)
+
+    prop_type = db.relationship('Prop_Type', backref='Property')
+    region = db.relationship('Region', backref='Property')
+
+class History(db.Model):
+    __tablename__ = 'search_history'
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    property_id = db.Column(db.Integer, db.ForeignKey('property.id'), nullable=False)
+    user_id = db.Column(db.String(255), db.ForeignKey('user.id'), nullable=False)
+    search_datetime= db.Column(db.DateTime, nullable=False)
+    deleted = db.Column(db.Boolean, nullable=False, default=False)
+
+    user = db.relationship('User', backref='History')
+    property = db.relationship('Property', backref='History')

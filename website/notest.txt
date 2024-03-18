@@ -4,3 +4,4 @@ Cloud Database:
 - !add org design in the future
 - add phone, country, and city to User
 - Change default organization to None
+- Change size type to Decimal(10, 2)

@@ -12,6 +12,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { faStar as faStarRegular } from "@fortawesome/free-regular-svg-icons";
 import { library } from "@fortawesome/fontawesome-svg-core";
+import { json } from "stream/consumers";
 
 interface PredictionFormProps {
   className?: string;
@@ -27,6 +28,7 @@ const PredictionForm: React.FC<PredictionFormProps> = ({ className }) => {
   const [sizeUnit, setSizeUnit] = useState("m2");
   const [customErrors, setCustomErrors] = useState("");
   const [favorite, setFavorite] = useState(false);
+  const [propertyId, setPropertyId] = useState(0);
 
   const numbers = Array.from({ length: 7 }, (_, index) => ({
     value: `${index}`,
@@ -65,9 +67,22 @@ const PredictionForm: React.FC<PredictionFormProps> = ({ className }) => {
       "http://localhost:5000/prediction",
       data
     );
+
+    localStorage.setItem(
+      "prediction data",
+      JSON.stringify({
+        size: data.size,
+        bedrooms: data.bedrooms,
+        bathrooms: data.bathrooms,
+        propType: data.propType,
+        region: data.region,
+        prediction: resp.data.prediction,
+      })
+    );
+
     setPrediction(resp.data.prediction);
     setShowPrediction(resp.data.prediction);
-    getRates();
+    // getRates();
   };
 
   const getPropType = async () => {
@@ -83,21 +98,21 @@ const PredictionForm: React.FC<PredictionFormProps> = ({ className }) => {
   const apiKey = process.env.REACT_APP_CONVERSION_KEY;
   const baseUrl = process.env.REACT_APP_API_BASE_URL;
 
-  const getRates = async () => {
-    try {
-      const url = `${baseUrl}/${apiKey}/latest/AED`;
-      const response = await fetch(url);
-      const data = await response.json();
+  // const getRates = async () => {
+  //   try {
+  //     const url = `${baseUrl}/${apiKey}/latest/AED`;
+  //     const response = await fetch(url);
+  //     const data = await response.json();
 
-      if (data.result === "success") {
-        setRates(data.conversion_rates);
-      } else {
-        console.error("Failed to fetch rates:", data.error);
-      }
-    } catch (error) {
-      console.error("Error fetching conversion rates:", error);
-    }
-  };
+  //     if (data.result === "success") {
+  //       setRates(data.conversion_rates);
+  //     } else {
+  //       console.error("Failed to fetch rates:", data.error);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching conversion rates:", error);
+  //   }
+  // };
 
   const handleReset = () => {
     console.log("reset");
@@ -116,21 +131,23 @@ const PredictionForm: React.FC<PredictionFormProps> = ({ className }) => {
     setPrediction(0);
     setShowPrediction(0);
     setSizeUnit("m2");
+    localStorage.removeItem("prediction data");
+    setPropertyId(0);
   };
 
-  const calculteRate = async (toCurrency: string) => {
-    try {
-      const url = `${baseUrl}/${apiKey}/latest/AED`;
-      const response = await fetch(url);
-      const data = await response.json();
+  // const calculteRate = async (toCurrency: string) => {
+  //   try {
+  //     const url = `${baseUrl}/${apiKey}/latest/AED`;
+  //     const response = await fetch(url);
+  //     const data = await response.json();
 
-      const rate = data.conversion_rates[toCurrency];
-      setCurrency(toCurrency);
-      return prediction * rate;
-    } catch (error) {
-      console.error("Error fetching conversion rates:", error);
-    }
-  };
+  //     const rate = data.conversion_rates[toCurrency];
+  //     setCurrency(toCurrency);
+  //     return prediction * rate;
+  //   } catch (error) {
+  //     console.error("Error fetching conversion rates:", error);
+  //   }
+  // };
 
   const formatCurrency = (value: number, currencyCode: string) => {
     return new Intl.NumberFormat("en-US", {
@@ -180,9 +197,36 @@ const PredictionForm: React.FC<PredictionFormProps> = ({ className }) => {
   }, [watchedSize, sizeUnit]);
 
   // eslint-disable-next-line
-  const toggleFavorite = () => {
+  const toggleFavorite = async () => {
     setFavorite(!favorite);
+
+    if (!favorite) {
+      const data = JSON.parse(localStorage.getItem("prediction data") || "{}");
+
+      const resp = await httpClient.post(
+        "http://localhost:5000/add-favorite",
+        data
+      );
+      console.log(resp.data);
+      setPropertyId(resp.data.property_id);
+    } else {
+      console.log(propertyId);
+      const resp = await httpClient.post(
+        "http://localhost:5000/remove-favorite",
+        {
+          propertyId: propertyId,
+        }
+      );
+
+      console.log(resp);
+    }
   };
+
+  useEffect(() => {
+    if (prediction === 0) {
+      localStorage.removeItem("prediction data");
+    }
+  });
 
   return (
     <div className="pred-container">
@@ -351,10 +395,10 @@ const PredictionForm: React.FC<PredictionFormProps> = ({ className }) => {
                   <select
                     name="currencies"
                     id="currency"
-                    onChange={async (e) => {
-                      const rate = await calculteRate(e.target.value);
-                      setShowPrediction(rate || 0);
-                    }}
+                    // onChange={async (e) => {
+                    //   const rate = await calculteRate(e.target.value);
+                    //   setShowPrediction(rate || 0);
+                    // }}
                   >
                     {Object.keys(rates).map((currency, index) => (
                       <option key={index} value={currency}>
@@ -366,17 +410,16 @@ const PredictionForm: React.FC<PredictionFormProps> = ({ className }) => {
                 {favorite ? (
                   <FontAwesomeIcon
                     icon={["fas", "star"]}
-                    // onClick={toggleFavorite}
+                    onClick={toggleFavorite}
                     title="Remove from favorites"
-                    id="disabled-star"
+                    // id="disabled-star"
                   />
                 ) : (
                   <FontAwesomeIcon
                     icon={["far", "star"]}
-                    // onClick={toggleFavorite}
-                    // title="Add to favorites"
-                    title="Coming soon!"
-                    id="disabled-star"
+                    onClick={toggleFavorite}
+                    title="Add to favorites"
+                    // id="disabled-star"
                   />
                 )}
               </>

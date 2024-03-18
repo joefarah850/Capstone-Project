@@ -16,6 +16,7 @@ import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsAndConditions from "./pages/TermsAndConditions";
 import { useIdleTimer } from "react-idle-timer";
 import emitter from "./eventEmitter";
+import Favorites from "./pages/Favorites";
 
 const Router = () => {
   const [user, setUser] = React.useState<User | null>(null);
@@ -119,6 +120,18 @@ const Router = () => {
               onLogout={onLogout}
             >
               <UserPage />
+            </Layout>
+          }
+        />
+        <Route
+          path="/favorites-page"
+          element={
+            <Layout
+              user={user}
+              getProfilePic={getProfilePic}
+              onLogout={onLogout}
+            >
+              <Favorites />
             </Layout>
           }
         />

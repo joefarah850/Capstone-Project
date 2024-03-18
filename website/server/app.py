@@ -1,11 +1,12 @@
 from datetime import datetime
+from decimal import Decimal
 from flask import Flask, request, jsonify, session, redirect
 from flask_bcrypt import Bcrypt
 from flask_session import Session
 from config import ApplicationConfig
 from flask_cors import CORS
 from functools import wraps
-from models import Prop_Type, Region, db, User, Organization
+from models import Prop_Type, Region, db, User, Organization, Property, History
 import requests
 import cloudinary
 from itsdangerous import BadTimeSignature, URLSafeTimedSerializer
@@ -448,6 +449,94 @@ def login_user():
             "profile_pic": user.profile_pic_url,
         }
     }), 200
+
+@app.route('/add-favorite', methods=['POST'])
+@login_required
+def add_favorite():
+    user_id = session.get("user_id")
+
+    if not user_id:
+        return jsonify({"message": "User not logged in"}), 401
+
+    prediction = request.json.get("prediction")
+    propType = request.json.get("propType")
+    region = request.json.get("region")
+    size = Decimal(request.json.get("size"))
+    bedrooms = request.json.get("bedrooms")
+    bathrooms = request.json.get("bathrooms")
+
+    type_id = Prop_Type.query.filter_by(name=propType).first().id
+    region_id = Region.query.filter_by(name=region).first().id
+
+    existing_property = Property.query.filter_by(
+        predicted_price=prediction,
+        type_id=type_id,
+        region_id=region_id,
+        size=round(size, 2),
+        num_rooms=bedrooms,
+        num_bathrooms=bathrooms
+    ).first()
+
+    # property_id = existing_property.id if existing_property else None
+
+    if existing_property:
+        property_id = existing_property.id
+    else:
+        new_property = Property(
+            predicted_price=prediction,
+            type_id=type_id,
+            region_id=region_id,
+            size=size,
+            num_rooms=bedrooms,
+            num_bathrooms=bathrooms
+        )
+
+        db.session.add(new_property)
+        db.session.commit()
+
+        property_id = new_property.id 
+
+    existing_history =  History.query.filter_by(property_id=property_id, user_id=user_id).first()
+        
+    if existing_history:
+        existing_history.deleted = False
+        existing_history.search_datetime = datetime.utcnow()
+        db.session.commit()
+    else:
+        search_datetime = datetime.utcnow()
+
+        new_history = History(
+            property_id=property_id,
+            user_id=user_id,
+            search_datetime=search_datetime
+        )
+
+        db.session.add(new_history)
+        db.session.commit()
+
+    return jsonify({"message": "Favorite added successfully", "property_id": property_id}), 200
+
+@app.route('/remove-favorite', methods=['POST'])
+@login_required
+def remove_favorite():
+    user_id = session.get("user_id")
+
+    if not user_id:
+        return jsonify({"message": "User not logged in"}), 401
+    
+    property_id = request.json.get("propertyId")
+
+    print("PROPERTY", property_id)
+
+    history = History.query.filter_by(property_id=property_id, user_id=user_id).first()
+
+    if not history:
+        return jsonify({"message": "Favorite not found"}), 404
+
+    history.deleted = True
+    db.session.commit()
+
+    return jsonify({"message": "Favorite removed successfully"}), 200
 
 
 @app.route('/logout', methods=['POST'])

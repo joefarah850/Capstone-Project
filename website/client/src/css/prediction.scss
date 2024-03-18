@@ -203,6 +203,7 @@ $dark-blue: #0F3057;
                 margin-left: 1em;
                 font-size: 1.5rem;
                 opacity: 0.5;
+            }
             
 
             .fa-star {
@@ -214,11 +215,12 @@ $dark-blue: #0F3057;
     
                 &:hover {
                     color: lighten($primary-color, 15%);
+                    cursor: pointer;
                 }
 
                 
+            
             }
-        }
         }
     
         
