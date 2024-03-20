@@ -160,7 +160,7 @@ const Favorites: React.FC = () => {
         {
           field: "displayId",
           headerName: "",
-          width: 90,
+          width: 50,
           headerClassName: "my-header",
           disableColumnMenu: true,
         },
@@ -174,35 +174,35 @@ const Favorites: React.FC = () => {
         {
           field: "bedrooms",
           headerName: "# of Bedrooms",
-          width: 150,
+          width: 165,
           headerClassName: "my-header",
           disableColumnMenu: true,
         },
         {
           field: "bathrooms",
           headerName: "# of Bathrooms",
-          width: 150,
+          width: 170,
           headerClassName: "my-header",
           disableColumnMenu: true,
         },
         {
           field: "region",
           headerName: "Region",
-          width: 340,
+          width: 330,
           headerClassName: "my-header",
           disableColumnMenu: true,
         },
         {
           field: "type",
           headerName: "Type",
-          width: 190,
+          width: 180,
           headerClassName: "my-header",
           disableColumnMenu: true,
         },
         {
           field: "displayPrice",
           headerName: "Predicted Price",
-          width: 150,
+          width: 170,
           headerClassName: "my-header",
           disableColumnMenu: true,
         },
@@ -293,8 +293,8 @@ const Favorites: React.FC = () => {
             className="favorites-table"
             isCellEditable={() => false}
             isRowSelectable={() => false}
-            components={{
-              Footer: CustomFooter,
+            slots={{
+              footer: CustomFooter,
             }}
             getRowClassName={(params) =>
               params.row.deleted ? "deleted-row" : ""
