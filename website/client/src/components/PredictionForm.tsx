@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { PredictionFormData, PredictionSchema } from "../types";
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import PredictionFormField from "./PredictionFormField";
 import httpClient from "../httpClient";
@@ -12,7 +12,8 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { faStar as faStarRegular } from "@fortawesome/free-regular-svg-icons";
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { json } from "stream/consumers";
+import { Bounce, ToastContainer, Zoom, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 interface PredictionFormProps {
   className?: string;
@@ -133,6 +134,7 @@ const PredictionForm: React.FC<PredictionFormProps> = ({ className }) => {
     setSizeUnit("m2");
     localStorage.removeItem("prediction data");
     setPropertyId(0);
+    setFavorite(false);
   };
 
   // const calculteRate = async (toCurrency: string) => {
@@ -200,26 +202,14 @@ const PredictionForm: React.FC<PredictionFormProps> = ({ className }) => {
   const toggleFavorite = async () => {
     setFavorite(!favorite);
 
-    if (!favorite) {
-      const data = JSON.parse(localStorage.getItem("prediction data") || "{}");
+    const data = JSON.parse(localStorage.getItem("prediction data") || "{}");
 
-      const resp = await httpClient.post(
-        "http://localhost:5000/add-favorite",
-        data
-      );
-      console.log(resp.data);
-      setPropertyId(resp.data.property_id);
-    } else {
-      console.log(propertyId);
-      const resp = await httpClient.post(
-        "http://localhost:5000/remove-favorite",
-        {
-          propertyId: propertyId,
-        }
-      );
-
-      console.log(resp);
-    }
+    const resp = await httpClient.post(
+      "http://localhost:5000/add-favorite",
+      data
+    );
+    console.log(resp.data);
+    setPropertyId(resp.data.property_id);
   };
 
   useEffect(() => {
@@ -227,6 +217,20 @@ const PredictionForm: React.FC<PredictionFormProps> = ({ className }) => {
       localStorage.removeItem("prediction data");
     }
   });
+
+  const notify = () =>
+    toast.success("Added to Favorites!", {
+      position: "top-center",
+      autoClose: 4000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+      transition: Zoom,
+      style: { backgroundColor: "#133C55", color: "#efeff3", marginTop: "25%" },
+    });
 
   return (
     <div className="pred-container">
@@ -242,6 +246,7 @@ const PredictionForm: React.FC<PredictionFormProps> = ({ className }) => {
           </span>
         </div>
       )}
+      <ToastContainer />
       <form onSubmit={handleSubmit(handlePredict)}>
         <div className="form-field">
           <PredictionFormField
@@ -410,14 +415,18 @@ const PredictionForm: React.FC<PredictionFormProps> = ({ className }) => {
                 {favorite ? (
                   <FontAwesomeIcon
                     icon={["fas", "star"]}
-                    onClick={toggleFavorite}
-                    title="Remove from favorites"
+                    // onClick={toggleFavorite}
+                    // title="Remove from favorites"
                     // id="disabled-star"
+                    style={{ pointerEvents: "none" }}
                   />
                 ) : (
                   <FontAwesomeIcon
                     icon={["far", "star"]}
-                    onClick={toggleFavorite}
+                    onClick={() => {
+                      toggleFavorite();
+                      notify();
+                    }}
                     title="Add to favorites"
                     // id="disabled-star"
                   />

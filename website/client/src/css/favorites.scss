@@ -1,0 +1,117 @@
+@font-face {
+    font-family: "Josefin Sans Italic";
+    src: url("../fonts/JosefinSans-Italic-VariableFont_wght.ttf");
+    font-optical-sizing: auto;
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Josefin Sans";
+    src: url("../fonts/JosefinSans-VariableFont_wght.ttf");
+    font-optical-sizing: auto;
+    font-weight: normal;
+    font-style: normal;
+}
+
+$primary-color: #133C55;
+$my-white: #efeff3;
+$error-color: rgb(201, 3, 3);
+$gray: #737272;
+$light-blue: #00b5ad;
+$orange: #f4a261;
+$dark-orange: #b9763f;  
+$dark-blue: #0F3057;
+
+.favorites-container {
+    width: 84%;
+    background-color: $my-white;
+    color: $primary-color;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 13%;
+    margin-bottom: 10%;
+    font-family: "Josefin Sans", sans-serif;
+    font-size: 1rem;
+
+    #note {
+        margin-top: -1rem;
+        color: $primary-color;
+        font-size: .9rem;
+        margin-bottom: .5rem;
+    }
+
+    h1 {
+        font-size: 2.3rem;
+        font-weight: 1000;
+        margin-top: 2rem;
+        margin-bottom: 2rem;
+        text-align: center;
+    }
+
+    .empty-rows {
+        font-weight: 1000;
+        margin-top: 5rem;
+        margin-bottom: 5rem;
+        text-align: center;
+    }
+
+    .favorites-table {
+        width: 100%;
+        background-color: $my-white;
+        color: $primary-color;
+        border-radius: 0px 0px 8px 8px;
+        font-family: "Josefin Sans", sans-serif;
+        font-size: 1rem;
+    }
+    
+    .my-header {
+        font-size: 1.05rem;
+        font-weight: 1000;
+    }
+    
+    .MuiTablePagination-root {
+        color: $primary-color;
+        font-family: "Josefin Sans", sans-serif !important;
+    }
+    
+    .MuiTablePagination-selectLabel, .MuiTablePagination-select, .MuiTablePagination-displayedRows{
+        color: $primary-color;
+        font-family: "Josefin Sans", sans-serif !important;
+    }
+}
+
+.favorites-table .MuiDataGrid-cell:focus,
+.favorites-table .MuiDataGrid-cell:focus-within {
+  outline: none !important;
+}
+
+.confirm-box {
+    top: 35%;
+}
+
+.show-deleted-button {
+    background-color: $primary-color !important;
+    color: $my-white !important;
+    font-family: "Josefin Sans", sans-serif !important;
+    font-size: .7rem !important;
+    padding: .2rem .3rem !important;
+    margin-left: 1rem !important;
+    width: 10% !important;
+
+    &:hover {
+        background-color: lighten($primary-color, 20%) !important;
+    }
+}
+
+.deleted-row {
+    pointer-events: none;
+    color: $gray;
+
+    .actions-cell {
+        pointer-events: auto;
+        color: $primary-color;
+    }
+}

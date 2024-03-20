@@ -524,9 +524,7 @@ def remove_favorite():
     if not user_id:
         return jsonify({"message": "User not logged in"}), 401
     
-    property_id = request.json.get("propertyId")
-
-    print("PROPERTY", property_id)
+    property_id = request.json.get("id")
 
     history = History.query.filter_by(property_id=property_id, user_id=user_id).first()
 
@@ -534,10 +532,53 @@ def remove_favorite():
         return jsonify({"message": "Favorite not found"}), 404
 
     history.deleted = True
+
     db.session.commit()
 
     return jsonify({"message": "Favorite removed successfully"}), 200
 
+@app.route('/get-favorites', methods=['GET'])
+@login_required
+def get_favorites():
+    user_id = session.get("user_id")
+
+    if not user_id:
+        return jsonify({"message": "User not logged in"}), 401
+    
+    history = History.query.filter_by(user_id=user_id).all()
+
+    return jsonify({
+        "data": [
+            {
+                "id": favorite.property.id,
+                "predicted_price": favorite.property.predicted_price,
+                "type": favorite.property.prop_type.name,
+                "region": favorite.property.region.name,
+                "size": favorite.property.size,
+                "bedrooms": favorite.property.num_rooms,
+                "bathrooms": favorite.property.num_bathrooms,
+                "deleted": favorite.deleted,
+            } for favorite in history
+        ]
+    }), 200
+
+@app.route('/restore-favorite', methods=['POST'])
+@login_required
+def reset_favorites():
+    user_id = session.get("user_id")
+
+    if not user_id:
+        return jsonify({"message": "User not logged in"}), 401
+    
+    property_id = request.json.get("id")
+
+    history = History.query.filter_by(user_id=user_id, property_id=property_id).first()
+
+    history.deleted = False
+
+    db.session.commit()
+
+    return jsonify({"message": "Favorites restored successfully"}), 200
 
 @app.route('/logout', methods=['POST'])
 def logout_user():

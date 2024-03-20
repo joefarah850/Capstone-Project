@@ -227,8 +227,13 @@ const UserPage: React.FC = () => {
                               setPhoneError("");
                             }}
                             onBlur={() => {
-                              if (!isValidPhoneNumber(phoneNumber)) {
+                              if (
+                                phoneNumber &&
+                                !isValidPhoneNumber(phoneNumber)
+                              ) {
                                 setPhoneError("Invalid phone number");
+                              } else {
+                                setPhoneError("");
                               }
                             }}
                             className={phoneError ? "phone-error" : ""}

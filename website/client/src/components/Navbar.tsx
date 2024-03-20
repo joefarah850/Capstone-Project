@@ -29,8 +29,11 @@ const Navbar: React.FC<NavbarProps> = ({
               </NavLink>
             </li>
             <li className="nav__item" title="Coming soon!">
-              {/* <NavLink to="/favorite" className={`nav__link ${!isLoggedIn ? "disabled" : ""}`}> */}
-              <NavLink to="/favorite" className="nav__link disabled">
+              <NavLink
+                to="/favorites-page"
+                className={`nav__link ${!isLoggedIn ? "disabled" : ""}`}
+              >
+                {/* <NavLink to="/favorite" className="nav__link disabled"> */}
                 Favorites
               </NavLink>
             </li>

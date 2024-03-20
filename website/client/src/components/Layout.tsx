@@ -26,7 +26,8 @@ const Layout: React.FC<LayoutProps> = ({
     <>
       {(location.pathname === "/" ||
         location.pathname === "/user-page" ||
-        location.pathname === "/about-us") && (
+        location.pathname === "/about-us" ||
+        location.pathname === "/favorites-page") && (
         <>
           <Navbar
             profilePic={getProfilePic()}
