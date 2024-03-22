@@ -54,7 +54,11 @@ const Navbar: React.FC<NavbarProps> = ({
                 to="/user-page"
                 className={`nav__link ${!isLoggedIn ? "disabled" : ""}`}
               >
-                <img src={profilePic} alt="profile-pic" />
+                <img
+                  src={profilePic}
+                  alt="profile-pic"
+                  style={{ borderRadius: "50%" }}
+                />
               </NavLink>
               {isLoggedIn && (
                 <div className="dropdown-content">
