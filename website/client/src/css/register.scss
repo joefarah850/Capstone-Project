@@ -442,12 +442,45 @@ img {
 
     #avatar-hover
     {
+        width: 80%;
+        position: relative;
+
+        #undo {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 20px;
+            height: 20px;
+            margin: 10px;
+            &:hover {
+                cursor: pointer;
+            }
+        }
+
+        #webcam-activate {
+            margin-top: 1em;
+            width: 100%;
+            height: 275px;
+            padding: 5 rem;
+            border: 2px dashed $primary-color;
+            border-radius: 10%;
+            color: $primary-color;
+            font-family: "Josefin Sans", sans-serif;
+            background-color: $my-white;
+            font-size: 1.2rem;
+
+            &:hover {
+                cursor: pointer;
+                border: 2px dashed #386FA4;
+                color: #386FA4;
+            }
+        }
+
         label:hover {
             cursor: pointer;
         }
-    }
-
-    #avatar-hover:hover {
-        cursor: pointer;
+        
+        
+    
     }
 }

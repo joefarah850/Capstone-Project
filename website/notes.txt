@@ -5,3 +5,6 @@ Cloud Database:
 - add phone, country, and city to User
 - Change default organization to None
 - Change size type to Decimal(10, 2)
+
+
+! will need to add the choose file option to the profile picture
