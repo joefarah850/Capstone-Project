@@ -77,3 +77,18 @@ class History(db.Model):
 
     user = db.relationship('User', backref='History')
     property = db.relationship('Property', backref='History')
+
+class Properties_Info(db.Model):
+    __tablename__ = 'properties_info'
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    url = db.Column(db.Text, nullable=False)
+    title = db.Column(db.Text, nullable=False)
+    city = db.Column(db.Text, nullable=False)
+    region = db.Column(db.Text, nullable=False)
+    type = db.Column(db.Text, nullable=False)
+    size = db.Column(db.Double, nullable=False)
+    num_rooms = db.Column(db.Integer, nullable=False)
+    num_bathrooms = db.Column(db.Integer, nullable=False)
+    price = db.Column(db.Double, nullable=False)
+    

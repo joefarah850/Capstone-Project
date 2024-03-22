@@ -32,9 +32,44 @@ $dark-blue: #0F3057;
     margin-left: auto;
     margin-right: auto;
     margin-top: 13%;
-    margin-bottom: 10%;
+    margin-bottom: 13%;
     font-family: "Josefin Sans", sans-serif;
     font-size: 1rem;
+
+    &.slide-up {
+        height: 55vh;
+    }
+
+    .main-container {
+        display: flex;
+        flex-direction: column;
+        position: relative;
+
+        .info-container {
+            position: absolute;
+            width: 100%;
+            transition: opacity 0.5s ease-in-out;
+            transition: transform 0.5s ease;
+            transition: 0.5s ease-out;
+            transform: translateY(150%);
+            opacity: 0;
+
+            &.slide-up {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .grid-container {
+            transition: transform 0.5s ease; 
+            transition: 0.5s ease-out;
+
+            &.slide-up {
+                transform: translateY(-100%);
+                opacity: 0; 
+            }
+        }
+    }
 
     #note {
         margin-top: -1rem;

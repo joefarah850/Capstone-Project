@@ -3,10 +3,11 @@ from decimal import Decimal
 from flask import Flask, request, jsonify, session, redirect
 from flask_bcrypt import Bcrypt
 from flask_session import Session
+from sqlalchemy import and_
 from config import ApplicationConfig
 from flask_cors import CORS
 from functools import wraps
-from models import Prop_Type, Region, db, User, Organization, Property, History
+from models import Prop_Type, Properties_Info, Region, db, User, Organization, Property, History
 import requests
 import cloudinary
 from itsdangerous import BadTimeSignature, URLSafeTimedSerializer
@@ -579,6 +580,57 @@ def reset_favorites():
     db.session.commit()
 
     return jsonify({"message": "Favorites restored successfully"}), 200
+
+
+@app.route('/similar-properties', methods=['POST'])
+@login_required
+def get_similar_properties():
+    user_id = session.get("user_id")
+    if not user_id:
+        return jsonify({"message": "User not logged in"}), 401
+
+    features = request.json
+    query = db.session.query(Properties_Info)
+
+    history = History.query.filter_by(user_id=user_id, property_id=features["id"]).first()
+
+    # Direct filters like 'type', 'region', etc.
+    direct_filters = []
+    for key in ['type', 'region']:
+        if key in features:
+            direct_filters.append(getattr(Properties_Info, key) == features[key])
+
+    if direct_filters:
+        query = query.filter(and_(*direct_filters))
+
+    # Range filters like 'size' and 'price'
+    try:
+        if 'size' in features:
+            size = float(features['size'])
+            query = query.filter(Properties_Info.size.between(size - 50, size + 50))
+
+        if 'predicted_price' in features:
+            price = float(features['predicted_price'])
+            query = query.filter(Properties_Info.price.between(price * 0.9, price * 1.1))
+    except ValueError as e:
+        # Handle incorrect data types
+        return jsonify({"message": f"Invalid input data: {str(e)}"}), 400
+
+    # Execute query and handle potential database errors
+    try:
+        similar_properties = query.limit(3).all()
+    except Exception as e:
+        return jsonify({"message": f"Database error: {str(e)}"}), 500
+
+    # Serialize and return data
+    similar_properties_data = [{
+        'title': prop.title,
+        'price': prop.price,
+        'url': prop.url,
+        
+    } for prop in similar_properties]
+
+    return jsonify({"similar": similar_properties_data, "data": features, "created_at": history.search_datetime}), 200
 
 @app.route('/logout', methods=['POST'])
 def logout_user():

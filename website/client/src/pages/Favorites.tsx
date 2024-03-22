@@ -15,7 +15,6 @@ import Footer from "../components/Footer";
 import { confirm } from "react-confirm-box";
 import Button from "@mui/material/Button";
 import { ToastContainer, Zoom, toast } from "react-toastify";
-import { set } from "react-hook-form";
 
 const Favorites: React.FC = () => {
   const [rows, setRows] = useState([]);
@@ -24,6 +23,10 @@ const Favorites: React.FC = () => {
   const [showDeleted, setShowDeleted] = useState(false);
   const [deletedRows, setDeletedRows] = useState([]);
   const [hasDeletedRows, setHasDeletedRows] = useState(false);
+  const [showInfo, setShowInfo] = useState(false);
+  const [property, setProperty] = useState({} as any);
+  const [similar, setSimilar] = useState([] as any[]);
+  const [createdAt, setCreatedAt] = useState("");
 
   const confirmOptions = {
     labels: {
@@ -74,9 +77,35 @@ const Favorites: React.FC = () => {
     }
   };
 
-  const viewRow = (id: number) => {
-    // Implement your view logic here. For example, navigate to a detail view or open a modal.
-    console.log("Viewing row with id:", id);
+  const formatDate = (date: Date) => {
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    const seconds = date.getSeconds();
+
+    return `${month.toString().padStart(2, "0")}/${day
+      .toString()
+      .padStart(2, "0")}/${year} ${hours.toString().padStart(2, "0")}:${minutes
+      .toString()
+      .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+  };
+
+  const viewRow = async (params: any) => {
+    setShowInfo(!showInfo);
+    try {
+      const resp = await httpClient.post(
+        "http://localhost:5000/similar-properties",
+        params.row
+      );
+
+      setProperty(resp.data.data);
+      setSimilar(resp.data.similar);
+      setCreatedAt(formatDate(new Date(resp.data.created_at)));
+    } catch (error: any) {
+      console.log(error);
+    }
   };
 
   const notify = () =>
@@ -97,6 +126,7 @@ const Favorites: React.FC = () => {
     const filteredData = deletedRows.filter((row: any) => !row.deleted);
     const nonDeleted = filteredData.map((row: any, index: number) => ({
       ...row,
+      displaySize: row.size + " m²",
       displayId: index + 1,
       displayPrice: formatCurrency(row.predicted_price, "AED"),
     }));
@@ -108,6 +138,7 @@ const Favorites: React.FC = () => {
       const onlyDeleted = filteredDataDeleted.map(
         (row: any, index: number) => ({
           ...row,
+          displaySize: row.size + " m²",
           displayId: nonDeleted.length + index + 1,
           displayPrice: formatCurrency(row.predicted_price, "AED"),
         })
@@ -136,6 +167,7 @@ const Favorites: React.FC = () => {
 
       const newData = filteredData.map((row: any, index: number) => ({
         ...row,
+        displaySize: row.size + " m²",
         displayId: index + 1,
         displayPrice: formatCurrency(row.predicted_price, "AED"),
       }));
@@ -143,6 +175,7 @@ const Favorites: React.FC = () => {
       const newDataUnfiltered = unfilteredData.map(
         (row: any, index: number) => ({
           ...row,
+          displaySize: row.size + " m²",
           displayId: index + 1,
           displayPrice: formatCurrency(row.predicted_price, "AED"),
         })
@@ -165,7 +198,7 @@ const Favorites: React.FC = () => {
           disableColumnMenu: true,
         },
         {
-          field: "size",
+          field: "displaySize",
           headerName: "Size",
           width: 110,
           headerClassName: "my-header",
@@ -235,7 +268,7 @@ const Favorites: React.FC = () => {
               <GridActionsCellItem
                 icon={<VisibilityIcon />}
                 label="View"
-                onClick={() => viewRow(Number(params.id))}
+                onClick={() => viewRow(params)}
                 color="inherit"
               />,
             ];
@@ -270,7 +303,7 @@ const Favorites: React.FC = () => {
   return (
     <>
       <ToastContainer />
-      <div className="favorites-container">
+      <div className={`favorites-container ${showInfo ? "slide-up" : ""}`}>
         <h1>Favorites</h1>
         {showDeleted && (
           <p id="note">
@@ -281,25 +314,89 @@ const Favorites: React.FC = () => {
         {emptyRows ? (
           <h2 className="empty-rows">No favorites found!</h2>
         ) : (
-          <DataGrid
-            rows={rows}
-            columns={columns}
-            initialState={{
-              pagination: {
-                paginationModel: { page: 0, pageSize: 5 },
-              },
-            }}
-            pageSizeOptions={[5, 10]}
-            className="favorites-table"
-            isCellEditable={() => false}
-            isRowSelectable={() => false}
-            slots={{
-              footer: CustomFooter,
-            }}
-            getRowClassName={(params) =>
-              params.row.deleted ? "deleted-row" : ""
-            }
-          />
+          <div className="main-container">
+            <div className={`grid-container ${showInfo ? "slide-up" : ""}`}>
+              <DataGrid
+                rows={rows}
+                columns={columns}
+                initialState={{
+                  pagination: {
+                    paginationModel: { page: 0, pageSize: 5 },
+                  },
+                }}
+                pageSizeOptions={[5, 10]}
+                className="favorites-table"
+                isCellEditable={() => false}
+                isRowSelectable={() => false}
+                slots={{
+                  footer: CustomFooter,
+                }}
+                getRowClassName={(params) =>
+                  params.row.deleted ? "deleted-row" : ""
+                }
+              />
+            </div>
+            <div className={`info-container ${showInfo ? "slide-up" : ""}`}>
+              <h2>Property Information</h2>
+              <div>
+                <strong>Size:</strong>{" "}
+                <input disabled type="text" value={property.displaySize} />
+              </div>
+              <div>
+                <strong>Bedrooms:</strong>{" "}
+                <input disabled type="text" value={property.bedrooms} />
+              </div>
+              <div>
+                <strong>Bathrooms:</strong>{" "}
+                <input disabled type="text" value={property.bathrooms} />
+              </div>
+              <div>
+                <strong>Region:</strong>{" "}
+                <input disabled type="text" value={property.region} />
+              </div>
+              <div>
+                <strong>Type:</strong>{" "}
+                <input disabled type="text" value={property.type} />
+              </div>
+              <div>
+                <strong>Predicted Price:</strong>{" "}
+                <input
+                  disabled
+                  type="text"
+                  value={formatCurrency(property.predicted_price, "AED")}
+                />
+              </div>
+              <div>
+                <strong>Favorite Added:</strong>{" "}
+                <input disabled type="text" value={createdAt} />
+              </div>
+
+              <h2>Similar Properties</h2>
+              <div className="similar-properties">
+                {similar.map((property, index) => (
+                  <div key={index} className="similar-property">
+                    <div>
+                      <strong>Title:</strong>{" "}
+                      <input disabled type="text" value={property.title} />
+                    </div>
+                    <div>
+                      <strong>URL:</strong>{" "}
+                      <input disabled type="url" value={property.url} />
+                    </div>
+                    <div>
+                      <strong>Predicted Price:</strong>{" "}
+                      <input
+                        disabled
+                        type="text"
+                        value={formatCurrency(property.price, "AED")}
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <button onClick={() => setShowInfo(false)}>Back</button>
+            </div>
+          </div>
         )}
       </div>
       <Footer />
