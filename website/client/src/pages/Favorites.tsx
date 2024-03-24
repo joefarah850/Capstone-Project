@@ -337,64 +337,99 @@ const Favorites: React.FC = () => {
               />
             </div>
             <div className={`info-container ${showInfo ? "slide-up" : ""}`}>
-              <h2>Property Information</h2>
-              <div>
-                <strong>Size:</strong>{" "}
-                <input disabled type="text" value={property.displaySize} />
-              </div>
-              <div>
-                <strong>Bedrooms:</strong>{" "}
-                <input disabled type="text" value={property.bedrooms} />
-              </div>
-              <div>
-                <strong>Bathrooms:</strong>{" "}
-                <input disabled type="text" value={property.bathrooms} />
-              </div>
-              <div>
-                <strong>Region:</strong>{" "}
-                <input disabled type="text" value={property.region} />
-              </div>
-              <div>
-                <strong>Type:</strong>{" "}
-                <input disabled type="text" value={property.type} />
-              </div>
-              <div>
-                <strong>Predicted Price:</strong>{" "}
-                <input
-                  disabled
-                  type="text"
-                  value={formatCurrency(property.predicted_price, "AED")}
-                />
-              </div>
-              <div>
-                <strong>Favorite Added:</strong>{" "}
-                <input disabled type="text" value={createdAt} />
-              </div>
-
-              <h2>Similar Properties</h2>
-              <div className="similar-properties">
-                {similar.map((property, index) => (
-                  <div key={index} className="similar-property">
-                    <div>
-                      <strong>Title:</strong>{" "}
-                      <input disabled type="text" value={property.title} />
+              <div className="inner-info-container">
+                <div className="info">
+                  <h2>Property Information</h2>
+                  <div className="info-2">
+                    <div className="input-field-prop">
+                      <strong>ID:</strong>{" "}
+                      <input disabled type="text" value={property.displayId} />
                     </div>
-                    <div>
-                      <strong>URL:</strong>{" "}
-                      <input disabled type="url" value={property.url} />
+                    <div className="input-field-prop">
+                      <strong>Size:</strong>{" "}
+                      <input
+                        disabled
+                        type="text"
+                        value={property.displaySize}
+                      />
                     </div>
-                    <div>
+                    <div className="input-field-prop">
+                      <strong>Bedrooms:</strong>{" "}
+                      <input disabled type="text" value={property.bedrooms} />
+                    </div>
+                    <div className="input-field-prop">
+                      <strong>Bathrooms:</strong>{" "}
+                      <input disabled type="text" value={property.bathrooms} />
+                    </div>
+                    <div className="input-field-prop">
+                      <strong>Region:</strong>{" "}
+                      <input disabled type="text" value={property.region} />
+                    </div>
+                    <div className="input-field-prop">
+                      <strong>Type:</strong>{" "}
+                      <input disabled type="text" value={property.type} />
+                    </div>
+                    <div className="input-field-prop">
                       <strong>Predicted Price:</strong>{" "}
                       <input
                         disabled
                         type="text"
-                        value={formatCurrency(property.price, "AED")}
+                        value={formatCurrency(property.predicted_price, "AED")}
                       />
                     </div>
+                    <div className="input-field-prop">
+                      <strong>Favorite Added:</strong>{" "}
+                      <input disabled type="text" value={createdAt} />
+                    </div>
+                    <button onClick={() => setShowInfo(false)}>Back</button>
                   </div>
-                ))}
+                </div>
+                <div className="similar">
+                  <h2>Similar Properties</h2>
+                  {similar.length === 0 ? (
+                    <h3>No similar properties found!</h3>
+                  ) : (
+                    <div className="similar-properties">
+                      {similar.map((property, index) => (
+                        <div key={index} className="similar-property">
+                          <strong
+                            style={{
+                              fontSize: "1.1rem",
+                            }}
+                          >
+                            Property {index + 1}:
+                          </strong>{" "}
+                          <div className="input-field-prop">
+                            <strong>Title:</strong>{" "}
+                            <input
+                              disabled
+                              type="text"
+                              value={property.title}
+                            />
+                          </div>
+                          <div className="input-field-prop">
+                            <strong>Price:</strong>{" "}
+                            <input
+                              disabled
+                              type="text"
+                              value={formatCurrency(property.price, "AED")}
+                            />
+                          </div>
+                          <div>
+                            <a
+                              href={`${property.url}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              Explore Property
+                            </a>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
               </div>
-              <button onClick={() => setShowInfo(false)}>Back</button>
             </div>
           </div>
         )}

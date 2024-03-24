@@ -37,7 +37,7 @@ $dark-blue: #0F3057;
     font-size: 1rem;
 
     &.slide-up {
-        height: 55vh;
+        height: 60dvh;
     }
 
     .main-container {
@@ -51,13 +51,150 @@ $dark-blue: #0F3057;
             transition: opacity 0.5s ease-in-out;
             transition: transform 0.5s ease;
             transition: 0.5s ease-out;
-            transform: translateY(150%);
+            transform: translateX(150%);
             opacity: 0;
+            
+
 
             &.slide-up {
                 opacity: 1;
-                transform: translateY(0);
+                transform: translateX(0);
             }
+
+            .inner-info-container {
+                display: flex;
+                justify-content: space-between; 
+                
+            
+
+            .info, .similar {
+                width: 100%;
+
+                h2 {
+                    font-size: 1.5rem;
+                    font-weight: 1000;
+                    margin-top: -1.3rem;
+                    margin-bottom: 1rem;
+                    text-align: center;
+                
+                }
+
+                h3 {
+                    font-size: 1.3rem;
+                    font-weight: 1000;
+                    margin-top: 6rem;
+                    margin-bottom: 1rem;
+                    text-align: center;
+                    align-self: center;
+                }
+            }
+
+            .info {
+                border-right: 2px solid lighten($gray, 30%);
+            }
+
+            .info-2 {
+                margin-top: 2rem;
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                grid-gap: 1.5rem;
+                padding: 0 1rem;
+                
+
+                .input-field-prop {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+
+
+                    input{
+                        
+                        padding: .5rem;
+                        // border: 2px solid lighten($gray, 30%);
+                        border: 1.5px solid lighten($gray, 30%);
+                        border-radius: 5px;
+                        font-size: 1rem;
+                        color: $primary-color;
+                        background-color: $my-white;
+                        font-family: "Josefin Sans", sans-serif;
+                        opacity: 0.8;
+
+                        &:focus {
+                            border-color: $dark-blue;
+                            outline: none;
+                        }
+                    }
+                }
+                button {
+                    width: 40%;
+                    padding: 7px;
+                    margin-top: 5.5rem;
+                    border-radius: 8px;
+                    border: 1px solid $primary-color;
+                    font-size: 1.1em;
+                    color: $my-white;
+                    font-family: "Josefin Sans", sans-serif;
+                    background-color: $primary-color;
+                }
+        
+                button:hover {
+                    background-color: #386FA4;
+                    cursor: pointer;
+                }
+            }
+
+            .similar-properties {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                flex-direction: column;
+                padding: 0 1rem;
+                gap: 1rem;
+                margin-top: 2rem;
+                
+                .similar-property {
+                    width: 100%;
+                    display: flex;
+                    justify-content: space-between;
+                    flex-direction: column;
+                    gap: .5rem;
+                
+
+                .input-field-prop {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+
+
+                    input{
+                        width: 70%;
+                        padding: .2rem .5rem;
+                        border: 1.5px solid lighten($gray, 30%);
+                        border-radius: 5px;
+                        font-size: 1rem;
+                        color: $primary-color;
+                        background-color: $my-white;
+                        opacity: 0.8;
+                        font-family: "Josefin Sans", sans-serif;
+                    }
+                }
+                a {
+                    color: $primary-color;
+                    font-size: .9rem;
+                    font-weight: 1000;
+                    transition: color 0.5s ease-in-out;
+
+                    &:hover {
+                        color: lighten($primary-color, 20%);
+                    }
+                
+                }
+            }
+            
+            }
+        }
+        
+
         }
 
         .grid-container {
@@ -65,7 +202,7 @@ $dark-blue: #0F3057;
             transition: 0.5s ease-out;
 
             &.slide-up {
-                transform: translateY(-100%);
+                transform: translateX(-100%);
                 opacity: 0; 
             }
         }
