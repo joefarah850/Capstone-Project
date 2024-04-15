@@ -27,6 +27,11 @@ const RegisterPage: React.FC = () => {
   const [pass, setPass] = useState<string>("");
   const [exists, setExists] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  // const [isSafari, setIsSafari] = useState(false);
+
+  // useEffect(() => {
+  //   setIsSafari(/^((?!chrome|android).)*safari/i.test(navigator.userAgent));
+  // }, []);
 
   library.add(faEye, faEyeSlash);
 

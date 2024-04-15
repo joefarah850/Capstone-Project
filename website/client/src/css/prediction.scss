@@ -28,14 +28,16 @@ $dark-blue: #0F3057;
     margin-bottom: 5%;
     background-color: $my-white;
     padding: 2rem;
+    padding-bottom: 1.7rem;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     width: 90%;
     margin-left: auto;
     margin-right: auto;
-    height: 14.3rem;
+    height: 14.3;
     font-family: "Josefin Sans", sans-serif;
     position: relative;
+
 
     .disabled {
         position: absolute;
@@ -83,7 +85,7 @@ $dark-blue: #0F3057;
     form {
         display: flex;
         flex-wrap: wrap;
-        gap: 20px;
+        gap: 15px;
         justify-content: space-between;
     }
 
@@ -100,7 +102,7 @@ $dark-blue: #0F3057;
             font-size: 1rem;
             color: $primary-color;
             background-color: $my-white;
-            margin-left: -2rem;
+            margin-left: .25rem;
             margin-top: auto;
             margin-bottom: auto;
             font-family: "Josefin Sans", sans-serif;
@@ -152,6 +154,17 @@ $dark-blue: #0F3057;
             position: absolute;
             bottom: -20px; // Adjust as needed to position the error message below the field
             left: 0;
+        }
+
+    }
+
+    .size-small {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+
+        #size {
+            width: 100%
         }
 
     }
@@ -290,4 +303,96 @@ $dark-blue: #0F3057;
     font-family: "Josefin Sans", sans-serif;
     margin-right: auto;
     margin-left: auto;
+}
+
+.small-curr {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    #currency {
+
+    font-family: "Josefin Sans", sans-serif;
+    
+    &:hover {
+        cursor: pointer;
+    
+    }
+}
+}
+
+@media (max-width: 768px) {
+    .pred-container {
+        padding: 1rem; 
+        margin-top: 2%; 
+        margin-bottom: 2%;
+        width: 80dvw;
+
+        .form-field {
+            width: 100%;
+            margin-bottom: 3%;
+        }
+
+        .size-small {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+
+            #size {
+                width: 75%
+            }
+
+            #size-unit {
+                padding: .6rem 0rem;
+            }
+        }
+
+        #button {
+            flex-direction: column; // Stack elements vertically for narrow screens
+            #get-prediction-button,
+            #reset {
+                width: 100%; 
+                margin-left: 0;
+                margin-top: 3%;
+                
+            }
+        }
+
+        #disabled-span {
+            font-size: 2rem; // Smaller font size for the disabled message
+        }
+    
+        #prediction {
+            flex-direction: column; // Stack elements vertically inside the prediction div
+            gap: 5px; // Add some space between elements
+            width: 100%;
+
+            h2 {
+                margin: 2rem 1rem 1rem 1rem;
+                text-align: center;
+            }
+        }
+    
+        #note {
+            margin-top: 2rem;
+            font-size: 0.9rem; // Slightly smaller font size for the note
+        }
+
+        .small-curr {
+            margin-top: 1rem;
+        }
+    
+        #disabled {
+            #disabled-span {
+                font-size: 2rem; // Smaller font size for the disabled message
+                transform: translate(-50%, -80%);
+            }
+        }
+    }
+
+    
+    
+
+    
 }

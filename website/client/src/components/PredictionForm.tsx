@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { PredictionFormData, PredictionSchema } from "../types";
-import { set, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import PredictionFormField from "./PredictionFormField";
 import httpClient from "../httpClient";
@@ -12,7 +12,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { faStar as faStarRegular } from "@fortawesome/free-regular-svg-icons";
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { Bounce, ToastContainer, Zoom, toast } from "react-toastify";
+import { ToastContainer, Zoom, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 interface PredictionFormProps {
@@ -29,7 +29,12 @@ const PredictionForm: React.FC<PredictionFormProps> = ({ className }) => {
   const [sizeUnit, setSizeUnit] = useState("m2");
   const [customErrors, setCustomErrors] = useState("");
   const [favorite, setFavorite] = useState(false);
-  const [propertyId, setPropertyId] = useState(0);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [isSafari, setIsSafari] = useState(false);
+
+  useEffect(() => {
+    setIsSafari(/^((?!chrome|android).)*safari/i.test(navigator.userAgent));
+  }, []);
 
   const numbers = Array.from({ length: 7 }, (_, index) => ({
     value: `${index}`,
@@ -83,7 +88,7 @@ const PredictionForm: React.FC<PredictionFormProps> = ({ className }) => {
 
     setPrediction(resp.data.prediction);
     setShowPrediction(resp.data.prediction);
-    // getRates();
+    getRates();
   };
 
   const getPropType = async () => {
@@ -99,21 +104,21 @@ const PredictionForm: React.FC<PredictionFormProps> = ({ className }) => {
   const apiKey = process.env.REACT_APP_CONVERSION_KEY;
   const baseUrl = process.env.REACT_APP_API_BASE_URL;
 
-  // const getRates = async () => {
-  //   try {
-  //     const url = `${baseUrl}/${apiKey}/latest/AED`;
-  //     const response = await fetch(url);
-  //     const data = await response.json();
+  const getRates = async () => {
+    try {
+      const url = `${baseUrl}/${apiKey}/latest/AED`;
+      const response = await fetch(url);
+      const data = await response.json();
 
-  //     if (data.result === "success") {
-  //       setRates(data.conversion_rates);
-  //     } else {
-  //       console.error("Failed to fetch rates:", data.error);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error fetching conversion rates:", error);
-  //   }
-  // };
+      if (data.result === "success") {
+        setRates(data.conversion_rates);
+      } else {
+        console.error("Failed to fetch rates:", data.error);
+      }
+    } catch (error) {
+      console.error("Error fetching conversion rates:", error);
+    }
+  };
 
   const handleReset = () => {
     console.log("reset");
@@ -133,23 +138,22 @@ const PredictionForm: React.FC<PredictionFormProps> = ({ className }) => {
     setShowPrediction(0);
     setSizeUnit("m2");
     localStorage.removeItem("prediction data");
-    setPropertyId(0);
     setFavorite(false);
   };
 
-  // const calculteRate = async (toCurrency: string) => {
-  //   try {
-  //     const url = `${baseUrl}/${apiKey}/latest/AED`;
-  //     const response = await fetch(url);
-  //     const data = await response.json();
+  const calculteRate = async (toCurrency: string) => {
+    try {
+      const url = `${baseUrl}/${apiKey}/latest/AED`;
+      const response = await fetch(url);
+      const data = await response.json();
 
-  //     const rate = data.conversion_rates[toCurrency];
-  //     setCurrency(toCurrency);
-  //     return prediction * rate;
-  //   } catch (error) {
-  //     console.error("Error fetching conversion rates:", error);
-  //   }
-  // };
+      const rate = data.conversion_rates[toCurrency];
+      setCurrency(toCurrency);
+      return prediction * rate;
+    } catch (error) {
+      console.error("Error fetching conversion rates:", error);
+    }
+  };
 
   const formatCurrency = (value: number, currencyCode: string) => {
     return new Intl.NumberFormat("en-US", {
@@ -209,7 +213,6 @@ const PredictionForm: React.FC<PredictionFormProps> = ({ className }) => {
       data
     );
     console.log(resp.data);
-    setPropertyId(resp.data.property_id);
   };
 
   useEffect(() => {
@@ -232,6 +235,10 @@ const PredictionForm: React.FC<PredictionFormProps> = ({ className }) => {
       style: { backgroundColor: "#133C55", color: "#efeff3", marginTop: "25%" },
     });
 
+  window.addEventListener("resize", () => {
+    setWindowWidth(window.innerWidth);
+  });
+
   return (
     <div className="pred-container">
       <div className={className}></div>
@@ -248,7 +255,7 @@ const PredictionForm: React.FC<PredictionFormProps> = ({ className }) => {
       )}
       <ToastContainer />
       <form onSubmit={handleSubmit(handlePredict)}>
-        <div className="form-field">
+        <div className="form-field size-small">
           <PredictionFormField
             id="size"
             type="float"
@@ -265,27 +272,41 @@ const PredictionForm: React.FC<PredictionFormProps> = ({ className }) => {
               borderWidth: customErrors || errors.size ? "2px" : "2px",
             }}
           />
-          {errors.size && (
-            <span className="error-message-prediction">
-              {errors.size.message}
-            </span>
-          )}
-          {customErrors && (
-            <span className="error-message-prediction">{customErrors}</span>
-          )}
-        </div>
-        <div className="form-field">
           <select
             name="sizeUnit"
             onChange={(e) => setSizeUnit(e.target.value)}
             disabled={className !== ""}
             id="size-unit"
             value={sizeUnit}
+            style={isSafari ? { WebkitAppearance: "none" } : {}}
           >
             <option value="m2">m²</option>
             <option value="ft2">ft²</option>
           </select>
+          {/* ) : null} */}
+          {errors.size && (
+            <span className="error-message-prediction">
+              {errors.size.message}
+            </span>
+          )}
+          {customErrors && !errors.size && (
+            <span className="error-message-prediction">{customErrors}</span>
+          )}
         </div>
+        {/* {window.innerWidth > 768 ? (
+          <div className="form-field">
+            <select
+              name="sizeUnit"
+              onChange={(e) => setSizeUnit(e.target.value)}
+              disabled={className !== ""}
+              id="size-unit"
+              value={sizeUnit}
+            >
+              <option value="m2">m²</option>
+              <option value="ft2">ft²</option>
+            </select>
+          </div>
+        ) : null} */}
         <div className="form-field">
           <PredictionFormField
             type="dropdown"
@@ -296,6 +317,7 @@ const PredictionForm: React.FC<PredictionFormProps> = ({ className }) => {
             valueAsNumber={true}
             options={numbers}
             disabled={className !== ""}
+            isSafari={isSafari}
           />
           {errors.bedrooms && (
             <span className="error-message-prediction">
@@ -313,6 +335,7 @@ const PredictionForm: React.FC<PredictionFormProps> = ({ className }) => {
             valueAsNumber={true}
             options={numbers2}
             disabled={className !== ""}
+            isSafari={isSafari}
           />
           {errors.bathrooms && (
             <span className="error-message-prediction">
@@ -332,6 +355,7 @@ const PredictionForm: React.FC<PredictionFormProps> = ({ className }) => {
               label: type.name,
             }))}
             disabled={className !== ""}
+            isSafari={isSafari}
           />
           {errors.propType && (
             <span className="error-message-prediction">
@@ -351,6 +375,7 @@ const PredictionForm: React.FC<PredictionFormProps> = ({ className }) => {
               label: region.name,
             }))}
             disabled={className !== ""}
+            isSafari={isSafari}
           />
           {errors.region && (
             <span className="error-message-prediction">
@@ -385,7 +410,11 @@ const PredictionForm: React.FC<PredictionFormProps> = ({ className }) => {
         >
           {/* {prediction === 0 ? null : ( */}
           <>
-            <h2>Prediction:&nbsp;&nbsp; </h2>
+            {windowWidth > 768 ? (
+              <h2>Prediction:&nbsp;&nbsp; </h2>
+            ) : (
+              <h2>Prediction:</h2>
+            )}
             <input
               type="text"
               value={
@@ -395,15 +424,16 @@ const PredictionForm: React.FC<PredictionFormProps> = ({ className }) => {
               style={{ borderColor: prediction === 0 ? "gray" : "" }}
             />
             {prediction === 0 ? null : (
-              <>
+              <div className="small-curr">
                 <div id="currencies">
                   <select
                     name="currencies"
                     id="currency"
-                    // onChange={async (e) => {
-                    //   const rate = await calculteRate(e.target.value);
-                    //   setShowPrediction(rate || 0);
-                    // }}
+                    style={isSafari ? { WebkitAppearance: "none" } : {}}
+                    onChange={async (e) => {
+                      const rate = await calculteRate(e.target.value);
+                      setShowPrediction(rate || 0);
+                    }}
                   >
                     {Object.keys(rates).map((currency, index) => (
                       <option key={index} value={currency}>
@@ -431,7 +461,7 @@ const PredictionForm: React.FC<PredictionFormProps> = ({ className }) => {
                     // id="disabled-star"
                   />
                 )}
-              </>
+              </div>
             )}
           </>
         </div>

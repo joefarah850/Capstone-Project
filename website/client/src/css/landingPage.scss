@@ -38,22 +38,24 @@ body {
     overflow-y: scroll;
 
     .intro{
-        width: 100%;
+        width: 85%;
         height: 50vh;
         display: flex;
         position: relative;
-        margin-bottom: 10%;
-        margin-top: 19%;
+        margin-bottom: 13%;
+        margin-top: 16%;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        margin-left: auto;
+        margin-right: auto;
 
         #getting-started {
-            position: absolute;
-            right:8%;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             color: $my-white;
-            top: 15%;
 
             h2 {
                 font-size: 2.5em;
@@ -126,10 +128,14 @@ body {
         }
 
         #slogan {
-            position: absolute;
-            left: 8%;
             color: $my-white;
             font-size: 1.85em;
+
+            #location {
+                font-size: 0.5em;
+                font-weight: normal;
+
+            }
         }
     }
 
@@ -206,6 +212,75 @@ body {
               }
         }
     }
+    }
+}
+
+
+@media screen and (max-width: 768px) {
+    body {
+        font-size: 0.9em; // Adjust font size for better readability
+    }
+
+    .container {
+        .intro {
+            flex-direction: column; 
+            height: max-content;
+            margin-top: 20%;
+            margin-right: 0;
+            margin-left: 0;
+            width: 100%;
+
+
+            #getting-started {
+                right: auto; 
+                width: 90%; 
+                margin: 0 auto;
+                top: auto; 
+                padding-top: 20px; 
+
+                #help-video {
+                #video {
+                    width: 90dvw; 
+                    height: 50dvw;
+                    }
+                }
+
+            }
+
+            #slogan {
+                left: auto; 
+                width: 100%; 
+                margin: 0 auto;
+                text-align: center; 
+                font-size: 5vw;
+                
+            }
+        }
+
+        .divs {
+            width: 90%; // Increase width to use more of the screen
+            padding: 2rem 0.5rem; // Reduce padding to fit small screens
+
+            .divs2 {
+                flex-direction: column; // Stack elements vertically
+
+                .info {
+                    &:not(:last-child)::after {
+                        content: none; // Remove the divider lines between sections
+                    }
+
+                    h2 {
+                        margin-bottom: 1.5rem; // Add some space below the heading
+                    
+                    }
+
+                    img {
+                        margin-top: 0; // Add some space above the image
+                        width: 80%; // Increase image width to better fit the space
+                    }
+                }
+            }
+        }
     }
 }
 

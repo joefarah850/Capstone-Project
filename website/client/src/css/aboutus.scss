@@ -89,3 +89,31 @@ body {
 }
 
 }
+
+@media (max-width: 768px) {
+    .container-aboutus {
+        .divs-aboutus {
+            width: 85%;
+            padding: 2rem 1rem;
+            margin-top: 20%;
+            margin-bottom: 20%;
+
+            .divs2-aboutus {
+                flex-direction: column;
+                gap: 1rem;
+
+                .info-aboutus {
+                    h2 {
+                        font-size: 1.2em;
+                        margin-bottom: 1rem;
+                    }
+
+                    p {
+                        width: 100%;
+                        font-size: 1rem;
+                    }
+                }
+            }
+        }
+    }
+}

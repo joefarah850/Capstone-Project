@@ -7,6 +7,7 @@ import Footer from "../components/Footer";
 
 const LandingPage = () => {
   const [user, setUser] = React.useState<User | null>(null);
+  const [windowWidth, setWindowWidth] = React.useState(window.innerWidth);
 
   useEffect(() => {
     (async () => {
@@ -18,6 +19,12 @@ const LandingPage = () => {
         console.log(error);
       }
     })();
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener("resize", () => {
+      setWindowWidth(window.innerWidth);
+    });
   }, []);
 
   return (
@@ -32,17 +39,7 @@ const LandingPage = () => {
                   <br></br>
                   <br></br>Predict with AI<br></br>Invest Smart
                   <br></br>
-                  <span
-                    style={{
-                      fontSize: "0.5em",
-                      color: "white",
-                      fontWeight: "normal",
-                      position: "relative",
-                      top: "-10px",
-                    }}
-                  >
-                    Dubai Market
-                  </span>
+                  <span id="location">Dubai Market</span>
                 </h1>
               </div>
               <div id="getting-started">
@@ -62,7 +59,7 @@ const LandingPage = () => {
                     ></iframe>
                   </div>
                 </div>
-                {user == null ? (
+                {user == null && windowWidth > 768 ? (
                   <div className="get-started-buttons">
                     <button onClick={() => (window.location.href = "/login")}>
                       Login

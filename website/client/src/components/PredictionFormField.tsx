@@ -15,6 +15,7 @@ const PredictionFormField: React.FC<PredictionFormFieldProps> = ({
   max,
   id,
   style,
+  isSafari,
 }) => {
   return (
     <>
@@ -26,6 +27,7 @@ const PredictionFormField: React.FC<PredictionFormFieldProps> = ({
             style={{
               borderColor: error ? "rgb(201, 3, 3)" : "",
               borderWidth: error ? "2px" : "2px",
+              WebkitAppearance: isSafari ? "none" : undefined,
               // padding: "9px",
             }}
             disabled={disabled}

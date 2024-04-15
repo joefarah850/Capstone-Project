@@ -101,6 +101,7 @@ $gray: #737272;
         margin-bottom: 20px;
         font-size: 1em;
         text-decoration: underline;
+        background-color: $my-white;
     }
     
     #profile-button:hover {
@@ -414,7 +415,7 @@ img {
             background: inherit;
             font-weight: bolder;
             padding: 0;
-            margin-left: 1%;
+            margin-left: 3%;
         }
 
         #cancel:hover {
@@ -479,8 +480,11 @@ img {
         label:hover {
             cursor: pointer;
         }
-        
-        
-    
+    }
+}
+
+@media screen and (max-width: 1200px) {
+    #register-container {
+        flex-direction: column;
     }
 }

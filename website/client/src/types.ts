@@ -146,6 +146,7 @@ export type PredictionFormFieldProps = {
   max?: number;
   id?: string;
   style?: React.CSSProperties;
+  isSafari?: boolean;
 };
 
 export type PredictionValidFieldNames =

@@ -283,7 +283,7 @@ const Favorites: React.FC = () => {
 
   useEffect(() => {
     load();
-  }, []);
+  });
 
   const CustomFooter = (props: any) => (
     <GridFooterContainer>
