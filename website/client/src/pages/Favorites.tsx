@@ -283,7 +283,8 @@ const Favorites: React.FC = () => {
 
   useEffect(() => {
     load();
-  });
+    // eslint-disable-next-line
+  }, []);
 
   const CustomFooter = (props: any) => (
     <GridFooterContainer>
